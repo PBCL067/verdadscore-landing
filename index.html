@@ -916,11 +916,12 @@
       const data = await res.json();
       clearInterval(interval);
       loading.classList.remove("visible");
-      const c = parseInt(localStorage.getItem("vs_scan_count") || "0");
-      localStorage.setItem("vs_scan_count", String(c + 1));
-      updateScanCount();
 
       if (res.ok) {
+        // Only increment on successful scan
+        const c = parseInt(localStorage.getItem("vs_scan_count") || "0");
+        localStorage.setItem("vs_scan_count", String(c + 1));
+        updateScanCount();
         const score   = Math.round(data.vci_score || 70);
         const verdict = data.verdict || "At Risk";
         const color   = score >= 82 ? "var(--green)" :
