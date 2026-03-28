@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verdad Score — Investor Briefing</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #060C17; --surface: #0D1521; --card: #111827;
+      --border: #1E293B; --blue: #3B82F6; --green: #22C55E;
+      --yellow: #F59E0B; --red: #EF4444; --cyan: #22D3EE;
+      --text: #E2E8F0; --muted: #64748B; --white: #FFFFFF;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text);
+      font-family: "DM Sans", system-ui, sans-serif; line-height: 1.6; }
+    .mono { font-family: "DM Mono", monospace; }
+    .bebas { font-family: "Bebas Neue", sans-serif; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 40px; background: rgba(6,12,23,0.92);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav-brand { display: flex; align-items: center; gap: 10px; }
+    .nav-logo { width: 32px; height: 32px;
+      background: linear-gradient(135deg, #3B82F6, #6366f1);
+      border-radius: 6px; display: flex; align-items: center;
+      justify-content: center; font-family: "Bebas Neue"; font-size: 18px; color: white; }
+    .nav-badge { font-family: "DM Mono"; font-size: 9px; color: var(--red);
+      background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+      padding: 3px 10px; border-radius: 3px; letter-spacing: 0.1em; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { font-size: 12px; color: var(--muted); text-decoration: none;
+      font-family: "DM Mono"; letter-spacing: 0.06em; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+
+    /* SECTIONS */
+    .section { padding: 100px 40px; max-width: 1000px; margin: 0 auto; }
+    .section-label { font-family: "DM Mono"; font-size: 10px; color: var(--blue);
+      letter-spacing: 0.15em; display: block; margin-bottom: 16px; }
+    .section-title { font-size: clamp(32px, 5vw, 52px); font-weight: 700;
+      letter-spacing: -0.02em; line-height: 1.08; margin-bottom: 20px; }
+    .section-title span { color: var(--blue); }
+    .section-sub { font-size: 17px; color: var(--muted); max-width: 600px; line-height: 1.7; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 120px 40px 80px; position: relative; overflow: hidden; }
+    .hero-grid { position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent); }
+    .hero-glow { position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, rgba(59,130,246,0.1), transparent 70%); }
+    .confidential { display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25);
+      border-radius: 20px; padding: 5px 14px; margin-bottom: 28px;
+      font-family: "DM Mono"; font-size: 10px; color: var(--red); letter-spacing: 0.1em; }
+
+    /* CARDS */
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 28px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 40px; }
+
+    /* STAT */
+    .stat-val { font-family: "Bebas Neue"; font-size: 48px; line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-family: "DM Mono"; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; }
+
+    /* TABLE */
+    .comp-table { width: 100%; border-collapse: collapse; margin-top: 40px; }
+    .comp-table th { font-family: "DM Mono"; font-size: 9px; color: var(--muted);
+      letter-spacing: 0.1em; padding: 10px 16px; text-align: left;
+      border-bottom: 1px solid var(--border); background: var(--surface); }
+    .comp-table td { padding: 12px 16px; font-size: 13px; color: var(--text);
+      border-bottom: 1px solid var(--border); }
+    .comp-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .tick { color: var(--green); font-weight: 700; }
+    .cross { color: var(--red); }
+    .vs-row td { background: rgba(59,130,246,0.06); border-left: 2px solid var(--blue); }
+
+    /* ROADMAP */
+    .roadmap { margin-top: 40px; }
+    .roadmap-item { display: flex; gap: 24px; margin-bottom: 32px; }
+    .roadmap-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+    .roadmap-line { width: 2px; background: var(--border); margin: 0 auto; flex-shrink: 0; }
+
+    /* USE OF FUNDS */
+    .fund-bar { height: 8px; border-radius: 4px; margin-top: 8px; }
+
+    /* FOOTER */
+    footer { padding: 48px 40px; border-top: 1px solid var(--border); text-align: center; }
+
+    @media (max-width: 768px) {
+      nav { padding: 12px 20px; }
+      .nav-links { display: none; }
+      .section { padding: 60px 20px; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .hero { padding: 100px 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">V</div>
+    <span style="font-family:'DM Mono';font-size:13px;letter-spacing:0.12em">VERDAD SCORE</span>
+  </div>
+  <div class="nav-links">
+    <a href="#problem">Problem</a>
+    <a href="#solution">Solution</a>
+    <a href="#traction">Traction</a>
+    <a href="#market">Market</a>
+    <a href="#competitive">Competitive</a>
+    <a href="#revenue">Revenue</a>
+    <a href="#ask">The Ask</a>
+  </div>
+  <div class="nav-badge">CONFIDENTIAL · PRE-SEED 2026</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="confidential mono">🔒 CONFIDENTIAL · NOT FOR DISTRIBUTION</div>
+  <h1 style="font-size:clamp(40px,7vw,80px);font-weight:700;letter-spacing:-0.02em;line-height:1.05;margin-bottom:20px">
+    The <span style="color:var(--blue)">Credibility Layer</span><br/>for Global News
+  </h1>
+  <p style="font-size:18px;color:var(--muted);max-width:580px;line-height:1.7;margin-bottom:48px">
+    Verdad Score uses AI to score the credibility of every news article, outlet and author
+    in real time — helping journalists, analysts and PR professionals verify information
+    before they act on it.
+  </p>
+
+  <!-- Live stats -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+    background:var(--border);border-radius:10px;overflow:hidden;
+    max-width:700px;width:100%;border:1px solid var(--border)">
+    <div style="background:var(--surface);padding:20px;text-align:center">
+      <div class="stat-val" style="color:var(--blue)" id="stat-articles">25,015</div>
+      <div class="stat-label">ARTICLES SCORED</div>
+    </div>
+    <div style="background:var(--surface);padding:20px;text-align:center">
+      <div class="stat-val" style="color:var(--green)">74+</div>
+      <div class="stat-label">GLOBAL OUTLETS</div>
+    </div>
+    <div style="background:var(--surface);padding:20px;text-align:center">
+      <div class="stat-val" style="color:var(--yellow)">22</div>
+      <div class="stat-label">COUNTRIES</div>
+    </div>
+    <div style="background:var(--surface);padding:20px;text-align:center">
+      <div class="stat-val" style="color:var(--cyan)">4,063</div>
+      <div class="stat-label">AUTHORS TRACKED</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- PROBLEM -->
+<section class="section" id="problem">
+  <span class="section-label mono">01 — THE PROBLEM</span>
+  <h2 class="section-title">Misinformation costs<br/><span>billions. Annually.</span></h2>
+  <p class="section-sub">
+    Businesses lose an estimated $78 billion per year to misinformation. A single false story
+    can wipe millions from a company's market cap, destroy reputations overnight, and
+    send investors in the wrong direction.
+  </p>
+
+  <div class="grid-3" style="margin-top:48px">
+    <div class="card">
+      <div style="font-size:32px;margin-bottom:12px">📰</div>
+      <div style="font-weight:600;font-size:16px;margin-bottom:8px">Journalists</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.6">
+        No reliable tool to verify source credibility before publishing.
+        Corrections are expensive — reputations are fragile.
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:32px;margin-bottom:12px">📊</div>
+      <div style="font-weight:600;font-size:16px;margin-bottom:8px">Financial Analysts</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.6">
+        Trading decisions are made on news. Low-credibility sources
+        cause mispricings worth millions in capital allocation errors.
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:32px;margin-bottom:12px">🏢</div>
+      <div style="font-weight:600;font-size:16px;margin-bottom:8px">PR & Communications</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.6">
+        Defending clients against false allegations requires rapid,
+        credible counter-evidence. Current tools are too slow and too blunt.
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- SOLUTION -->
+<section class="section" id="solution">
+  <span class="section-label mono">02 — THE SOLUTION</span>
+  <h2 class="section-title">A proprietary<br/><span>credibility intelligence</span> engine</h2>
+  <p class="section-sub">
+    The Veritas Credibility Index (VCI) scores every article 0–100 across four
+    independent layers, updated in real time as news breaks.
+  </p>
+
+  <div class="grid-4" style="margin-top:48px">
+    <div class="card" style="border-top:2px solid var(--blue)">
+      <div class="mono" style="font-size:28px;color:rgba(59,130,246,0.2);font-weight:700;margin-bottom:8px">01</div>
+      <div style="font-weight:600;margin-bottom:6px">Outlet Registry</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6">
+        Every outlet assigned a base VCI based on editorial standards, ownership and track record.
+      </div>
+    </div>
+    <div class="card" style="border-top:2px solid var(--cyan)">
+      <div class="mono" style="font-size:28px;color:rgba(34,211,238,0.2);font-weight:700;margin-bottom:8px">02</div>
+      <div style="font-weight:600;margin-bottom:6px">Signal Detection</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6">
+        AI scans for anonymous sources, unverified claims, propaganda framing and inflammatory language.
+      </div>
+    </div>
+    <div class="card" style="border-top:2px solid var(--yellow)">
+      <div class="mono" style="font-size:28px;color:rgba(245,158,11,0.2);font-weight:700;margin-bottom:8px">03</div>
+      <div style="font-weight:600;margin-bottom:6px">Sentiment Analysis</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6">
+        Framing scored for neutrality. Sensationalism, one-sided reporting and advocacy penalised.
+      </div>
+    </div>
+    <div class="card" style="border-top:2px solid var(--green)">
+      <div class="mono" style="font-size:28px;color:rgba(34,197,94,0.2);font-weight:700;margin-bottom:8px">04</div>
+      <div style="font-weight:600;margin-bottom:6px">Fact-Check Match</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6">
+        Claims cross-referenced against Full Fact, Snopes, PolitiFact and 12 other global fact-checkers.
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:16px">
+    <div class="card">
+      <div class="mono" style="font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:12px">PROPRIETARY OUTPUTS</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px">VCI Score</span>
+          <span class="mono" style="font-size:11px;color:var(--blue)">0–100 credibility rating per article</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px">ACI Score</span>
+          <span class="mono" style="font-size:11px;color:var(--cyan)">Author credibility index</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px">SCI Score</span>
+          <span class="mono" style="font-size:11px;color:var(--yellow)">Source credibility index</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0">
+          <span style="font-size:13px">Story Clustering</span>
+          <span class="mono" style="font-size:11px;color:var(--green)">Contested narrative detection</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="mono" style="font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:12px">DELIVERY CHANNELS</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px">Live Dashboard</span>
+          <span class="mono" style="font-size:11px;color:var(--blue)">app.verdadscore.com</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px">Daily PDF Digest</span>
+          <span class="mono" style="font-size:11px;color:var(--cyan)">Intelligence Digest email</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px">URL Scanner</span>
+          <span class="mono" style="font-size:11px;color:var(--yellow)">Any article, instant report</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0">
+          <span style="font-size:13px">REST API</span>
+          <span class="mono" style="font-size:11px;color:var(--green)">Enterprise integration</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- TRACTION -->
+<section class="section" id="traction">
+  <span class="section-label mono">03 — TRACTION</span>
+  <h2 class="section-title">Built, live and<br/><span>growing daily</span></h2>
+  <p class="section-sub">
+    Verdad Score launched in March 2026. The full platform — pipeline, dashboard,
+    payments and auth — was built and deployed in under 6 weeks.
+  </p>
+
+  <div class="grid-4" style="margin-top:48px">
+    <div class="card" style="text-align:center">
+      <div class="stat-val" style="color:var(--blue)">25K+</div>
+      <div class="stat-label">ARTICLES SCORED</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="stat-val" style="color:var(--green)">74</div>
+      <div class="stat-label">OUTLETS MONITORED</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="stat-val" style="color:var(--yellow)">4,063</div>
+      <div class="stat-label">AUTHORS TRACKED</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="stat-val" style="color:var(--cyan)">692</div>
+      <div class="stat-label">ARTICLES/DAY</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:16px">
+    <div class="card">
+      <div class="mono" style="font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:16px">PLATFORM MILESTONES</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+          <span style="color:var(--green)">✓</span> Live scraping pipeline — 74 outlets, 22 countries
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+          <span style="color:var(--green)">✓</span> 4-layer AI credibility scoring engine (VCI)
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+          <span style="color:var(--green)">✓</span> Story clustering and contested narrative detection
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+          <span style="color:var(--green)">✓</span> URL scanner with multi-strategy content extraction
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+          <span style="color:var(--green)">✓</span> Daily PDF Intelligence Digest
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+          <span style="color:var(--green)">✓</span> Watchlist and email alert system
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+          <span style="color:var(--green)">✓</span> Subscription billing (Lemon Squeezy)
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+          <span style="color:var(--green)">✓</span> Auth system (Supabase — Google, GitHub, Email)
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+          <span style="color:var(--green)">✓</span> Public landing page — verdadscore.com
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="mono" style="font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:16px">ROADMAP 2026</div>
+      <div class="roadmap">
+        <div class="roadmap-item">
+          <div>
+            <div class="roadmap-dot" style="background:var(--green)"></div>
+          </div>
+          <div>
+            <div class="mono" style="font-size:9px;color:var(--green);margin-bottom:4px">Q1 2026 — COMPLETE</div>
+            <div style="font-weight:600;font-size:14px;margin-bottom:4px">Platform Launch</div>
+            <div style="font-size:12px;color:var(--muted)">Full pipeline, dashboard, payments, auth</div>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div>
+            <div class="roadmap-dot" style="background:var(--blue)"></div>
+          </div>
+          <div>
+            <div class="mono" style="font-size:9px;color:var(--blue);margin-bottom:4px">Q2 2026 — IN PROGRESS</div>
+            <div style="font-weight:600;font-size:14px;margin-bottom:4px">Growth & First Revenue</div>
+            <div style="font-size:12px;color:var(--muted)">First 50 paying users, 150+ outlets, YouTube integration</div>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div>
+            <div class="roadmap-dot" style="background:var(--muted)"></div>
+          </div>
+          <div>
+            <div class="mono" style="font-size:9px;color:var(--muted);margin-bottom:4px">Q3 2026</div>
+            <div style="font-weight:600;font-size:14px;margin-bottom:4px">Enterprise API</div>
+            <div style="font-size:12px;color:var(--muted)">B2B API tier, newsroom integrations, enterprise sales</div>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div>
+            <div class="roadmap-dot" style="background:var(--muted)"></div>
+          </div>
+          <div>
+            <div class="mono" style="font-size:9px;color:var(--muted);margin-bottom:4px">Q4 2026</div>
+            <div style="font-weight:600;font-size:14px;margin-bottom:4px">Seed Round</div>
+            <div style="font-size:12px;color:var(--muted)">Scale pipeline to 500+ outlets, expand to 50+ countries</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- MARKET -->
+<section class="section" id="market">
+  <span class="section-label mono">04 — MARKET OPPORTUNITY</span>
+  <h2 class="section-title">A $50B+ market<br/><span>with no clear leader</span></h2>
+  <p class="section-sub">
+    The global media intelligence market is fragmented across monitoring tools,
+    PR analytics platforms and fact-checking services — none of which provide
+    real-time credibility scoring at the article level.
+  </p>
+
+  <div class="grid-3" style="margin-top:48px">
+    <div class="card" style="border-top:2px solid var(--blue);text-align:center">
+      <div class="mono" style="font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:12px">TAM</div>
+      <div style="font-family:'Bebas Neue';font-size:52px;color:var(--blue);line-height:1">$50B+</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:8px">Global media intelligence,<br/>PR analytics & fact-checking</div>
+    </div>
+    <div class="card" style="border-top:2px solid var(--cyan);text-align:center">
+      <div class="mono" style="font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:12px">SAM</div>
+      <div style="font-family:'Bebas Neue';font-size:52px;color:var(--cyan);line-height:1">$8B</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:8px">Journalists, PR firms &<br/>financial analysts globally</div>
+    </div>
+    <div class="card" style="border-top:2px solid var(--green);text-align:center">
+      <div class="mono" style="font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:12px">SOM (Year 3)</div>
+      <div style="font-family:'Bebas Neue';font-size:52px;color:var(--green);line-height:1">$50M</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:8px">Realistic capture with<br/>enterprise + API tier</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="mono" style="font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:16px">TARGET SEGMENTS</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+      <div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:6px">Journalists & Newsrooms</div>
+        <div style="font-size:12px;color:var(--muted)">500,000+ professional journalists globally. Source verification before publishing is a daily need.</div>
+      </div>
+      <div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:6px">PR & Communications</div>
+        <div style="font-size:12px;color:var(--muted)">280,000+ PR professionals. Monitoring outlet credibility for client reputation management.</div>
+      </div>
+      <div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:6px">Financial Analysts</div>
+        <div style="font-size:12px;color:var(--muted)">400,000+ analysts who make decisions based on news. Credibility scores reduce information risk.</div>
+      </div>
+      <div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:6px">General Public</div>
+        <div style="font-size:12px;color:var(--muted)">Growing segment of news consumers who actively seek reliable sources and pay for trusted information.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- COMPETITIVE -->
+<section class="section" id="competitive">
+  <span class="section-label mono">05 — COMPETITIVE LANDSCAPE</span>
+  <h2 class="section-title">We score what others<br/><span>only monitor</span></h2>
+  <p class="section-sub">
+    Existing tools track mentions and sentiment. None provide real-time,
+    article-level credibility scoring with source and author intelligence.
+  </p>
+
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>PLATFORM</th>
+        <th>ARTICLE-LEVEL VCI</th>
+        <th>AUTHOR CREDIBILITY</th>
+        <th>SOURCE TRACKING</th>
+        <th>CONTESTED NARRATIVES</th>
+        <th>REAL-TIME</th>
+        <th>PRICE</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="vs-row">
+        <td><strong>Verdad Score</strong></td>
+        <td class="tick">✓</td>
+        <td class="tick">✓</td>
+        <td class="tick">✓</td>
+        <td class="tick">✓</td>
+        <td class="tick">✓</td>
+        <td style="color:var(--green)">$12–$199/mo</td>
+      </tr>
+      <tr>
+        <td>Meltwater</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td>Partial</td>
+        <td class="cross">✗</td>
+        <td class="tick">✓</td>
+        <td style="color:var(--muted)">$10,000+/yr</td>
+      </tr>
+      <tr>
+        <td>Cision</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td>Partial</td>
+        <td class="cross">✗</td>
+        <td class="tick">✓</td>
+        <td style="color:var(--muted)">$7,200+/yr</td>
+      </tr>
+      <tr>
+        <td>NewsGuard</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td style="color:var(--muted)">$399/yr</td>
+      </tr>
+      <tr>
+        <td>Media Bias Fact Check</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td style="color:var(--muted)">Free/manual</td>
+      </tr>
+      <tr>
+        <td>Brandwatch</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td>Partial</td>
+        <td class="cross">✗</td>
+        <td class="tick">✓</td>
+        <td style="color:var(--muted)">$1,000+/mo</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card" style="margin-top:16px;border-left:3px solid var(--blue)">
+    <div style="font-size:14px;color:var(--text);line-height:1.7">
+      <strong style="color:var(--blue)">Our moat:</strong> Verdad Score is the only platform that scores credibility
+      at the article level in real time, tracks author and source credibility over time,
+      and detects contested narratives across outlet ecosystems — all at consumer-accessible pricing.
+      Enterprise tools charge 50–100x more and don't offer these capabilities.
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- REVENUE -->
+<section class="section" id="revenue">
+  <span class="section-label mono">06 — REVENUE MODEL</span>
+  <h2 class="section-title">SaaS subscriptions<br/><span>plus enterprise API</span></h2>
+
+  <div class="grid-3" style="margin-top:48px">
+    <div class="card">
+      <div class="mono" style="font-size:10px;color:var(--blue);letter-spacing:0.1em;margin-bottom:12px">READER</div>
+      <div style="font-family:'Bebas Neue';font-size:40px;color:var(--text);line-height:1">$12</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:16px">per month</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.8">
+        Dashboard access<br/>Daily PDF digest<br/>Full leaderboard
+      </div>
+      <div style="margin-top:16px;font-size:11px;color:var(--muted)">
+        Target: news consumers, students, bloggers
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--blue)">
+      <div class="mono" style="font-size:10px;color:var(--blue);letter-spacing:0.1em;margin-bottom:12px">ANALYST ★ FOCUS</div>
+      <div style="font-family:'Bebas Neue';font-size:40px;color:var(--blue);line-height:1">$49</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:16px">per month</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.8">
+        URL scanner (50/day)<br/>Watchlist & alerts<br/>Source profiles<br/>Author deep-dives
+      </div>
+      <div style="margin-top:16px;font-size:11px;color:var(--muted)">
+        Target: journalists, PR firms, analysts
+      </div>
+    </div>
+    <div class="card">
+      <div class="mono" style="font-size:10px;color:var(--yellow);letter-spacing:0.1em;margin-bottom:12px">PROFESSIONAL</div>
+      <div style="font-family:'Bebas Neue';font-size:40px;color:var(--text);line-height:1">$199</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:16px">per month</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.8">
+        Unlimited scans<br/>API access<br/>Custom outlet tracking<br/>Priority support
+      </div>
+      <div style="margin-top:16px;font-size:11px;color:var(--muted)">
+        Target: newsrooms, hedge funds, agencies
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="mono" style="font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:20px">REVENUE PROJECTIONS</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+      <div style="text-align:center">
+        <div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:8px">YEAR 1</div>
+        <div style="font-family:'Bebas Neue';font-size:36px;color:var(--blue)">$180K</div>
+        <div style="font-size:12px;color:var(--muted)">50 Analyst + 20 Professional + 100 Reader</div>
+      </div>
+      <div style="text-align:center">
+        <div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:8px">YEAR 2</div>
+        <div style="font-family:'Bebas Neue';font-size:36px;color:var(--cyan)">$960K</div>
+        <div style="font-size:12px;color:var(--muted)">200 Analyst + 80 Professional + 400 Reader</div>
+      </div>
+      <div style="text-align:center">
+        <div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:8px">YEAR 3</div>
+        <div style="font-family:'Bebas Neue';font-size:36px;color:var(--green)">$3.2M</div>
+        <div style="font-size:12px;color:var(--muted)">Enterprise API + 500 Analyst + 200 Professional</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- TEAM -->
+<section class="section" id="team">
+  <span class="section-label mono">07 — TEAM</span>
+  <h2 class="section-title">Built by someone who<br/><span>knows bad data costs money</span></h2>
+
+  <div style="margin-top:48px">
+    <div class="card" style="display:flex;gap:24px;align-items:flex-start">
+      <div style="width:64px;height:64px;border-radius:50%;
+        background:linear-gradient(135deg,#3B82F6,#6366f1);
+        display:flex;align-items:center;justify-content:center;
+        font-size:24px;font-weight:700;color:white;flex-shrink:0">M</div>
+      <div>
+        <div style="font-size:20px;font-weight:700;margin-bottom:4px">Matt Stevens</div>
+        <div class="mono" style="font-size:10px;color:var(--blue);letter-spacing:0.1em;margin-bottom:16px">
+          FOUNDER & CEO · BUENOS AIRES, ARGENTINA
+        </div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7;max-width:600px">
+          12 years in marketing and content creation, delivering data-driven content
+          across sports, blogs, leagues and betting platforms. 8 years working with
+          data companies in the sports betting and agricultural sectors — industries
+          where bad data directly costs money.
+        </p>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7;max-width:600px;margin-top:12px">
+          Having witnessed the financial and human cost of misinformation firsthand —
+          businesses losing millions to false narratives, individuals falsely accused
+          without verified sources — Matt built Verdad Score to create the credibility
+          infrastructure the internet is missing.
+        </p>
+        <div style="display:flex;gap:12px;margin-top:20px">
+          <span class="mono" style="font-size:10px;color:var(--muted);
+            background:var(--surface);padding:4px 10px;border-radius:3px;
+            border:1px solid var(--border)">DATA INTELLIGENCE</span>
+          <span class="mono" style="font-size:10px;color:var(--muted);
+            background:var(--surface);padding:4px 10px;border-radius:3px;
+            border:1px solid var(--border)">SPORTS BETTING</span>
+          <span class="mono" style="font-size:10px;color:var(--muted);
+            background:var(--surface);padding:4px 10px;border-radius:3px;
+            border:1px solid var(--border)">AGRICULTURAL DATA</span>
+          <span class="mono" style="font-size:10px;color:var(--muted);
+            background:var(--surface);padding:4px 10px;border-radius:3px;
+            border:1px solid var(--border)">CONTENT STRATEGY</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- FUNDING ASK -->
+<section class="section" id="ask">
+  <span class="section-label mono">08 — THE ASK</span>
+  <h2 class="section-title">$350K pre-seed to<br/><span>reach $1M ARR</span></h2>
+  <p class="section-sub">
+    The platform is built and live. This round funds growth, data infrastructure
+    and the first enterprise sales motion.
+  </p>
+
+  <div class="grid-2" style="margin-top:48px">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="mono" style="font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:20px">USE OF FUNDS</div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <span style="font-size:13px">Data & Infrastructure</span>
+              <span class="mono" style="font-size:11px;color:var(--blue)">35% · $122K</span>
+            </div>
+            <div class="fund-bar" style="background:var(--border)">
+              <div class="fund-bar" style="background:var(--blue);width:35%"></div>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">ScraperAPI, expanded outlet coverage, server scaling</div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <span style="font-size:13px">Growth & Marketing</span>
+              <span class="mono" style="font-size:11px;color:var(--green)">30% · $105K</span>
+            </div>
+            <div class="fund-bar" style="background:var(--border)">
+              <div class="fund-bar" style="background:var(--green);width:30%"></div>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">Content marketing, journalist outreach, PR firm partnerships</div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <span style="font-size:13px">Product & Engineering</span>
+              <span class="mono" style="font-size:11px;color:var(--yellow)">25% · $87K</span>
+            </div>
+            <div class="fund-bar" style="background:var(--border)">
+              <div class="fund-bar" style="background:var(--yellow);width:25%"></div>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">Mobile app, enterprise API, additional hire</div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <span style="font-size:13px">Operations & Legal</span>
+              <span class="mono" style="font-size:11px;color:var(--cyan)">10% · $35K</span>
+            </div>
+            <div class="fund-bar" style="background:var(--border)">
+              <div class="fund-bar" style="background:var(--cyan);width:10%"></div>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">Company incorporation, IP protection, operations</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="mono" style="font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:20px">WHAT THIS ROUND ACHIEVES</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div style="width:24px;height:24px;border-radius:50%;background:var(--blue);
+              display:flex;align-items:center;justify-content:center;
+              font-size:11px;font-weight:700;flex-shrink:0">1</div>
+            <div>
+              <div style="font-size:13px;font-weight:600;margin-bottom:2px">150+ outlets, 50+ countries</div>
+              <div style="font-size:12px;color:var(--muted)">Double global coverage within 6 months</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div style="width:24px;height:24px;border-radius:50%;background:var(--green);
+              display:flex;align-items:center;justify-content:center;
+              font-size:11px;font-weight:700;flex-shrink:0">2</div>
+            <div>
+              <div style="font-size:13px;font-weight:600;margin-bottom:2px">500 paying subscribers</div>
+              <div style="font-size:12px;color:var(--muted)">~$400K ARR run rate by end of year 1</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div style="width:24px;height:24px;border-radius:50%;background:var(--yellow);
+              display:flex;align-items:center;justify-content:center;
+              font-size:11px;font-weight:700;flex-shrink:0">3</div>
+            <div>
+              <div style="font-size:13px;font-weight:600;margin-bottom:2px">3 enterprise API customers</div>
+              <div style="font-size:12px;color:var(--muted)">Newsroom or hedge fund integrations at $2K+/mo</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div style="width:24px;height:24px;border-radius:50%;background:var(--cyan);
+              display:flex;align-items:center;justify-content:center;
+              font-size:11px;font-weight:700;flex-shrink:0">4</div>
+            <div>
+              <div style="font-size:13px;font-weight:600;margin-bottom:2px">Seed round readiness</div>
+              <div style="font-size:12px;color:var(--muted)">Revenue traction + enterprise pilots = $2M seed at end of 2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-color:var(--blue)">
+        <div class="mono" style="font-size:9px;color:var(--blue);letter-spacing:0.1em;margin-bottom:12px">GET IN TOUCH</div>
+        <div style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.6">
+          Interested in learning more or participating in the pre-seed round?
+        </div>
+        <div style="font-size:15px;font-weight:600;color:var(--text)">
+          matt@verdadscore.com
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px">
+          verdadscore.com · app.verdadscore.com
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<footer>
+  <div style="font-family:'DM Mono';font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:8px">
+    VERDAD SCORE · PRE-SEED INVESTOR BRIEFING · 2026
+  </div>
+  <div style="font-size:12px;color:var(--muted)">
+    This document is confidential and intended solely for the recipient.
+    Not for distribution. All projections are forward-looking estimates.
+  </div>
+</footer>
+
+<script>
+  // Load live stats
+  fetch("https://coldfact.up.railway.app/health")
+    .then(r => r.json())
+    .then(d => {
+      if (d.article_count) {
+        document.getElementById("stat-articles").textContent =
+          d.article_count.toLocaleString();
+      }
+    }).catch(() => {});
+</script>
+</body>
+</html>
