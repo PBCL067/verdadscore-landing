@@ -642,16 +642,71 @@
       </div>
 
       <div class="scan-result" id="scan-result">
+        <!-- Header: outlet + score -->
         <div class="scan-result-header">
-          <div>
+          <div style="flex:1">
             <div class="result-outlet mono" id="res-outlet">BBC NEWS</div>
             <div class="result-title" id="res-title">Article title</div>
-            <div class="result-summary" id="res-summary">Summary</div>
-            <div class="result-tags" id="res-tags"></div>
           </div>
           <div class="vci-display">
             <div class="vci-score" id="res-vci">82</div>
             <div class="vci-label mono" id="res-verdict" style="color:var(--green)">RELIABLE</div>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <div id="res-summary" style="font-size:13px;color:#94A3B8;line-height:1.6;
+          margin:12px 0;padding:12px;background:rgba(255,255,255,0.03);
+          border-radius:6px;border-left:3px solid var(--blue)"></div>
+
+        <!-- Free: Claims preview -->
+        <div id="res-claims" style="margin-top:16px"></div>
+
+        <!-- Free: Sources preview -->
+        <div id="res-sources" style="margin-top:12px"></div>
+
+        <!-- LOCKED: Full report teaser -->
+        <div style="margin-top:20px;position:relative;border-radius:8px;overflow:hidden;">
+          <!-- Blurred preview -->
+          <div style="filter:blur(4px);pointer-events:none;opacity:0.5;padding:16px;
+            background:var(--card);border-radius:8px;">
+            <div style="font-family:'DM Mono';font-size:9px;color:var(--blue);
+              letter-spacing:0.1em;margin-bottom:10px;">FULL CREDIBILITY REPORT</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+              <div style="background:var(--surface);padding:10px;border-radius:6px">
+                <div style="font-family:'DM Mono';font-size:8px;color:var(--muted);margin-bottom:4px">FRAMING SCORE</div>
+                <div style="font-size:20px;font-weight:700;color:var(--green)">94</div>
+              </div>
+              <div style="background:var(--surface);padding:10px;border-radius:6px">
+                <div style="font-family:'DM Mono';font-size:8px;color:var(--muted);margin-bottom:4px">FACT-CHECKS</div>
+                <div style="font-size:20px;font-weight:700;color:var(--yellow)">3</div>
+              </div>
+            </div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:6px">
+              ██████████ ████ ███ ████████ ██████
+            </div>
+            <div style="font-size:12px;color:var(--muted)">
+              ████████ ███ ██████ ████ ██████████ ███
+            </div>
+          </div>
+          <!-- Lock overlay -->
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;
+            align-items:center;justify-content:center;
+            background:linear-gradient(to bottom, transparent, rgba(17,24,39,0.95) 40%);
+            padding:20px;text-align:center;">
+            <div style="font-size:24px;margin-bottom:8px">🔒</div>
+            <div style="font-family:'DM Mono';font-size:10px;color:var(--text);
+              letter-spacing:0.1em;margin-bottom:6px">FULL REPORT LOCKED</div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:16px;max-width:260px">
+              Unlock framing analysis, fact-check matches, source deep-dives and AI reasoning
+            </div>
+            <a href="https://app.verdadscore.com">
+              <button style="background:var(--blue);border:none;color:white;
+                padding:10px 24px;border-radius:5px;font-family:'DM Mono';
+                font-size:10px;cursor:pointer;letter-spacing:0.08em;">
+                START FREE TRIAL
+              </button>
+            </a>
           </div>
         </div>
       </div>
@@ -931,25 +986,64 @@
           (data.outlet || "Unknown").toUpperCase();
         document.getElementById("res-title").textContent =
           data.title || url;
-        document.getElementById("res-summary").textContent =
-          data.summary || "";
         document.getElementById("res-vci").textContent = score;
         document.getElementById("res-vci").style.color = color;
         document.getElementById("res-verdict").textContent = verdict.toUpperCase();
         document.getElementById("res-verdict").style.color = color;
 
-        // Tags
-        const tags = document.getElementById("res-tags");
-        tags.innerHTML = "";
-        const signals = data.risk_signals || [];
-        signals.slice(0, 4).forEach(s => {
-          const t = document.createElement("span");
-          t.className = "result-tag mono";
-          t.textContent = s.toUpperCase();
-          t.style.background = "rgba(239,68,68,0.1)";
-          t.style.color = "var(--red)";
-          tags.appendChild(t);
-        });
+        // Summary
+        document.getElementById("res-summary").textContent = data.summary || "";
+
+        // Claims (show first 2 free)
+        const claimsEl = document.getElementById("res-claims");
+        const claims = data.claims || [];
+        if (claims.length > 0) {
+          claimsEl.innerHTML = `
+            <div style="font-family:'DM Mono';font-size:9px;color:var(--blue);
+              letter-spacing:0.1em;margin-bottom:8px">
+              KEY CLAIMS (${claims.length} DETECTED)
+            </div>
+            ${claims.slice(0,2).map(c => `
+              <div style="font-size:12px;color:var(--muted);padding:8px 10px;
+                background:rgba(255,255,255,0.03);border-radius:4px;
+                margin-bottom:4px;border-left:2px solid var(--blue)">
+                ${c}
+              </div>`).join("")}
+            ${claims.length > 2 ? `
+              <div style="font-size:11px;color:var(--muted);font-family:'DM Mono';
+                margin-top:4px">+${claims.length-2} more claims in full report</div>
+            ` : ""}
+          `;
+        }
+
+        // Sources (show first 3 free)
+        const sourcesEl = document.getElementById("res-sources");
+        const sources = data.sources || [];
+        if (sources.length > 0) {
+          const credColor = c => c==="HIGH"?"var(--green)":c==="MEDIUM"?"var(--yellow)":"var(--red)";
+          sourcesEl.innerHTML = `
+            <div style="font-family:'DM Mono';font-size:9px;color:var(--blue);
+              letter-spacing:0.1em;margin-bottom:8px">
+              SOURCES CITED (${sources.length} IDENTIFIED)
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              ${sources.slice(0,3).map(s => `
+                <div style="display:flex;align-items:center;gap:6px;
+                  background:rgba(255,255,255,0.03);padding:5px 10px;
+                  border-radius:4px;font-size:11px;">
+                  <span style="width:6px;height:6px;border-radius:50%;
+                    background:${credColor(s.credibility)};flex-shrink:0"></span>
+                  <span style="color:var(--text)">${s.entity}</span>
+                  <span style="font-family:'DM Mono';font-size:9px;
+                    color:var(--muted)">${s.type}</span>
+                </div>`).join("")}
+              ${sources.length > 3 ? `
+                <div style="font-size:11px;color:var(--muted);font-family:'DM Mono';
+                  padding:5px 0">+${sources.length-3} more in full report</div>
+              ` : ""}
+            </div>
+          `;
+        }
 
         result.classList.add("visible");
       } else {
