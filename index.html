@@ -621,10 +621,28 @@
           <span style="font-family:'DM Mono';font-size:10px;color:var(--green)" id="scan-count-label">3 FREE SCANS REMAINING</span>
           <span style="font-family:'DM Mono';font-size:10px;color:var(--muted)" id="scan-email-label"></span>
         </div>
-        <div class="scan-input-row">
+        <!-- Tab switcher -->
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
+          <button class="mono" id="tab-url" onclick="switchTab('url')" style="background:#1E293B;border:1px solid #3B82F6;color:#3B82F6;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:10px;letter-spacing:0.08em;">URL</button>
+          <button class="mono" id="tab-text" onclick="switchTab('text')" style="background:transparent;border:1px solid #334155;color:#64748B;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:10px;letter-spacing:0.08em;">PASTE TEXT</button>
+        </div>
+
+        <div id="input-url-row" class="scan-input-row">
           <input class="scan-input" id="scan-url" type="url"
             placeholder="https://www.bbc.com/news/articles/..." />
           <button class="scan-btn mono" onclick="runScan()">SCAN ARTICLE</button>
+        </div>
+
+  <!-- Paste text input -->
+  <div id="input-text-row" style="display:none">
+    <textarea class="scan-input" id="scan-text" maxlength="1000" rows="5"
+      placeholder="Paste article text here (max 1,000 characters)..."
+      style="width:100%;resize:vertical;font-family:inherit;"
+      oninput="updateCharCount()"></textarea>
+    <div style="font-family:'DM Mono';font-size:9px;color:var(--muted);text-align:right;margin-top:4px;">
+      <span id="char-count">0</span>/1000 characters
+    </div>
+    <button class="scan-btn mono" onclick="runScan()" style="width:100%;margin-top:8px;">SCAN ARTICLE</button>
         </div>
       </div>
 
@@ -971,7 +989,11 @@
       const res = await fetch(API + "/scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify(
+          document.getElementById("input-text-row") && document.getElementById("input-text-row").style.display !== "none"
+            ? { text: document.getElementById("scan-text").value.trim() }
+            : { url: document.getElementById("scan-url").value.trim() }
+        ),
       });
       const data = await res.json();
       clearInterval(interval);
