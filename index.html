@@ -514,7 +514,7 @@
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
 
-  <div class="hero-badge mono">LIVE · 24,000+ ARTICLES SCORED DAILY</div>
+  <div class="hero-badge mono">LIVE · 42,000+ ARTICLES SCORED</div>
 
   <h1>
     Know which news<br/>
@@ -589,8 +589,8 @@
 <!-- SCAN DEMO -->
 <section id="scan" style="padding-top:0;">
   <span class="section-label">Live scan</span>
-  <h2 class="section-title">Try it on any<br/><span>news article</span></h2>
-  <p class="section-sub">Paste any article URL and get a full credibility report in seconds.</p>
+  <h2 class="section-title">Paste any article.<br/><span>Know if it's credible.</span></h2>
+  <p class="section-sub">Copy any article text and get a full AI credibility report in seconds. Works on any site, no paywall issues.</p>
 
   <div class="scan-demo">
     <div class="scan-header">
@@ -623,18 +623,18 @@
         </div>
         <!-- Tab switcher -->
         <div style="display:flex;gap:8px;margin-bottom:12px;">
-          <button class="mono" id="tab-url" onclick="switchTab('url')" style="background:#1E293B;border:1px solid #3B82F6;color:#3B82F6;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:10px;letter-spacing:0.08em;">URL</button>
-          <button class="mono" id="tab-text" onclick="switchTab('text')" style="background:transparent;border:1px solid #334155;color:#64748B;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:10px;letter-spacing:0.08em;">PASTE TEXT</button>
+          <button class="mono" id="tab-url" onclick="switchTab('url')" style="background:transparent;border:1px solid #334155;color:#64748B;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:10px;letter-spacing:0.08em;">URL</button>
+          <button class="mono" id="tab-text" onclick="switchTab('text')" style="background:#1E293B;border:1px solid #3B82F6;color:#3B82F6;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:10px;letter-spacing:0.08em;">PASTE TEXT</button>
         </div>
 
-        <div id="input-url-row" class="scan-input-row">
+        <div id="input-url-row" class="scan-input-row" style="display:none">
           <input class="scan-input" id="scan-url" type="url"
             placeholder="https://www.bbc.com/news/articles/..." />
           <button class="scan-btn mono" onclick="runScan()">SCAN ARTICLE</button>
         </div>
 
   <!-- Paste text input -->
-  <div id="input-text-row" style="display:none">
+  <div id="input-text-row">
     <textarea class="scan-input" id="scan-text" maxlength="1000" rows="5"
       placeholder="Paste article text here (max 1,000 characters)..."
       style="width:100%;resize:vertical;font-family:inherit;"
@@ -763,7 +763,7 @@
       <div class="pricing-period">per month</div>
       <ul class="pricing-features">
         <li>Everything in Reader</li>
-        <li>Unlimited URL scans + AI analysis</li>
+        <li>Unlimited article scans + AI analysis</li>
         <li>Watchlist &amp; alert system</li>
         <li>Source &amp; author profiles</li>
         <li>Narrative detection</li>
