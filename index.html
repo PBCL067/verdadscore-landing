@@ -898,6 +898,30 @@
     }
   });
 
+  // Tab switching
+  function switchTab(tab) {
+    const urlRow  = document.getElementById("input-url-row");
+    const textRow = document.getElementById("input-text-row");
+    const tabUrl  = document.getElementById("tab-url");
+    const tabText = document.getElementById("tab-text");
+    if (tab === "url") {
+      urlRow.style.display  = "flex";
+      textRow.style.display = "none";
+      tabUrl.style.borderColor  = "#3B82F6"; tabUrl.style.color  = "#3B82F6"; tabUrl.style.background  = "#1E293B";
+      tabText.style.borderColor = "#334155"; tabText.style.color = "#64748B"; tabText.style.background = "transparent";
+    } else {
+      urlRow.style.display  = "none";
+      textRow.style.display = "block";
+      tabText.style.borderColor = "#3B82F6"; tabText.style.color = "#3B82F6"; tabText.style.background = "#1E293B";
+      tabUrl.style.borderColor  = "#334155"; tabUrl.style.color  = "#64748B"; tabUrl.style.background  = "transparent";
+    }
+  }
+
+  function updateCharCount() {
+    const text = document.getElementById("scan-text").value;
+    document.getElementById("char-count").textContent = text.length;
+  }
+
   // Scan
   async function runScan() {
     const remaining = updateScanCount();
