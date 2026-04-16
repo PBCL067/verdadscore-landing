@@ -950,7 +950,7 @@
               letter-spacing:0.1em;margin-bottom:8px">
               KEY CLAIMS (${claims.length} DETECTED)
             </div>
-            ${claims.slice(0,2).map(c => `
+            ${claims.map(c => `
               <div style="font-size:12px;color:var(--muted);padding:8px 10px;
                 background:rgba(255,255,255,0.03);border-radius:4px;
                 margin-bottom:4px;border-left:2px solid var(--blue)">
@@ -958,8 +958,7 @@
               </div>`).join("")}
             ${claims.length > 2 ? `
               <div style="font-size:11px;color:var(--muted);font-family:'DM Mono';
-                margin-top:4px">+${claims.length-2} more claims in full report</div>
-            ` : ""}
+                margin-top:4px">+
           `;
         }
 
@@ -974,7 +973,7 @@
               SOURCES CITED (${sources.length} IDENTIFIED)
             </div>
             <div style="display:flex;flex-wrap:wrap;gap:6px">
-              ${sources.slice(0,3).map(s => `
+              ${sources.map(s => `
                 <div style="display:flex;align-items:center;gap:6px;
                   background:rgba(255,255,255,0.03);padding:5px 10px;
                   border-radius:4px;font-size:11px;">
@@ -986,8 +985,7 @@
                 </div>`).join("")}
               ${sources.length > 3 ? `
                 <div style="font-size:11px;color:var(--muted);font-family:'DM Mono';
-                  padding:5px 0">+${sources.length-3} more in full report</div>
-              ` : ""}
+                  padding:5px 0">+
             </div>
           `;
         }
