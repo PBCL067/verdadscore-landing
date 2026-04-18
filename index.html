@@ -661,7 +661,7 @@
             <div style="font-size:12px;color:#94A3B8;margin-bottom:16px">
               Free account — no credit card required
             </div>
-            <a href="https://app.verdadscore.com">
+            <a href="https://app.verdadscore.com/?restore=1">
               <button style="background:#3B82F6;border:none;color:white;
                 padding:12px 32px;border-radius:5px;font-family:'DM Mono';
                 font-size:11px;cursor:pointer;letter-spacing:0.08em;
@@ -910,6 +910,9 @@
           outletEl.style.display = "none";
         }
         document.getElementById("res-title").textContent = data.title || "";
+
+        // Store scan result for post-signup restore
+        sessionStorage.setItem("vs_pending_scan", JSON.stringify(data));
 
         // Show result + locked overlay
         result.classList.add("visible");
