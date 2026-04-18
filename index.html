@@ -601,6 +601,10 @@
 
       
 
+      <div class="scan-loading" id="scan-loading">
+        <span id="scan-status">Analysing article...</span>
+      </div>
+
       <div class="scan-result" id="scan-result">
         <!-- Header: always visible -->
         <div class="scan-result-header">
@@ -891,16 +895,13 @@
         const color   = score >= 82 ? "var(--green)" :
                         score >= 65 ? "var(--yellow)" : "var(--red)";
 
-        document.getElementById("res-outlet").textContent =
-          (data.outlet || "Unknown").toUpperCase();
-        document.getElementById("res-title").textContent =
-          data.title || url;
-        docudocument.getElementById("res-vci").textContent = score;
+        // Score + verdict
+        document.getElementById("res-vci").textContent = score;
         document.getElementById("res-vci").style.color = color;
         document.getElementById("res-verdict").textContent = verdict.toUpperCase();
         document.getElementById("res-verdict").style.color = color;
 
-        // Outlet + title (always visible)
+        // Outlet + title
         const outletEl = document.getElementById("res-outlet");
         if (data.outlet && data.outlet !== "Unknown") {
           outletEl.textContent = data.outlet.toUpperCase();
