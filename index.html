@@ -661,16 +661,15 @@
             <div style="font-size:12px;color:#94A3B8;margin-bottom:16px">
               Free account — no credit card required
             </div>
-            <a href="https://app.verdadscore.com/">
-              <button style="background:#3B82F6;border:none;color:white;
-                padding:12px 32px;border-radius:5px;font-family:'DM Mono';
-                font-size:11px;cursor:pointer;letter-spacing:0.08em;
-                box-shadow:0 0 20px rgba(59,130,246,0.3);">
-                CREATE FREE ACCOUNT →
-              </button>
-            </a>
+            <button onclick="openAuthModal('signup')" style="background:#3B82F6;border:none;color:white;
+              padding:12px 32px;border-radius:5px;font-family:'DM Mono';
+              font-size:11px;cursor:pointer;letter-spacing:0.08em;
+              box-shadow:0 0 20px rgba(59,130,246,0.3);">
+              CREATE FREE ACCOUNT →
+            </button>
             <div style="font-size:11px;color:#475569;margin-top:10px">
-              Already have an account? <a href="https://app.verdadscore.com" 
+              Already have an account?
+              <a onclick="openAuthModal('signin')" href="#"
               style="color:#3B82F6;text-decoration:none">Sign in →</a>
             </div>
           </div>
@@ -912,7 +911,7 @@
         document.getElementById("res-title").textContent = data.title || "";
 
         // Store scan result for post-signup restore
-        sessionStorage.setItem("vs_pending_scan", JSON.stringify(data));
+        localStorage.setItem("vs_pending_scan", JSON.stringify(data));
 
         // Show result + locked overlay
         result.classList.add("visible");
@@ -1077,6 +1076,195 @@
     </div>
   </div>
 </div>
+
+
+<!-- AUTH MODAL -->
+<div id="auth-modal" style="display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.75);z-index:999;
+  align-items:center;justify-content:center;">
+  <div style="background:#0D1521;border:1px solid #1E293B;border-radius:12px;
+    padding:40px;max-width:420px;width:90%;position:relative;">
+
+    <!-- Close -->
+    <button onclick="closeAuthModal()" style="position:absolute;top:16px;right:16px;
+      background:transparent;border:none;color:#64748B;font-size:20px;cursor:pointer;">✕</button>
+
+    <!-- Brand -->
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="width:40px;height:40px;background:#3B82F6;border-radius:8px;
+        display:flex;align-items:center;justify-content:center;
+        font-family:'Bebas Neue';font-size:22px;color:white;margin:0 auto 12px;">V</div>
+      <div id="auth-title" style="font-size:20px;font-weight:700;color:#E2E8F0;margin-bottom:4px;">
+        Create account
+      </div>
+      <div id="auth-sub" style="font-size:13px;color:#64748B;">
+        Unlock your full credibility report
+      </div>
+    </div>
+
+    <!-- Google OAuth -->
+    <button onclick="signInWithGoogle()" style="width:100%;display:flex;align-items:center;
+      justify-content:center;gap:10px;padding:12px;background:#111827;
+      border:1px solid #1E293B;border-radius:6px;color:#E2E8F0;
+      font-family:'DM Sans';font-size:14px;cursor:pointer;margin-bottom:16px;">
+      <span style="font-weight:700">G</span> Continue with Google
+    </button>
+
+    <!-- Divider -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <div style="flex:1;height:1px;background:#1E293B;"></div>
+      <span style="font-family:'DM Mono';font-size:10px;color:#475569;">OR</span>
+      <div style="flex:1;height:1px;background:#1E293B;"></div>
+    </div>
+
+    <!-- Email/password -->
+    <input id="auth-email" type="email" placeholder="your@email.com"
+      style="width:100%;background:#111827;border:1px solid #1E293B;border-radius:6px;
+      padding:12px 16px;color:#E2E8F0;font-family:'DM Sans';font-size:14px;
+      outline:none;margin-bottom:10px;box-sizing:border-box;" />
+    <input id="auth-password" type="password" placeholder="Password"
+      style="width:100%;background:#111827;border:1px solid #1E293B;border-radius:6px;
+      padding:12px 16px;color:#E2E8F0;font-family:'DM Sans';font-size:14px;
+      outline:none;margin-bottom:10px;box-sizing:border-box;" />
+
+    <div id="auth-error" style="font-family:'DM Mono';font-size:11px;color:#EF4444;
+      margin-bottom:10px;display:none;"></div>
+    <div id="auth-msg" style="font-family:'DM Mono';font-size:11px;color:#22C55E;
+      margin-bottom:10px;display:none;"></div>
+
+    <button id="auth-submit" onclick="submitAuth()"
+      style="width:100%;padding:13px;background:#3B82F6;border:none;border-radius:6px;
+      color:white;font-family:'DM Sans';font-size:15px;font-weight:600;cursor:pointer;
+      margin-bottom:16px;">
+      Create Account
+    </button>
+
+    <div style="text-align:center;font-size:13px;color:#64748B;">
+      <span id="auth-toggle-text">Already registered?</span>
+      <a onclick="toggleAuthMode()" href="#"
+        style="color:#3B82F6;text-decoration:none;margin-left:4px;"
+        id="auth-toggle-link">Sign in</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL  = "https://wmdyapgjerjhrtdvbuxq.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtZHlhcGdqZXJqaHJ0ZHZidXhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0ODU5NjIsImV4cCI6MjA4ODA2MTk2Mn0.qSW5P7jrgxZg2WTD3Xc3QdarZz_FOPlOvr3usQAkIp8";
+
+let authMode = "signup";
+
+function openAuthModal(mode) {
+  authMode = mode || "signup";
+  updateAuthMode();
+  document.getElementById("auth-modal").style.display = "flex";
+  document.getElementById("auth-error").style.display = "none";
+  document.getElementById("auth-msg").style.display   = "none";
+}
+
+function closeAuthModal() {
+  document.getElementById("auth-modal").style.display = "none";
+}
+
+function toggleAuthMode() {
+  authMode = authMode === "signup" ? "signin" : "signup";
+  updateAuthMode();
+}
+
+function updateAuthMode() {
+  const isSignup = authMode === "signup";
+  document.getElementById("auth-title").textContent       = isSignup ? "Create account" : "Welcome back";
+  document.getElementById("auth-sub").textContent         = isSignup ? "Unlock your full credibility report" : "Sign in to see your full report";
+  document.getElementById("auth-submit").textContent      = isSignup ? "Create Account" : "Sign In";
+  document.getElementById("auth-toggle-text").textContent = isSignup ? "Already registered?" : "No account?";
+  document.getElementById("auth-toggle-link").textContent = isSignup ? "Sign in" : "Sign up free";
+}
+
+function signInWithGoogle() {
+  const redirectTo = window.location.href;
+  window.location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(redirectTo)}`;
+}
+
+async function submitAuth() {
+  const email    = document.getElementById("auth-email").value.trim();
+  const password = document.getElementById("auth-password").value;
+  const errEl    = document.getElementById("auth-error");
+  const msgEl    = document.getElementById("auth-msg");
+  const btn      = document.getElementById("auth-submit");
+
+  errEl.style.display = "none";
+  msgEl.style.display = "none";
+  btn.textContent     = "Please wait...";
+  btn.disabled        = true;
+
+  try {
+    const endpoint = authMode === "signup"
+      ? `${SUPABASE_URL}/auth/v1/signup`
+      : `${SUPABASE_URL}/auth/v1/token?grant_type=password`;
+
+    const res  = await fetch(endpoint, {
+      method: "POST",
+      headers: { "apikey": SUPABASE_ANON, "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+
+    if (data.error || data.error_description) {
+      errEl.textContent   = data.error_description || data.error;
+      errEl.style.display = "block";
+    } else if (authMode === "signup" && !data.access_token) {
+      // Email confirmation required
+      msgEl.textContent   = "Check your email to confirm your account, then come back and sign in.";
+      msgEl.style.display = "block";
+      authMode = "signin";
+      updateAuthMode();
+    } else if (data.access_token) {
+      // Signed in — unlock the result
+      localStorage.setItem("vs_token", data.access_token);
+      localStorage.setItem("vs_user", JSON.stringify(data.user));
+      closeAuthModal();
+      unlockResult();
+    }
+  } catch(e) {
+    errEl.textContent   = "Something went wrong. Please try again.";
+    errEl.style.display = "block";
+  }
+
+  btn.textContent = authMode === "signup" ? "Create Account" : "Sign In";
+  btn.disabled    = false;
+}
+
+// Handle Google OAuth redirect back to landing page
+(function() {
+  const hash = new URLSearchParams(window.location.hash.slice(1));
+  const token = hash.get("access_token");
+  if (token) {
+    localStorage.setItem("vs_token", token);
+    window.history.replaceState({}, "", window.location.pathname);
+    unlockResult();
+  }
+})();
+
+function unlockResult() {
+  // Remove the blur and unlock overlay
+  const blurred = document.getElementById("res-blurred");
+  const overlay = document.getElementById("res-unlock");
+  if (blurred) blurred.style.filter  = "none";
+  if (blurred) blurred.style.opacity = "1";
+  if (blurred) blurred.style.pointerEvents = "auto";
+  if (overlay) overlay.style.display = "none";
+
+  // Show dashboard link
+  const existing = document.getElementById("res-dashboard-link");
+  if (!existing) {
+    const link = document.createElement("div");
+    link.id = "res-dashboard-link";
+    link.style.cssText = "text-align:center;margin-top:16px;";
+    link.innerHTML = `<a href="https://app.verdadscore.com" style="font-family:'DM Mono';font-size:11px;color:#3B82F6;letter-spacing:0.08em;">VIEW FULL DASHBOARD →</a>`;
+    document.getElementById("res-locked").appendChild(link);
+  }
+}
+</script>
 
 </body>
 </html>
