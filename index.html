@@ -1366,40 +1366,121 @@ async function submitForgotPassword() {
 }
 
 function unlockResult() {
-  // If scan result is not on page (fresh load after OAuth), restore from localStorage
   const result  = document.getElementById("scan-result");
   const pending = localStorage.getItem("vs_pending_scan");
+  const data    = pending ? JSON.parse(pending) : null;
 
-  if (pending && result && !result.classList.contains("visible")) {
-    try {
-      const data = JSON.parse(pending);
-      const score   = Math.round(data.vci_score || 70);
-      const verdict = data.verdict || "At Risk";
-      const color   = score >= 82 ? "var(--green)" :
-                      score >= 65 ? "var(--yellow)" : "var(--red)";
+  if (data) {
+    const score   = Math.round(data.vci_score || 70);
+    const verdict = data.verdict || "At Risk";
+    const color   = score >= 82 ? "var(--green)" : score >= 65 ? "var(--yellow)" : "var(--red)";
 
-      document.getElementById("res-vci").textContent    = score;
-      document.getElementById("res-vci").style.color    = color;
-      document.getElementById("res-verdict").textContent = verdict.toUpperCase();
-      document.getElementById("res-verdict").style.color = color;
+    document.getElementById("res-vci").textContent     = score;
+    document.getElementById("res-vci").style.color     = color;
+    document.getElementById("res-verdict").textContent = verdict.toUpperCase();
+    document.getElementById("res-verdict").style.color = color;
 
-      const outletEl = document.getElementById("res-outlet");
-      if (data.outlet && data.outlet !== "Unknown") {
-        outletEl.textContent    = data.outlet.toUpperCase();
-        outletEl.style.display  = "block";
-      } else {
-        outletEl.style.display = "none";
-      }
-      document.getElementById("res-title").textContent = data.title || "";
-
-      result.classList.add("visible");
-
-      // Scroll to result
-      result.scrollIntoView({ behavior: "smooth", block: "center" });
-    } catch(_) {}
+    const outletEl = document.getElementById("res-outlet");
+    if (data.outlet && data.outlet !== "Unknown") {
+      outletEl.textContent   = data.outlet.toUpperCase();
+      outletEl.style.display = "block";
+    } else {
+      outletEl.style.display = "none";
+    }
+    document.getElementById("res-title").textContent = data.title || "";
+    result.classList.add("visible");
   }
 
   localStorage.removeItem("vs_pending_scan");
+
+  // Replace locked section with full report
+  const locked = document.getElementById("res-locked");
+  if (!locked || !data) return;
+
+  const f = data.framing || {};
+  const credColor = c => c === "HIGH" ? "#22C55E" : c === "MEDIUM" ? "#F59E0B" : "#EF4444";
+  const typeColor = t => t === "STATE_MEDIA" || t === "ANONYMOUS" ? "#F59E0B" : t === "EXPERT" || t === "GOVERNMENT" ? "#22C55E" : "#64748B";
+
+  locked.innerHTML = `
+    <div style="margin-top:16px;border-top:1px solid #1E293B;padding-top:16px;">
+
+      ${data.reasoning ? `
+      <div style="font-size:13px;color:#94A3B8;line-height:1.7;margin-bottom:20px;
+        padding:14px;background:rgba(59,130,246,0.05);border-radius:6px;
+        border-left:3px solid #3B82F6;font-style:italic;">
+        ${data.reasoning}
+      </div>` : ""}
+
+      ${data.framing ? `
+      <div style="margin-bottom:20px;">
+        <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;
+          letter-spacing:0.1em;margin-bottom:10px;">FRAMING ANALYSIS</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
+          ${[
+            ["SENSATIONAL",      f.is_sensational],
+            ["ONE-SIDED",        f.is_one_sided],
+            ["EMOTIONAL LANGUAGE", f.has_emotional_language],
+          ].map(([label, val]) => `
+            <div style="background:${val ? "rgba(239,68,68,0.1)" : "rgba(34,197,94,0.1)"};
+              border:1px solid ${val ? "rgba(239,68,68,0.3)" : "rgba(34,197,94,0.3)"};
+              border-radius:6px;padding:10px;text-align:center;
+              font-family:'DM Mono';font-size:9px;
+              color:${val ? "#EF4444" : "#22C55E"};">
+              ${val ? "⚠ " : "✓ "}${label}
+            </div>`).join("")}
+        </div>
+        ${f.narrative_push ? `
+          <div style="font-family:'DM Mono';font-size:9px;color:#F59E0B;
+            letter-spacing:0.08em;margin-bottom:4px;">NARRATIVE PUSH</div>
+          <div style="font-size:12px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">
+            ${f.narrative_push}
+          </div>` : ""}
+        ${f.missing_context ? `
+          <div style="font-family:'DM Mono';font-size:9px;color:#64748B;
+            letter-spacing:0.08em;margin-bottom:4px;">MISSING CONTEXT</div>
+          <div style="font-size:12px;color:#94A3B8;line-height:1.6;">
+            ${f.missing_context}
+          </div>` : ""}
+      </div>` : ""}
+
+      ${data.sources && data.sources.length ? `
+      <div style="margin-bottom:20px;">
+        <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;
+          letter-spacing:0.1em;margin-bottom:10px;">
+          SOURCES CITED (${data.sources.length})
+        </div>
+        ${data.sources.map(s => `
+          <div style="display:flex;align-items:center;justify-content:space-between;
+            padding:8px 0;border-bottom:1px solid #1E293B;">
+            <div style="font-size:13px;color:#E2E8F0;">${s.entity}</div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <span style="font-family:'DM Mono';font-size:9px;
+                color:${typeColor(s.type)};background:${typeColor(s.type)}20;
+                padding:2px 8px;border-radius:3px;">${s.type}</span>
+              <span style="font-family:'DM Mono';font-size:9px;
+                color:${credColor(s.credibility)};">${s.credibility}</span>
+            </div>
+          </div>`).join("")}
+      </div>` : ""}
+
+      ${data.claims && data.claims.length ? `
+      <div style="margin-bottom:20px;">
+        <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;
+          letter-spacing:0.1em;margin-bottom:10px;">KEY CLAIMS</div>
+        ${data.claims.map((c, i) => `
+          <div style="display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;">
+            <span style="font-family:'DM Mono';font-size:9px;color:#3B82F6;min-width:20px;">${i+1}.</span>
+            <div style="font-size:12px;color:#94A3B8;line-height:1.6;">${c}</div>
+          </div>`).join("")}
+      </div>` : ""}
+
+      <div style="text-align:center;margin-top:24px;">
+        <a href="https://app.verdadscore.com" style="font-family:'DM Mono';
+          font-size:11px;color:#3B82F6;letter-spacing:0.08em;text-decoration:none;">
+          VIEW FULL DASHBOARD →
+        </a>
+      </div>
+    </div>`;
 
   // Remove the blur and unlock overlay
   const blurred = document.getElementById("res-blurred");
