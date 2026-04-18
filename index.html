@@ -1475,11 +1475,20 @@ function unlockResult() {
       </div>` : ""}
 
       <div style="text-align:center;margin-top:24px;">
-        <a href="https://app.verdadscore.com" style="font-family:'DM Mono';
+        <a id="dashboard-link" href="https://app.verdadscore.com" style="font-family:'DM Mono';
           font-size:11px;color:#3B82F6;letter-spacing:0.08em;text-decoration:none;">
           VIEW FULL DASHBOARD →
         </a>
       </div>
+      <script>
+        (function() {
+          const token = localStorage.getItem("vs_token");
+          const link  = document.getElementById("dashboard-link");
+          if (token && link) {
+            link.href = "https://app.verdadscore.com/#access_token=" + token;
+          }
+        })();
+      </script>
     </div>`;
 
   // Remove the blur and unlock overlay
@@ -1490,15 +1499,6 @@ function unlockResult() {
   if (blurred) blurred.style.pointerEvents = "auto";
   if (overlay) overlay.style.display = "none";
 
-  // Show dashboard link
-  const existing = document.getElementById("res-dashboard-link");
-  if (!existing) {
-    const link = document.createElement("div");
-    link.id = "res-dashboard-link";
-    link.style.cssText = "text-align:center;margin-top:16px;";
-    link.innerHTML = `<a href="https://app.verdadscore.com" style="font-family:'DM Mono';font-size:11px;color:#3B82F6;letter-spacing:0.08em;">VIEW FULL DASHBOARD →</a>`;
-    document.getElementById("res-locked").appendChild(link);
-  }
 }
 </script>
 
