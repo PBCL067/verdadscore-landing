@@ -632,18 +632,18 @@
             <div style="margin-top:16px">
               <div style="font-family:'DM Mono';font-size:9px;color:var(--blue);letter-spacing:0.1em;margin-bottom:8px">FRAMING ANALYSIS</div>
               <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-                ${["SENSATIONAL","ONE-SIDED","EMOTIONAL"].map(l => `
-                  <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);
-                    border-radius:6px;padding:10px;text-align:center;font-family:'DM Mono';font-size:9px;color:#10B981">✓ ${l}</div>
-                `).join("")}
+                <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:6px;padding:10px;text-align:center;font-family:'DM Mono';font-size:9px;color:#10B981">✓ SENSATIONAL</div>
+                <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:6px;padding:10px;text-align:center;font-family:'DM Mono';font-size:9px;color:#10B981">✓ ONE-SIDED</div>
+                <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:6px;padding:10px;text-align:center;font-family:'DM Mono';font-size:9px;color:#10B981">✓ EMOTIONAL</div>
               </div>
             </div>
             <div style="margin-top:16px">
               <div style="font-family:'DM Mono';font-size:9px;color:var(--blue);letter-spacing:0.1em;margin-bottom:8px">SOURCES CITED (4)</div>
               <div style="display:flex;flex-wrap:wrap;gap:6px">
-                ${["Government Official","Named Expert","Court Record","Named Resident"].map(s => `
-                  <div style="background:rgba(255,255,255,0.03);padding:5px 10px;border-radius:4px;font-size:11px;color:#94A3B8">${s}</div>
-                `).join("")}
+                <div style="background:rgba(255,255,255,0.03);padding:5px 10px;border-radius:4px;font-size:11px;color:#94A3B8">Government Official</div>
+                <div style="background:rgba(255,255,255,0.03);padding:5px 10px;border-radius:4px;font-size:11px;color:#94A3B8">Named Expert</div>
+                <div style="background:rgba(255,255,255,0.03);padding:5px 10px;border-radius:4px;font-size:11px;color:#94A3B8">Court Record</div>
+                <div style="background:rgba(255,255,255,0.03);padding:5px 10px;border-radius:4px;font-size:11px;color:#94A3B8">Named Resident</div>
               </div>
             </div>
           </div>
@@ -1188,7 +1188,7 @@ function updateAuthMode() {
 }
 
 function signInWithGoogle() {
-  const redirectTo = window.location.href;
+  const redirectTo = window.location.origin + window.location.pathname;
   window.location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(redirectTo)}`;
 }
 
@@ -1220,11 +1220,18 @@ async function submitAuth() {
       errEl.textContent   = data.error_description || data.error;
       errEl.style.display = "block";
     } else if (authMode === "signup" && !data.access_token) {
-      // Email confirmation required
-      msgEl.textContent   = "Check your email to confirm your account, then come back and sign in.";
-      msgEl.style.display = "block";
-      authMode = "signin";
-      updateAuthMode();
+      // Email confirmation required — clear fields, show message only
+      document.getElementById("auth-email").value    = "";
+      document.getElementById("auth-password").value = "";
+      document.getElementById("auth-email").style.display    = "none";
+      document.getElementById("auth-password").style.display = "none";
+      document.getElementById("auth-submit").style.display   = "none";
+      document.getElementById("forgot-link") && (document.getElementById("forgot-link").style.display = "none");
+      document.querySelector("[onclick='signInWithGoogle()']").style.display = "none";
+      document.getElementById("auth-title").textContent = "Check your email";
+      document.getElementById("auth-sub").textContent   = "Click the confirmation link we sent you, then come back and sign in.";
+      msgEl.textContent   = "";
+      msgEl.style.display = "none";
     } else if (data.access_token) {
       // Signed in — unlock the result
       localStorage.setItem("vs_token", data.access_token);
