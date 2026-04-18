@@ -1238,6 +1238,7 @@ async function submitAuth() {
       localStorage.setItem("vs_user", JSON.stringify(data.user));
       closeAuthModal();
       unlockResult();
+      localStorage.removeItem("vs_pending_scan");
     }
   } catch(e) {
     errEl.textContent   = "Something went wrong. Please try again.";
@@ -1390,8 +1391,6 @@ function unlockResult() {
     document.getElementById("res-title").textContent = data.title || "";
     result.classList.add("visible");
   }
-
-  localStorage.removeItem("vs_pending_scan");
 
   // Replace locked section with full report
   const locked = document.getElementById("res-locked");
