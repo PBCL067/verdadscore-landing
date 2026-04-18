@@ -1158,6 +1158,13 @@ function openAuthModal(mode) {
   authMode = mode || "signup";
   updateAuthMode();
   document.getElementById("auth-modal").style.display = "flex";
+  // Reset modal to default state
+  document.getElementById("auth-email").style.display    = "block";
+  document.querySelector("[onclick='signInWithGoogle()']").style.display = "block";
+  document.getElementById("auth-submit").onclick = submitAuth;
+  document.getElementById("auth-toggle-text").style.display = "inline";
+  document.getElementById("auth-toggle-link").style.display = "inline";
+  addForgotPassword();
   document.getElementById("auth-error").style.display = "none";
   document.getElementById("auth-msg").style.display   = "none";
 }
@@ -1234,16 +1241,122 @@ async function submitAuth() {
   btn.disabled    = false;
 }
 
-// Handle Google OAuth redirect back to landing page
+// Handle Supabase redirects — OAuth, email confirmation, password reset
 (function() {
-  const hash = new URLSearchParams(window.location.hash.slice(1));
+  const hash  = new URLSearchParams(window.location.hash.slice(1));
   const token = hash.get("access_token");
-  if (token) {
-    localStorage.setItem("vs_token", token);
-    window.history.replaceState({}, "", window.location.pathname);
+  const type  = hash.get("type");
+
+  if (!token) return;
+
+  localStorage.setItem("vs_token", token);
+  window.history.replaceState({}, "", window.location.pathname);
+
+  if (type === "recovery") {
+    // Password reset — show reset form in modal
+    openResetModal();
+  } else {
+    // Email confirmation or OAuth — unlock result on page
     unlockResult();
   }
 })();
+
+function openResetModal() {
+  document.getElementById("auth-modal").style.display = "flex";
+  document.getElementById("auth-title").textContent   = "Set new password";
+  document.getElementById("auth-sub").textContent     = "Choose a new password for your account";
+  document.getElementById("auth-submit").textContent  = "SET PASSWORD";
+  document.getElementById("auth-submit").onclick      = submitReset;
+
+  // Hide email field, show only password
+  document.getElementById("auth-email").style.display    = "none";
+  document.getElementById("auth-toggle-text").style.display = "none";
+  document.getElementById("auth-toggle-link").style.display = "none";
+
+  // Swap Google button text
+  document.querySelector("[onclick='signInWithGoogle()']").style.display = "none";
+  document.querySelectorAll(".auth-divider").forEach(el => el.style.display = "none");
+}
+
+async function submitReset() {
+  const password = document.getElementById("auth-password").value;
+  const errEl    = document.getElementById("auth-error");
+  const msgEl    = document.getElementById("auth-msg");
+  const btn      = document.getElementById("auth-submit");
+  const token    = localStorage.getItem("vs_token");
+
+  errEl.style.display = "none";
+  msgEl.style.display = "none";
+  btn.textContent     = "Please wait...";
+  btn.disabled        = true;
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      method: "PUT",
+      headers: {
+        "apikey":        SUPABASE_ANON,
+        "Authorization": `Bearer ${token}`,
+        "Content-Type":  "application/json",
+      },
+      body: JSON.stringify({ password }),
+    });
+    const data = await res.json();
+
+    if (data.error) {
+      errEl.textContent   = data.error;
+      errEl.style.display = "block";
+    } else {
+      msgEl.textContent   = "Password updated. You are now signed in.";
+      msgEl.style.display = "block";
+      setTimeout(() => {
+        closeAuthModal();
+        unlockResult();
+      }, 1500);
+    }
+  } catch(e) {
+    errEl.textContent   = "Something went wrong. Please try again.";
+    errEl.style.display = "block";
+  }
+
+  btn.textContent = "SET PASSWORD";
+  btn.disabled    = false;
+}
+
+// Add forgot password link to modal
+function addForgotPassword() {
+  const existing = document.getElementById("forgot-link");
+  if (existing) return;
+  const el = document.createElement("div");
+  el.id = "forgot-link";
+  el.style.cssText = "text-align:center;margin-top:-8px;margin-bottom:10px;";
+  el.innerHTML = `<a onclick="submitForgotPassword()" href="#"
+    style="font-family:'DM Mono';font-size:10px;color:#475569;text-decoration:none;
+    letter-spacing:0.08em;">FORGOT PASSWORD?</a>`;
+  document.getElementById("auth-submit").before(el);
+}
+
+async function submitForgotPassword() {
+  const email = document.getElementById("auth-email").value.trim();
+  const errEl = document.getElementById("auth-error");
+  const msgEl = document.getElementById("auth-msg");
+
+  if (!email) {
+    errEl.textContent   = "Enter your email address first.";
+    errEl.style.display = "block";
+    return;
+  }
+
+  errEl.style.display = "none";
+
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/recover`, {
+    method: "POST",
+    headers: { "apikey": SUPABASE_ANON, "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+
+  msgEl.textContent   = "Password reset email sent. Check your inbox.";
+  msgEl.style.display = "block";
+}
 
 function unlockResult() {
   // Remove the blur and unlock overlay
