@@ -956,5 +956,127 @@
     if (e.key === "Enter") submitSignup();
   });
 </script>
+
+<script>
+(function() {
+  const path = window.location.pathname;
+  if (!path.startsWith("/share/")) return;
+  const shareId = path.split("/share/")[1];
+  if (!shareId) return;
+
+  // Inject OG meta tags dynamically (for crawlers we need server-side,
+  // but this handles direct browser visits)
+  fetch("https://coldfact.up.railway.app/share/" + shareId)
+    .then(r => r.json())
+    .then(d => {
+      if (d.detail) { document.getElementById("share-loading").textContent = "Share link not found."; return; }
+
+      const score   = Math.round(d.vci_score || 0);
+      const verdict = (d.verdict || "").toUpperCase();
+      const outlet  = d.outlet || "";
+      const title   = d.title  || "Article Analysis";
+      const color   = score >= 82 ? "#22C55E" : score >= 65 ? "#F59E0B" : "#EF4444";
+
+      // Update page title and meta
+      document.title = `VCI ${score} — ${verdict} | Verdad Score`;
+      document.getElementById("share-loading").style.display = "none";
+      document.getElementById("share-card").style.display   = "block";
+
+      document.getElementById("sc-score").textContent   = score;
+      document.getElementById("sc-score").style.color   = color;
+      document.getElementById("sc-verdict").textContent = verdict;
+      document.getElementById("sc-verdict").style.color = color;
+      document.getElementById("sc-outlet").textContent  = outlet ? outlet.toUpperCase() : "";
+      document.getElementById("sc-outlet").style.display = outlet ? "block" : "none";
+      document.getElementById("sc-title").textContent   = title;
+      document.getElementById("sc-summary").textContent = d.summary || "";
+
+      // Copy link button
+      document.getElementById("sc-copy").addEventListener("click", () => {
+        navigator.clipboard.writeText(window.location.href);
+        document.getElementById("sc-copy").textContent = "✓ COPIED";
+        setTimeout(() => document.getElementById("sc-copy").textContent = "COPY LINK", 2000);
+      });
+
+      // Scan your own button
+      document.getElementById("sc-scan").addEventListener("click", () => {
+        window.location.href = "/#scan";
+      });
+    })
+    .catch(() => {
+      document.getElementById("share-loading").textContent = "Failed to load result.";
+    });
+
+  // Show share UI, hide normal page
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector("nav").style.display        = "block";
+    document.querySelector(".hero").style.display      = "none";
+    document.querySelectorAll("section").forEach(s => s.style.display = "none");
+    document.querySelector(".signup-section").style.display = "none";
+    document.querySelector("footer").style.display     = "block";
+    document.getElementById("share-view").style.display = "flex";
+  });
+})();
+</script>
+
+<!-- SHARE VIEW (hidden by default) -->
+<div id="share-view" style="display:none;flex-direction:column;align-items:center;
+  justify-content:center;min-height:80vh;padding:80px 24px;">
+
+  <div id="share-loading" style="font-family:'DM Mono',monospace;font-size:12px;
+    color:var(--muted);letter-spacing:0.1em;">LOADING RESULT...</div>
+
+  <div id="share-card" style="display:none;max-width:560px;width:100%;">
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--blue);
+        letter-spacing:0.15em;margin-bottom:16px;">VERDAD SCORE · CREDIBILITY REPORT</div>
+      <div id="sc-score" style="font-family:'Bebas Neue',sans-serif;font-size:120px;
+        line-height:1;margin-bottom:0;"></div>
+      <div id="sc-verdict" style="font-family:'DM Mono',monospace;font-size:14px;
+        letter-spacing:0.2em;margin-bottom:16px;"></div>
+      <div id="sc-outlet" style="font-family:'DM Mono',monospace;font-size:10px;
+        color:var(--blue);letter-spacing:0.12em;margin-bottom:10px;"></div>
+      <div id="sc-title" style="font-size:18px;font-weight:600;color:var(--text);
+        line-height:1.4;margin-bottom:16px;"></div>
+      <div id="sc-summary" style="font-size:14px;color:var(--muted);line-height:1.7;
+        margin-bottom:32px;"></div>
+    </div>
+
+    <!-- Locked full report -->
+    <div style="background:var(--surface);border:1px solid var(--border);
+      border-radius:10px;padding:28px;text-align:center;margin-bottom:20px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--blue);
+        letter-spacing:0.1em;margin-bottom:8px;">🔒 FULL REPORT</div>
+      <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;">
+        Framing analysis, sources & claims
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:20px;">
+        Free account — no credit card required
+      </div>
+      <a href="https://app.verdadscore.com">
+        <button style="background:var(--blue);border:none;color:white;
+          padding:12px 32px;border-radius:5px;font-family:'DM Mono',monospace;
+          font-size:11px;cursor:pointer;letter-spacing:0.08em;
+          box-shadow:0 0 20px rgba(59,130,246,0.3);">
+          CREATE FREE ACCOUNT →
+        </button>
+      </a>
+    </div>
+
+    <!-- Actions -->
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button id="sc-copy" style="background:transparent;border:1px solid var(--border);
+        color:var(--muted);padding:10px 20px;border-radius:5px;
+        font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;
+        letter-spacing:0.08em;transition:all 0.2s;">COPY LINK</button>
+      <button id="sc-scan" style="background:transparent;border:1px solid var(--border);
+        color:var(--muted);padding:10px 20px;border-radius:5px;
+        font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;
+        letter-spacing:0.08em;transition:all 0.2s;">SCAN YOUR OWN →</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
