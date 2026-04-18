@@ -571,27 +571,9 @@
       <span class="mono" style="font-size:11px;color:var(--muted);margin-left:8px;">verdad score · url scanner</span>
     </div>
     <div class="scan-body">
-      <!-- Email gate -->
-      <div id="scan-email-gate">
-        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;font-family:'DM Mono'">
-          Enter your email to get 10 free scans per day
-        </p>
-        <div class="scan-input-row">
-          <input class="scan-input" id="scan-email-input" type="email"
-            placeholder="your@email.com" />
-          <button class="scan-btn mono" onclick="submitScanEmail()">GET FREE SCANS</button>
-        </div>
-        <p style="font-size:10px;color:var(--muted);margin-top:8px;font-family:'DM Mono'">
-          No credit card required
-        </p>
-      </div>
-
       <!-- Scan form -->
-      <div id="scan-form" style="display:none">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <span style="font-family:'DM Mono';font-size:10px;color:var(--green)" id="scan-count-label">10 FREE SCANS REMAINING</span>
-          <span style="font-family:'DM Mono';font-size:10px;color:var(--muted)" id="scan-email-label"></span>
-        </div>
+      <div id="scan-form" style="display:block">
+        
         <!-- Tab switcher -->
         <div style="display:flex;gap:8px;margin-bottom:12px;">
           <button class="mono" id="tab-url" onclick="switchTab('url')" style="background:transparent;border:1px solid #334155;color:#64748B;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:10px;letter-spacing:0.08em;">URL</button>
@@ -617,60 +599,77 @@
         </div>
       </div>
 
-      <!-- Upgrade prompt -->
-      <div id="scan-upgrade" style="display:none;text-align:center;padding:24px;">
-        <p style="font-family:'DM Mono';font-size:11px;color:var(--yellow);margin-bottom:16px;">YOU'VE USED YOUR 3 FREE SCANS TODAY</p>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Start a free trial for unlimited access.</p>
-        <a href="https://app.verdadscore.com">
-          <button class="scan-btn mono" style="padding:12px 28px;">START FREE TRIAL</button>
-        </a>
-      </div>
-
-      <div class="scan-loading mono" id="scan-loading">
-        <div id="scan-status">Fetching article...</div>
-      </div>
+      
 
       <div class="scan-result" id="scan-result">
-        <!-- Header: outlet + score -->
+        <!-- Header: always visible -->
         <div class="scan-result-header">
           <div style="flex:1">
-            <div class="result-outlet mono" id="res-outlet">BBC NEWS</div>
-            <div class="result-title" id="res-title">Article title</div>
+            <div class="result-outlet mono" id="res-outlet"></div>
+            <div class="result-title" id="res-title"></div>
           </div>
           <div class="vci-display">
-            <div class="vci-score" id="res-vci">82</div>
-            <div class="vci-label mono" id="res-verdict" style="color:var(--green)">RELIABLE</div>
+            <div class="vci-score" id="res-vci">--</div>
+            <div class="vci-label mono" id="res-verdict"></div>
           </div>
         </div>
 
-        <!-- Summary -->
-        <div id="res-summary" style="font-size:13px;color:#94A3B8;line-height:1.6;
-          margin:12px 0;padding:12px;background:rgba(255,255,255,0.03);
-          border-radius:6px;border-left:3px solid var(--blue)"></div>
-
-        <!-- Free: Claims preview -->
-        <div id="res-claims" style="margin-top:16px"></div>
-
-        <!-- Free: Sources preview -->
-        <div id="res-sources" style="margin-top:12px"></div>
-
-        <!-- Post-scan signup prompt -->
-        <div id="res-signup-prompt" style="display:none;margin-top:20px;
-          background:linear-gradient(135deg,#0D1521,#0f1e35);
-          border:1px solid #3B82F6;border-radius:8px;padding:20px;text-align:center;">
-          <div style="font-size:18px;margin-bottom:8px">📋</div>
-          <div style="font-family:'DM Mono';font-size:11px;color:#3B82F6;
-            letter-spacing:0.1em;margin-bottom:8px">SAVE YOUR SCAN HISTORY</div>
-          <div style="font-size:13px;color:#94A3B8;margin-bottom:16px;max-width:300px;margin-left:auto;margin-right:auto;">
-            Create a free account to track all your scans, build a credibility history and get daily alerts.
+        <!-- Locked full report -->
+        <div id="res-locked" style="position:relative;margin-top:16px;">
+          <!-- Blurred preview -->
+          <div id="res-blurred" style="filter:blur(4px);pointer-events:none;user-select:none;opacity:0.5;">
+            <div style="font-size:13px;color:#94A3B8;line-height:1.6;
+              margin:12px 0;padding:12px;background:rgba(255,255,255,0.03);
+              border-radius:6px;border-left:3px solid var(--blue)">
+              This article shows strong signals of balanced reporting with multiple credible sources cited.
+              The framing is neutral and the claims are well supported by official documentation and named sources.
+              Missing context includes independent verification of key statistics.
+            </div>
+            <div style="margin-top:16px">
+              <div style="font-family:'DM Mono';font-size:9px;color:var(--blue);letter-spacing:0.1em;margin-bottom:8px">FRAMING ANALYSIS</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+                ${["SENSATIONAL","ONE-SIDED","EMOTIONAL"].map(l => `
+                  <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);
+                    border-radius:6px;padding:10px;text-align:center;font-family:'DM Mono';font-size:9px;color:#10B981">✓ ${l}</div>
+                `).join("")}
+              </div>
+            </div>
+            <div style="margin-top:16px">
+              <div style="font-family:'DM Mono';font-size:9px;color:var(--blue);letter-spacing:0.1em;margin-bottom:8px">SOURCES CITED (4)</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px">
+                ${["Government Official","Named Expert","Court Record","Named Resident"].map(s => `
+                  <div style="background:rgba(255,255,255,0.03);padding:5px 10px;border-radius:4px;font-size:11px;color:#94A3B8">${s}</div>
+                `).join("")}
+              </div>
+            </div>
           </div>
-          <a href="https://app.verdadscore.com">
-            <button style="background:#3B82F6;border:none;color:white;
-              padding:10px 28px;border-radius:5px;font-family:'DM Mono';
-              font-size:10px;cursor:pointer;letter-spacing:0.08em;">
-              CREATE FREE ACCOUNT →
-            </button>
-          </a>
+
+          <!-- Unlock overlay -->
+          <div id="res-unlock" style="position:absolute;top:0;left:0;right:0;bottom:0;
+            display:flex;flex-direction:column;align-items:center;justify-content:center;
+            background:linear-gradient(to bottom, transparent, rgba(10,15,25,0.95) 40%);
+            border-radius:8px;padding:24px;text-align:center;">
+            <div style="font-family:'DM Mono';font-size:10px;color:#3B82F6;
+              letter-spacing:0.1em;margin-bottom:8px">🔒 FULL REPORT</div>
+            <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px">
+              Unlock framing analysis, sources & claims
+            </div>
+            <div style="font-size:12px;color:#94A3B8;margin-bottom:16px">
+              Free account — no credit card required
+            </div>
+            <a href="https://app.verdadscore.com">
+              <button style="background:#3B82F6;border:none;color:white;
+                padding:12px 32px;border-radius:5px;font-family:'DM Mono';
+                font-size:11px;cursor:pointer;letter-spacing:0.08em;
+                box-shadow:0 0 20px rgba(59,130,246,0.3);">
+                CREATE FREE ACCOUNT →
+              </button>
+            </a>
+            <div style="font-size:11px;color:#475569;margin-top:10px">
+              Already have an account? <a href="https://app.verdadscore.com" 
+              style="color:#3B82F6;text-decoration:none">Sign in →</a>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -822,56 +821,7 @@
       }
     }).catch(() => {});
 
-  // Scan email gate
-  function submitScanEmail() {
-    const email = document.getElementById("scan-email-input").value.trim();
-    if (!email || !email.includes("@")) return;
-    fetch(API + "/waitlist", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, source: "scan_gate" }),
-    }).catch(() => {});
-    localStorage.setItem("vs_scan_email", email);
-    localStorage.setItem("vs_scan_count", "0");
-    localStorage.setItem("vs_scan_date", new Date().toDateString());
-    document.getElementById("scan-email-gate").style.display = "none";
-    document.getElementById("scan-form").style.display = "block";
-    document.getElementById("scan-email-label").textContent = email;
-    updateScanCount();
-  }
-
-  function updateScanCount() {
-    const today = new Date().toDateString();
-    const savedDate = localStorage.getItem("vs_scan_date");
-    if (savedDate !== today) {
-      localStorage.setItem("vs_scan_count", "0");
-      localStorage.setItem("vs_scan_date", today);
-    }
-    const count = parseInt(localStorage.getItem("vs_scan_count") || "0");
-    const remaining = Math.max(0, 3 - count);
-    const label = document.getElementById("scan-count-label");
-    if (label) label.textContent = remaining + " FREE SCAN" + (remaining !== 1 ? "S" : "") + " REMAINING";
-    if (remaining === 0) {
-      document.getElementById("scan-form").style.display = "none";
-      document.getElementById("scan-upgrade").style.display = "block";
-    }
-    return remaining;
-  }
-
-  window.addEventListener("load", () => {
-    const email = localStorage.getItem("vs_scan_email");
-    if (email) {
-      const today = new Date().toDateString();
-      if (localStorage.getItem("vs_scan_date") !== today) {
-        localStorage.setItem("vs_scan_count", "0");
-        localStorage.setItem("vs_scan_date", today);
-      }
-      document.getElementById("scan-email-gate").style.display = "none";
-      document.getElementById("scan-form").style.display = "block";
-      document.getElementById("scan-email-label").textContent = email;
-      updateScanCount();
-    }
-  });
+  // Email gate removed — scanner open to all visitors
 
   // Tab switching
   function switchTab(tab) {
@@ -899,10 +849,7 @@
 
   // Scan
   async function runScan() {
-    const remaining = updateScanCount();
-    if (remaining === 0) return;
     const url = document.getElementById("scan-url").value.trim();
-    if (!url) return;
 
     const loading = document.getElementById("scan-loading");
     const result  = document.getElementById("scan-result");
@@ -938,10 +885,7 @@
       loading.classList.remove("visible");
 
       if (res.ok) {
-        // Only increment on successful scan
-        const c = parseInt(localStorage.getItem("vs_scan_count") || "0");
-        localStorage.setItem("vs_scan_count", String(c + 1));
-        updateScanCount();
+
         const score   = Math.round(data.vci_score || 70);
         const verdict = data.verdict || "At Risk";
         const color   = score >= 82 ? "var(--green)" :
@@ -951,58 +895,23 @@
           (data.outlet || "Unknown").toUpperCase();
         document.getElementById("res-title").textContent =
           data.title || url;
-        document.getElementById("res-vci").textContent = score;
+        docudocument.getElementById("res-vci").textContent = score;
         document.getElementById("res-vci").style.color = color;
         document.getElementById("res-verdict").textContent = verdict.toUpperCase();
         document.getElementById("res-verdict").style.color = color;
 
-        // Summary
-        document.getElementById("res-summary").textContent = data.summary || "";
-
-        // Claims (show first 2 free)
-        const claimsEl = document.getElementById("res-claims");
-        const claims = data.claims || [];
-        if (claims.length > 0) {
-          claimsEl.innerHTML = `
-            <div style="font-family:'DM Mono';font-size:9px;color:var(--blue);
-              letter-spacing:0.1em;margin-bottom:8px">
-              KEY CLAIMS (${claims.length} DETECTED)
-            </div>
-            ${claims.map(c => `
-              <div style="font-size:12px;color:var(--muted);padding:8px 10px;
-                background:rgba(255,255,255,0.03);border-radius:4px;
-                margin-bottom:4px;border-left:2px solid var(--blue)">
-                ${c}
-              </div>`).join("")}
-          `;
+        // Outlet + title (always visible)
+        const outletEl = document.getElementById("res-outlet");
+        if (data.outlet && data.outlet !== "Unknown") {
+          outletEl.textContent = data.outlet.toUpperCase();
+          outletEl.style.display = "block";
+        } else {
+          outletEl.style.display = "none";
         }
+        document.getElementById("res-title").textContent = data.title || "";
 
-        // Sources (show first 3 free)
-        const sourcesEl = document.getElementById("res-sources");
-        const sources = data.sources || [];
-        if (sources.length > 0) {
-          const credColor = c => c==="HIGH"?"var(--green)":c==="MEDIUM"?"var(--yellow)":"var(--red)";
-          sourcesEl.innerHTML = `
-            <div style="font-family:'DM Mono';font-size:9px;color:var(--blue);
-              letter-spacing:0.1em;margin-bottom:8px">
-              SOURCES CITED (${sources.length} IDENTIFIED)
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px">
-              ${sources.map(s => `
-                <div style="display:flex;align-items:center;gap:6px;
-                  background:rgba(255,255,255,0.03);padding:5px 10px;
-                  border-radius:4px;font-size:11px;">
-                  <span style="width:6px;height:6px;border-radius:50%;
-                    background:${credColor(s.credibility)};flex-shrink:0"></span>
-                  <span style="color:var(--text)">${s.entity}</span>
-                  <span style="font-family:'DM Mono';font-size:9px;
-                    color:var(--muted)">${s.type}</span>
-                </div>`).join("")}
-          `;
-        }
-
+        // Show result + locked overlay
         result.classList.add("visible");
-        document.getElementById("res-signup-prompt").style.display = "block";
       } else {
         const detail = data.detail;
         if (typeof detail === "object" && detail.suggestion) {
