@@ -1480,16 +1480,14 @@ function unlockResult() {
           VIEW FULL DASHBOARD →
         </a>
       </div>
-      <script>
-        (function() {
-          const token = localStorage.getItem("vs_token");
-          const link  = document.getElementById("dashboard-link");
-          if (token && link) {
-            link.href = "https://app.verdadscore.com/#access_token=" + token;
-          }
-        })();
-      </script>
     </div>`;
+
+  // Set dashboard link with token
+  const token = localStorage.getItem("vs_token");
+  const dashLink = document.getElementById("dashboard-link");
+  if (token && dashLink) {
+    dashLink.href = "https://app.verdadscore.com/#access_token=" + token;
+  }
 
   // Remove the blur and unlock overlay
   const blurred = document.getElementById("res-blurred");
