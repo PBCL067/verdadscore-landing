@@ -1366,6 +1366,41 @@ async function submitForgotPassword() {
 }
 
 function unlockResult() {
+  // If scan result is not on page (fresh load after OAuth), restore from localStorage
+  const result  = document.getElementById("scan-result");
+  const pending = localStorage.getItem("vs_pending_scan");
+
+  if (pending && result && !result.classList.contains("visible")) {
+    try {
+      const data = JSON.parse(pending);
+      const score   = Math.round(data.vci_score || 70);
+      const verdict = data.verdict || "At Risk";
+      const color   = score >= 82 ? "var(--green)" :
+                      score >= 65 ? "var(--yellow)" : "var(--red)";
+
+      document.getElementById("res-vci").textContent    = score;
+      document.getElementById("res-vci").style.color    = color;
+      document.getElementById("res-verdict").textContent = verdict.toUpperCase();
+      document.getElementById("res-verdict").style.color = color;
+
+      const outletEl = document.getElementById("res-outlet");
+      if (data.outlet && data.outlet !== "Unknown") {
+        outletEl.textContent    = data.outlet.toUpperCase();
+        outletEl.style.display  = "block";
+      } else {
+        outletEl.style.display = "none";
+      }
+      document.getElementById("res-title").textContent = data.title || "";
+
+      result.classList.add("visible");
+
+      // Scroll to result
+      result.scrollIntoView({ behavior: "smooth", block: "center" });
+    } catch(_) {}
+  }
+
+  localStorage.removeItem("vs_pending_scan");
+
   // Remove the blur and unlock overlay
   const blurred = document.getElementById("res-blurred");
   const overlay = document.getElementById("res-unlock");
