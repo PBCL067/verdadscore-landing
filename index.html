@@ -1605,8 +1605,28 @@ function unlockResult() {
       </div>
     </div>`;
 
-  // Set dashboard link with token
+  // Save to scan history now that user is authenticated
   const token = localStorage.getItem("vs_token");
+  if (token && data) {
+    fetch("https://coldfact.up.railway.app/scan/history", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        url:         data.url         || null,
+        title:       data.title       || null,
+        outlet:      data.outlet      || null,
+        vci_score:   data.vci_score   || null,
+        verdict:     data.verdict     || null,
+        summary:     data.summary     || null,
+        result_json: data,
+      }),
+    }).catch(() => {});
+  }
+
+  // Set dashboard link with token
   const dashLink = document.getElementById("dashboard-link");
   if (token && dashLink) {
     dashLink.href = "https://app.verdadscore.com/#access_token=" + token;
