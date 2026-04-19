@@ -1265,6 +1265,27 @@ async function submitAuth() {
   btn.disabled    = false;
 }
 
+// On page load — check if user just confirmed email and has a pending share URL
+(function() {
+  const shareUrl = localStorage.getItem("vs_share_url");
+  const token    = localStorage.getItem("vs_token");
+  if (shareUrl && !token) {
+    // No token yet but share URL exists — user just confirmed, Supabase will have set a session
+    // Check if Supabase session exists via cookie by trying to get the user
+    fetch("https://wmdyapgjerjhrtdvbuxq.supabase.co/auth/v1/user", {
+      headers: {
+        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtZHlhcGdqZXJqaHJ0ZHZidXhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0ODU5NjIsImV4cCI6MjA4ODA2MTk2Mn0.qSW5P7jrgxZg2WTD3Xc3QdarZz_FOPlOvr3usQAkIp8",
+      }
+    }).then(r => r.json()).then(u => {
+      if (u.id) {
+        localStorage.removeItem("vs_share_url");
+        localStorage.removeItem("vs_pending_scan");
+        window.location.href = shareUrl;
+      }
+    }).catch(() => {});
+  }
+})();
+
 // Handle Supabase redirects — OAuth, email confirmation, password reset
 (function() {
   const hash  = new URLSearchParams(window.location.hash.slice(1));
@@ -1272,8 +1293,6 @@ async function submitAuth() {
   const type  = hash.get("type");
 
   if (!token) return;
-
-  console.log("Supabase redirect type:", type, "token:", !!token);
 
   localStorage.setItem("vs_token", token);
   window.history.replaceState({}, "", window.location.pathname);
