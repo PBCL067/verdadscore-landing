@@ -1273,6 +1273,8 @@ async function submitAuth() {
 
   if (!token) return;
 
+  console.log("Supabase redirect type:", type, "token:", !!token);
+
   localStorage.setItem("vs_token", token);
   window.history.replaceState({}, "", window.location.pathname);
 
