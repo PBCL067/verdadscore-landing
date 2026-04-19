@@ -992,8 +992,29 @@
       const title   = d.title  || "Article Analysis";
       const color   = score >= 82 ? "#22C55E" : score >= 65 ? "#F59E0B" : "#EF4444";
 
-      // Update page title and meta
+      // Update page title and OG meta tags
       document.title = `VCI ${score} — ${verdict} | Verdad Score`;
+
+      const setMeta = (prop, content, isName) => {
+        const attr = isName ? "name" : "property";
+        let el = document.querySelector(`meta[${attr}="${prop}"]`);
+        if (!el) { el = document.createElement("meta"); el.setAttribute(attr, prop); document.head.appendChild(el); }
+        el.setAttribute("content", content);
+      };
+
+      const ogTitle = `${title} — VCI ${score} ${verdict}`;
+      const ogDesc  = `Credibility score: ${score}/100 · ${verdict} · Powered by Verdad Score`;
+      const ogUrl   = window.location.href;
+
+      setMeta("og:title",       ogTitle);
+      setMeta("og:description", ogDesc);
+      setMeta("og:url",         ogUrl);
+      setMeta("og:type",        "article");
+      setMeta("og:site_name",   "Verdad Score");
+      setMeta("twitter:card",        "summary", true);
+      setMeta("twitter:title",       ogTitle,   true);
+      setMeta("twitter:description", ogDesc,    true);
+      setMeta("description",         ogDesc,    true);
       document.getElementById("share-loading").style.display = "none";
       document.getElementById("share-card").style.display   = "block";
 
@@ -1097,11 +1118,13 @@
 
   // Show share UI, hide normal page
   document.addEventListener("DOMContentLoaded", () => {
-    document.querySelector("nav").style.display        = "block";
-    document.querySelector(".hero").style.display      = "none";
+    // Minimal nav — hide links and dual CTA, show only logo + sign in
+    document.querySelector(".nav-links").style.display  = "none";
+    document.querySelector(".nav-cta").innerHTML        = '<a href="https://app.verdadscore.com"><button class="btn-primary" style="font-size:13px;padding:8px 20px;">Sign In</button></a>';
+    document.querySelector(".hero").style.display       = "none";
     document.querySelectorAll("section").forEach(s => s.style.display = "none");
     document.querySelector(".signup-section").style.display = "none";
-    document.querySelector("footer").style.display     = "block";
+    document.querySelector("footer").style.display      = "none";
     document.getElementById("share-view").style.display = "flex";
   });
 })();
@@ -1109,12 +1132,12 @@
 
 <!-- SHARE VIEW (hidden by default) -->
 <div id="share-view" style="display:none;flex-direction:column;align-items:center;
-  justify-content:center;min-height:80vh;padding:80px 24px;">
+  justify-content:center;min-height:80vh;padding:60px 24px;background:var(--bg);">
 
   <div id="share-loading" style="font-family:'DM Mono',monospace;font-size:12px;
     color:var(--muted);letter-spacing:0.1em;">LOADING RESULT...</div>
 
-  <div id="share-card" style="display:none;max-width:560px;width:100%;">
+  <div id="share-card" style="display:none;max-width:680px;width:100%;margin:0 auto;">
     <!-- Header -->
     <div style="text-align:center;margin-bottom:32px;">
       <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--blue);
