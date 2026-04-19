@@ -913,6 +913,22 @@
         // Store scan result for post-signup restore
         localStorage.setItem("vs_pending_scan", JSON.stringify(data));
 
+        // Save to /share endpoint immediately so confirmation redirect can use it
+        fetch("https://coldfact.up.railway.app/share", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            vci_score:   Math.round(data.vci_score || 0),
+            verdict:     data.verdict || "",
+            outlet:      data.outlet  || null,
+            title:       data.title   || null,
+            summary:     data.summary || null,
+            result_json: data,
+          }),
+        }).then(r => r.json()).then(d => {
+          if (d.url) localStorage.setItem("vs_share_url", d.url);
+        }).catch(() => {});
+
         // Show result + locked overlay
         result.classList.add("visible");
       } else {
@@ -1262,10 +1278,20 @@ async function submitAuth() {
 
   if (type === "recovery") {
     // Password reset — show reset form in modal
-    openResetModal();
+    document.addEventListener("DOMContentLoaded", openResetModal);
+  } else if (type === "signup") {
+    // Email confirmation — redirect to share page if available
+    const shareUrl = localStorage.getItem("vs_share_url");
+    if (shareUrl) {
+      localStorage.removeItem("vs_share_url");
+      localStorage.removeItem("vs_pending_scan");
+      window.location.href = shareUrl;
+    } else {
+      document.addEventListener("DOMContentLoaded", unlockResult);
+    }
   } else {
-    // Email confirmation or OAuth — unlock result on page
-    unlockResult();
+    // Google OAuth — unlock on page
+    document.addEventListener("DOMContentLoaded", unlockResult);
   }
 })();
 
