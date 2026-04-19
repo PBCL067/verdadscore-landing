@@ -1006,6 +1006,79 @@
       document.getElementById("sc-title").textContent   = title;
       document.getElementById("sc-summary").textContent = d.summary || "";
 
+      // Render full report
+      const d2 = d.result_json || d;
+      const f  = d2.framing || {};
+      const credColor = c => c === "HIGH" ? "#22C55E" : c === "MEDIUM" ? "#F59E0B" : "#EF4444";
+      const typeColor = t => t === "STATE_MEDIA" || t === "ANONYMOUS" ? "#F59E0B" : t === "EXPERT" || t === "GOVERNMENT" ? "#22C55E" : "#64748B";
+
+      document.getElementById("sc-full-report").innerHTML = `
+        <div style="border-top:1px solid #1E293B;padding-top:24px;">
+
+          ${d2.reasoning ? `
+          <div style="font-size:13px;color:#94A3B8;line-height:1.7;margin-bottom:20px;
+            padding:14px;background:rgba(59,130,246,0.05);border-radius:6px;
+            border-left:3px solid #3B82F6;font-style:italic;">
+            ${d2.reasoning}
+          </div>` : ""}
+
+          ${d2.framing ? `
+          <div style="margin-bottom:20px;">
+            <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;
+              letter-spacing:0.1em;margin-bottom:10px;">FRAMING ANALYSIS</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
+              ${[["SENSATIONAL", f.is_sensational], ["ONE-SIDED", f.is_one_sided], ["EMOTIONAL LANGUAGE", f.has_emotional_language]].map(([label, val]) =>
+                `<div style="background:${val ? "rgba(239,68,68,0.1)" : "rgba(34,197,94,0.1)"};
+                  border:1px solid ${val ? "rgba(239,68,68,0.3)" : "rgba(34,197,94,0.3)"};
+                  border-radius:6px;padding:10px;text-align:center;
+                  font-family:'DM Mono';font-size:9px;
+                  color:${val ? "#EF4444" : "#22C55E"};">
+                  ${val ? "⚠ " : "✓ "}${label}
+                </div>`).join("")}
+            </div>
+            ${f.narrative_push ? `
+              <div style="font-family:'DM Mono';font-size:9px;color:#F59E0B;margin-bottom:4px;">NARRATIVE PUSH</div>
+              <div style="font-size:12px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">${f.narrative_push}</div>` : ""}
+            ${f.missing_context ? `
+              <div style="font-family:'DM Mono';font-size:9px;color:#64748B;margin-bottom:4px;">MISSING CONTEXT</div>
+              <div style="font-size:12px;color:#94A3B8;line-height:1.6;">${f.missing_context}</div>` : ""}
+          </div>` : ""}
+
+          ${d2.sources && d2.sources.length ? `
+          <div style="margin-bottom:20px;">
+            <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;
+              letter-spacing:0.1em;margin-bottom:10px;">SOURCES CITED (${d2.sources.length})</div>
+            ${d2.sources.map(s => `
+              <div style="display:flex;align-items:center;justify-content:space-between;
+                padding:8px 0;border-bottom:1px solid #1E293B;">
+                <div style="font-size:13px;color:#E2E8F0;">${s.entity}</div>
+                <div style="display:flex;gap:8px;">
+                  <span style="font-family:'DM Mono';font-size:9px;color:${typeColor(s.type)};
+                    background:${typeColor(s.type)}20;padding:2px 8px;border-radius:3px;">${s.type}</span>
+                  <span style="font-family:'DM Mono';font-size:9px;color:${credColor(s.credibility)};">${s.credibility}</span>
+                </div>
+              </div>`).join("")}
+          </div>` : ""}
+
+          ${d2.claims && d2.claims.length ? `
+          <div style="margin-bottom:20px;">
+            <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;
+              letter-spacing:0.1em;margin-bottom:10px;">KEY CLAIMS</div>
+            ${d2.claims.map((c, i) => `
+              <div style="display:flex;gap:10px;margin-bottom:8px;">
+                <span style="font-family:'DM Mono';font-size:9px;color:#3B82F6;min-width:20px;">${i+1}.</span>
+                <div style="font-size:12px;color:#94A3B8;line-height:1.6;">${c}</div>
+              </div>`).join("")}
+          </div>` : ""}
+
+          <div style="text-align:center;margin-top:8px;">
+            <a href="https://app.verdadscore.com" style="font-family:'DM Mono';
+              font-size:11px;color:#3B82F6;letter-spacing:0.08em;text-decoration:none;">
+              VIEW FULL DASHBOARD →
+            </a>
+          </div>
+        </div>`;
+
       // Copy link button
       document.getElementById("sc-copy").addEventListener("click", () => {
         navigator.clipboard.writeText(window.location.href);
@@ -1058,26 +1131,7 @@
         margin-bottom:32px;"></div>
     </div>
 
-    <!-- Locked full report -->
-    <div style="background:var(--surface);border:1px solid var(--border);
-      border-radius:10px;padding:28px;text-align:center;margin-bottom:20px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--blue);
-        letter-spacing:0.1em;margin-bottom:8px;">🔒 FULL REPORT</div>
-      <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;">
-        Framing analysis, sources & claims
-      </div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:20px;">
-        Free account — no credit card required
-      </div>
-      <a href="https://app.verdadscore.com">
-        <button style="background:var(--blue);border:none;color:white;
-          padding:12px 32px;border-radius:5px;font-family:'DM Mono',monospace;
-          font-size:11px;cursor:pointer;letter-spacing:0.08em;
-          box-shadow:0 0 20px rgba(59,130,246,0.3);">
-          CREATE FREE ACCOUNT →
-        </button>
-      </a>
-    </div>
+        <div id="sc-full-report" style="margin-bottom:20px;"></div>
 
     <!-- Actions -->
     <div style="display:flex;gap:10px;justify-content:center;">
