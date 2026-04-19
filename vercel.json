@@ -1,1 +1,12 @@
-{"cleanUrls": true, "trailingSlash": false}
+{
+  "rewrites": [
+    {
+      "source": "/share/:id",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
