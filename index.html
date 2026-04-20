@@ -579,6 +579,7 @@
           <button class="mono" id="tab-text" onclick="switchTab('text')" style="background:#1E293B;border:1px solid #3B82F6;color:#3B82F6;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:10px;letter-spacing:0.08em;">PASTE TEXT</button>
         </div>
 
+        <div style="font-family:'DM Mono';font-size:9px;color:var(--muted);margin-bottom:10px;">⚡ 10 free scans per day · <a href="https://app.verdadscore.com" style="color:var(--blue);text-decoration:none;">Sign up</a> to unlock more</div>
         <div id="input-url-row" class="scan-input-row" style="display:none">
           <input class="scan-input" id="scan-url" type="url"
             placeholder="https://www.bbc.com/news/articles/..." />
@@ -587,12 +588,18 @@
 
   <!-- Paste text input -->
   <div id="input-text-row">
-    <textarea class="scan-input" id="scan-text" maxlength="1000" rows="5"
-      placeholder="Paste any article or social media post here (max 1,000 characters)..."
+    <div style="font-family:'DM Mono';font-size:9px;color:var(--muted);margin-bottom:6px;line-height:1.6;">
+      Format: <span style="color:var(--blue);">Outlet:</span> The Guardian &nbsp;·&nbsp; <span style="color:var(--blue);">Author:</span> Jane Smith &nbsp;·&nbsp; then paste article text
+    </div>
+    <textarea class="scan-input" id="scan-text" rows="7"
+      placeholder="Outlet: The Guardian
+Author: Jane Smith
+
+Paste your article, social media post or blog text here (max 500 words)..."
       style="width:100%;resize:vertical;font-family:inherit;"
       oninput="updateCharCount()"></textarea>
     <div style="font-family:'DM Mono';font-size:9px;color:var(--muted);text-align:right;margin-top:4px;">
-      <span id="char-count">0</span>/1000 characters
+      <span id="char-count">0</span>/500 words
     </div>
     <button class="scan-btn mono" onclick="runScan()" style="width:100%;margin-top:8px;">SCAN ARTICLE</button>
         </div>
@@ -846,7 +853,15 @@
 
   function updateCharCount() {
     const text = document.getElementById("scan-text").value;
-    document.getElementById("char-count").textContent = text.length;
+    const words = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+    const counter = document.getElementById("char-count");
+    counter.textContent = words;
+    counter.style.color = words > 500 ? "#EF4444" : "var(--muted)";
+    if (words > 500) {
+      const trimmed = text.trim().split(/\s+/).slice(0, 500).join(" ");
+      document.getElementById("scan-text").value = trimmed;
+      counter.textContent = 500;
+    }
   }
 
   // Scan
