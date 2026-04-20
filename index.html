@@ -974,6 +974,20 @@ Paste your article, social media post or blog text here (max 500 words)..."
   }
 
   // Enter key on scan input
+  function showShareUrl() {
+    const url = localStorage.getItem("vs_share_url");
+    const display = document.getElementById("share-url-display");
+    const btn = document.getElementById("share-btn");
+    if (url) {
+      display.style.display = "block";
+      display.innerHTML = `<a href="${url}" style="color:#3B82F6;text-decoration:none;">${url}</a> <span onclick="navigator.clipboard.writeText('${url}').then(()=>{this.textContent='✓ COPIED';setTimeout(()=>this.textContent='COPY',2000)})" style="cursor:pointer;color:#64748B;margin-left:8px;">COPY</span>`;
+      btn.textContent = "↗ LINK READY";
+    } else {
+      display.style.display = "block";
+      display.textContent = "Scan an article first to generate a share link.";
+    }
+  }
+
   document.getElementById("scan-url").addEventListener("keydown", e => {
     if (e.key === "Enter") runScan();
   });
@@ -1122,6 +1136,10 @@ Paste your article, social media post or blog text here (max 500 words)..."
               font-size:11px;color:#3B82F6;letter-spacing:0.08em;text-decoration:none;">
               VIEW FULL DASHBOARD →
             </a>
+          </div>
+          <div style="text-align:center;margin-top:8px;">
+            <button id="share-btn" onclick="showShareUrl()" style="background:transparent;border:1px solid #1E293B;color:#64748B;padding:6px 16px;border-radius:4px;font-family:'DM Mono';font-size:10px;cursor:pointer;letter-spacing:0.08em;">↗ SHARE RESULT</button>
+            <div id="share-url-display" style="display:none;margin-top:8px;font-family:'DM Mono';font-size:10px;color:#3B82F6;word-break:break-all;"></div>
           </div>
         </div>`;
 
