@@ -943,6 +943,19 @@ Paste your article, social media post or blog text here (max 500 words)..."
 
         // Show result + locked overlay
         result.classList.add("visible");
+
+        // If URL scan returned no deep analysis (site blocked scraping), show hint
+        const hasDeepAnalysis = data.framing || (data.sources && data.sources.length) || (data.claims && data.claims.length);
+        const isUrlScan = document.getElementById("input-url-row").style.display !== "none";
+        const existingHint = document.getElementById("partial-result-hint");
+        if (existingHint) existingHint.remove();
+        if (isUrlScan && !hasDeepAnalysis) {
+          const hint = document.createElement("div");
+          hint.id = "partial-result-hint";
+          hint.style.cssText = "margin-top:12px;padding:10px 14px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:6px;display:flex;align-items:flex-start;gap:10px;";
+          hint.innerHTML = `<span style="color:#F59E0B;font-size:14px;flex-shrink:0;">⚠</span><span style="font-family:'DM Mono';font-size:10px;color:#94A3B8;line-height:1.6;">This site restricted full content access. <a onclick="switchTab('text')" href="#" style="color:#3B82F6;text-decoration:none;">Paste the article text</a> for a complete analysis including sources, key claims and framing.</span>`;
+          document.getElementById("scan-result").appendChild(hint);
+        }
       } else {
         const detail = data.detail;
         if (typeof detail === "object" && detail.suggestion) {
