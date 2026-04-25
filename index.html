@@ -1065,8 +1065,86 @@ Paste your article, social media post or blog text here (max 500 words)..."
       document.getElementById("sc-title").textContent   = title;
       document.getElementById("sc-summary").textContent = d.summary || "";
 
-      // Render full report
+      // Detect report vs article scan
       const d2 = d.result_json || d;
+      const isReport = d2.is_report === true;
+
+      if (isReport) {
+        const vciCol = s => s >= 82 ? "#22C55E" : s >= 65 ? "#F59E0B" : "#EF4444";
+        const rj = d2;
+        const gap = rj.credibility_gap || 0;
+
+        const statsHtml = `
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;">
+            <div style="text-align:center;padding:12px;background:rgba(59,130,246,0.05);border-radius:6px;border:1px solid #1E293B;">
+              <div style="font-size:28px;font-weight:700;color:#3B82F6;font-family:'DM Mono';">${rj.articles_analysed}</div>
+              <div style="font-size:9px;color:#64748B;font-family:'DM Mono';letter-spacing:1px;">ARTICLES</div>
+            </div>
+            <div style="text-align:center;padding:12px;background:rgba(59,130,246,0.05);border-radius:6px;border:1px solid #1E293B;">
+              <div style="font-size:28px;font-weight:700;color:${vciCol(rj.avg_vci)};font-family:'DM Mono';">${rj.avg_vci}</div>
+              <div style="font-size:9px;color:#64748B;font-family:'DM Mono';letter-spacing:1px;">AVG VCI</div>
+            </div>
+            <div style="text-align:center;padding:12px;background:rgba(59,130,246,0.05);border-radius:6px;border:1px solid #1E293B;">
+              <div style="font-size:28px;font-weight:700;color:#EF4444;font-family:'DM Mono';">${rj.blacklisted}</div>
+              <div style="font-size:9px;color:#64748B;font-family:'DM Mono';letter-spacing:1px;">BLACKLISTED</div>
+            </div>
+            <div style="text-align:center;padding:12px;background:rgba(59,130,246,0.05);border-radius:6px;border:1px solid #1E293B;">
+              <div style="font-size:28px;font-weight:700;color:${gap > 5 ? "#EF4444" : "#22C55E"};font-family:'DM Mono';">${gap > 0 ? "\u2212" : "+"}${Math.abs(gap)}</div>
+              <div style="font-size:9px;color:#64748B;font-family:'DM Mono';letter-spacing:1px;">CRED GAP</div>
+            </div>
+          </div>`;
+
+        const narrativeHtml = rj.narrative ? `
+          <div style="margin-bottom:24px;">
+            <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">EXECUTIVE SUMMARY</div>
+            <div style="font-size:13px;color:#94A3B8;line-height:1.8;">${rj.narrative.replace(/\*\*/g,"").trim()}</div>
+          </div>` : "";
+
+        const patternsHtml = rj.patterns && rj.patterns.length ? `
+          <div style="margin-bottom:24px;padding:16px;background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:6px;">
+            <div style="font-family:'DM Mono';font-size:9px;color:#EF4444;letter-spacing:0.1em;margin-bottom:10px;">PATTERNS DETECTED</div>
+            ${rj.patterns.map(p => `<div style="font-size:12px;color:#E2E8F0;padding:8px 0;border-bottom:1px solid #1E293B;">${p}</div>`).join("")}
+          </div>` : "";
+
+        const authorsHtml = rj.authors && rj.authors.length ? `
+          <div style="margin-bottom:24px;">
+            <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">AUTHOR CREDIBILITY BREAKDOWN</div>
+            ${rj.authors.slice(0,10).map(a => `
+              <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #1E293B;">
+                <div style="font-size:18px;font-weight:700;color:${vciCol(a.avg_vci)};font-family:'DM Mono';width:40px;text-align:center;">${a.avg_vci}</div>
+                <div style="flex:1;">
+                  <div style="font-size:13px;color:#E2E8F0;font-weight:500;">${a.author}</div>
+                  <div style="font-size:10px;color:#3B82F6;font-family:'DM Mono';">${a.outlet} · ${a.article_count} articles · ${a.status}</div>
+                </div>
+                ${a.delta !== null && a.delta !== undefined ? `<div style="font-size:10px;font-family:'DM Mono';color:${a.delta > 0 ? "#22C55E" : "#EF4444"};">${a.delta > 0 ? "+" : ""}${a.delta} vs overall</div>` : ""}
+              </div>`).join("")}
+          </div>` : "";
+
+        const compHtml = rj.comparison && rj.comparison.length ? `
+          <div style="margin-bottom:24px;">
+            <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">COMPARISON COVERAGE</div>
+            ${rj.comparison.map(c => `
+              <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #1E293B;">
+                <div style="font-size:16px;font-weight:700;color:${vciCol(c.vci_score)};font-family:'DM Mono';width:36px;text-align:center;">${Math.round(c.vci_score)}</div>
+                <div style="flex:1;">
+                  <div style="font-size:12px;color:#E2E8F0;">${(c.title||"").slice(0,70)}</div>
+                  <div style="font-size:10px;color:#3B82F6;font-family:'DM Mono';">${c.outlet}</div>
+                </div>
+              </div>`).join("")}
+          </div>` : "";
+
+        document.getElementById("sc-full-report").innerHTML =
+          "<div style='border-top:1px solid #1E293B;padding-top:24px;'>" +
+          statsHtml + narrativeHtml + patternsHtml + authorsHtml + compHtml +
+          "</div>";
+
+        document.getElementById("sc-outlet").textContent = "NARRATIVE INTELLIGENCE REPORT";
+        document.getElementById("sc-outlet").style.display = "block";
+
+      } else {
+
+      // Render full report (article scan)
+      const d2_orig = d2;
       const f  = d2.framing || {};
       const credColor = c => c === "HIGH" ? "#22C55E" : c === "MEDIUM" ? "#F59E0B" : "#EF4444";
       const typeColor = t => t === "STATE_MEDIA" || t === "ANONYMOUS" ? "#F59E0B" : t === "EXPERT" || t === "GOVERNMENT" ? "#22C55E" : "#64748B";
@@ -1141,6 +1219,8 @@ Paste your article, social media post or blog text here (max 500 words)..."
             <div id="share-url-display" style="display:none;margin-top:8px;font-family:'DM Mono';font-size:10px;color:#3B82F6;word-break:break-all;"></div>
           </div>
         </div>`;
+
+      } // end else (article scan)
 
       // Copy link button
       document.getElementById("sc-copy").addEventListener("click", () => {
