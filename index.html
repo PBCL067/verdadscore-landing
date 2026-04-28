@@ -1001,14 +1001,36 @@ Paste your article, social media post or blog text here (max 500 words)..."
   }
 
   // Enter key on scan input
+  function copyToClipboard(text, feedbackEl, successMsg, resetMsg) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => {
+        if (feedbackEl) { feedbackEl.textContent = successMsg; setTimeout(() => { feedbackEl.textContent = resetMsg; }, 2500); }
+      }).catch(() => fallbackCopy(text));
+    } else {
+      fallbackCopy(text);
+      if (feedbackEl) { feedbackEl.textContent = successMsg; setTimeout(() => { feedbackEl.textContent = resetMsg; }, 2500); }
+    }
+  }
+
+  function fallbackCopy(text) {
+    const el = document.createElement("textarea");
+    el.value = text;
+    el.style.cssText = "position:fixed;top:-9999px;left:-9999px;";
+    document.body.appendChild(el);
+    el.focus(); el.select();
+    try { document.execCommand("copy"); } catch(e) {}
+    document.body.removeChild(el);
+  }
+
   function showShareUrl() {
     const url = localStorage.getItem("vs_share_url");
     const display = document.getElementById("share-url-display");
     const btn = document.getElementById("share-btn");
     if (url) {
       display.style.display = "block";
-      display.innerHTML = `<a href="${url}" style="color:#3B82F6;text-decoration:none;">${url}</a> <span onclick="navigator.clipboard.writeText('${url}').then(()=>{this.textContent='✓ COPIED';setTimeout(()=>this.textContent='COPY',2000)})" style="cursor:pointer;color:#64748B;margin-left:8px;">COPY</span>`;
-      btn.textContent = "↗ LINK READY";
+      display.innerHTML = `<a href="${url}" style="color:#3B82F6;text-decoration:none;">${url}</a>`;
+      btn.textContent = "↗ COPY LINK";
+      btn.onclick = () => copyToClipboard(url, btn, "✓ COPIED", "↗ COPY LINK");
     } else {
       display.style.display = "block";
       display.textContent = "Scan an article first to generate a share link.";
@@ -1252,9 +1274,8 @@ Paste your article, social media post or blog text here (max 500 words)..."
 
       // Copy link button
       document.getElementById("sc-copy").addEventListener("click", () => {
-        navigator.clipboard.writeText(window.location.href);
-        document.getElementById("sc-copy").textContent = "✓ COPIED";
-        setTimeout(() => document.getElementById("sc-copy").textContent = "COPY LINK", 2000);
+        const copyBtn = document.getElementById("sc-copy");
+        copyToClipboard(window.location.href, copyBtn, "✓ COPIED", "COPY LINK");
       });
 
       // Scan your own button
@@ -1501,12 +1522,7 @@ function landingShareResult() {
     return;
   }
   // Copy to clipboard
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(url).then(() => {
-      btn.textContent = "✓ LINK COPIED";
-      setTimeout(() => { btn.textContent = "↗ SHARE RESULT"; }, 2500);
-    }).catch(() => {});
-  }
+  copyToClipboard(url, btn, "✓ LINK COPIED", "↗ SHARE RESULT");
   // Show the URL
   if (display) {
     display.style.display = "block";
