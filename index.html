@@ -1492,6 +1492,28 @@ async function submitAuth() {
   btn.disabled    = false;
 }
 
+function landingShareResult() {
+  const btn = document.getElementById("landing-share-btn");
+  const display = document.getElementById("landing-share-url");
+  const url = (btn && btn.getAttribute("data-share-url")) || localStorage.getItem("vs_share_url");
+  if (!url) {
+    if (display) { display.style.display = "block"; display.textContent = "No share link available — try scanning again."; }
+    return;
+  }
+  // Copy to clipboard
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(url).then(() => {
+      btn.textContent = "✓ LINK COPIED";
+      setTimeout(() => { btn.textContent = "↗ SHARE RESULT"; }, 2500);
+    }).catch(() => {});
+  }
+  // Show the URL
+  if (display) {
+    display.style.display = "block";
+    display.innerHTML = `<a href="${url}" target="_blank" style="color:#3B82F6;text-decoration:none;">${url}</a>`;
+  }
+}
+
 // On page load — check if user just confirmed email and has a pending share URL
 (function() {
   const shareUrl = localStorage.getItem("vs_share_url");
@@ -1755,7 +1777,17 @@ function unlockResult() {
           </div>`).join("")}
       </div>` : ""}
 
-      <div style="text-align:center;margin-top:24px;">
+      <div style="text-align:center;margin-top:24px;display:flex;flex-direction:column;gap:12px;align-items:center;">
+        <button id="landing-share-btn" onclick="landingShareResult()" style="
+          background:transparent;border:1px solid #1E293B;color:#64748B;
+          padding:8px 20px;border-radius:4px;font-family:'DM Mono';
+          font-size:10px;cursor:pointer;letter-spacing:0.08em;
+          transition:all 0.2s;" onmouseover="this.style.borderColor='#3B82F6';this.style.color='#E2E8F0'"
+          onmouseout="this.style.borderColor='#1E293B';this.style.color='#64748B'">
+          ↗ SHARE RESULT
+        </button>
+        <div id="landing-share-url" style="display:none;font-family:'DM Mono';font-size:10px;
+          color:#3B82F6;word-break:break-all;max-width:400px;text-align:center;"></div>
         <a id="dashboard-link" href="https://app.verdadscore.com" style="font-family:'DM Mono';
           font-size:11px;color:#3B82F6;letter-spacing:0.08em;text-decoration:none;">
           VIEW FULL DASHBOARD →
@@ -1782,6 +1814,13 @@ function unlockResult() {
         result_json: data,
       }),
     }).catch(() => {});
+  }
+
+  // Populate share button with already-saved share URL
+  const shareBtn = document.getElementById("landing-share-btn");
+  const savedShareUrl = localStorage.getItem("vs_share_url");
+  if (shareBtn && savedShareUrl) {
+    shareBtn.setAttribute("data-share-url", savedShareUrl);
   }
 
   // Set dashboard link with token
