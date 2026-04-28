@@ -1524,9 +1524,17 @@ async function submitAuth() {
   localStorage.setItem("vs_token", token);
   window.history.replaceState({}, "", window.location.pathname);
 
+  function runWhenReady(fn) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn);
+    } else {
+      fn();
+    }
+  }
+
   if (type === "recovery") {
     // Password reset — show reset form in modal
-    document.addEventListener("DOMContentLoaded", openResetModal);
+    runWhenReady(openResetModal);
   } else if (type === "signup") {
     // Email confirmation — redirect to share page if available
     const shareUrl = localStorage.getItem("vs_share_url");
@@ -1535,11 +1543,11 @@ async function submitAuth() {
       localStorage.removeItem("vs_pending_scan");
       window.location.href = shareUrl;
     } else {
-      document.addEventListener("DOMContentLoaded", unlockResult);
+      runWhenReady(unlockResult);
     }
   } else {
     // Google OAuth — unlock on page
-    document.addEventListener("DOMContentLoaded", unlockResult);
+    runWhenReady(unlockResult);
   }
 })();
 
