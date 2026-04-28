@@ -1148,7 +1148,7 @@ Paste your article, social media post or blog text here (max 500 words)..."
         const narrativeHtml = rj.narrative ? `
           <div style="margin-bottom:24px;">
             <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">EXECUTIVE SUMMARY</div>
-            <div style="font-size:13px;color:#94A3B8;line-height:1.8;">${rj.narrative.replace(/\*\*/g,"").trim()}</div>
+            <div style="font-size:13px;color:#94A3B8;line-height:1.8;">${rj.narrative.replace(/^#+\s*/gm,"").replace(/\*\*/g,"").trim()}</div>
           </div>` : "";
 
         const patternsHtml = rj.patterns && rj.patterns.length ? `
@@ -1312,8 +1312,8 @@ Paste your article, social media post or blog text here (max 500 words)..."
   <div id="share-card" style="display:none;max-width:680px;width:100%;margin:0 auto;">
     <!-- Header -->
     <div style="text-align:center;margin-bottom:32px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--blue);
-        letter-spacing:0.15em;margin-bottom:16px;">VERDAD SCORE · CREDIBILITY REPORT</div>
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--blue);
+        letter-spacing:0.08em;margin-bottom:16px;">VERDAD SCORE · CREDIBILITY REPORT</div>
       <div id="sc-score" style="font-family:'Bebas Neue',sans-serif;font-size:120px;
         line-height:1;margin-bottom:0;"></div>
       <div id="sc-verdict" style="font-family:'DM Mono',monospace;font-size:14px;
