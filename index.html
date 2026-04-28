@@ -1119,6 +1119,7 @@ Paste your article, social media post or blog text here (max 500 words)..."
       // Detect report vs article scan
       const d2 = d.result_json || d;
       const isReport = d2.is_report === true;
+      if (isReport) document.getElementById("sc-summary").style.display = "none";
 
       if (isReport) {
         const vciCol = s => s >= 82 ? "#22C55E" : s >= 65 ? "#F59E0B" : "#EF4444";
