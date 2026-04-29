@@ -1002,7 +1002,63 @@ Paste your article, social media post or blog text here (max 500 words)..."
   }
 
   // Enter key on scan input
-  function copyToClipboard(text, feedbackEl, successMsg, resetMsg) {
+  
+function openShareModal(url) {
+  const modal = document.getElementById("share-modal");
+  const urlEl = document.getElementById("sm-url");
+  if (!modal || !url) return;
+
+  urlEl.textContent = url;
+  document.getElementById("sm-whatsapp").href = "https://wa.me/?text=" + encodeURIComponent("Check this credibility report: " + url);
+  document.getElementById("sm-x").href = "https://x.com/intent/tweet?text=" + encodeURIComponent("Credibility report via @VerdadScore") + "&url=" + encodeURIComponent(url);
+  document.getElementById("sm-facebook").href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
+  document.getElementById("sm-linkedin").href = "https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(url);
+  document.getElementById("sm-reddit").href = "https://www.reddit.com/submit?url=" + encodeURIComponent(url) + "&title=" + encodeURIComponent("Credibility Report — Verdad Score");
+  document.getElementById("sm-email").href = "mailto:?subject=" + encodeURIComponent("Credibility Report — Verdad Score") + "&body=" + encodeURIComponent("Check this credibility report: " + url);
+
+  modal.style.display = "flex";
+  modal.onclick = function(e) { if (e.target === modal) closeShareModal(); };
+}
+
+function closeShareModal() {
+  document.getElementById("share-modal").style.display = "none";
+}
+
+function copyShareModalUrl() {
+  const url = document.getElementById("sm-url").textContent;
+  const btn = document.getElementById("sm-copy-btn");
+  copyToClipboard(url, btn, "✓ COPIED", "COPY");
+}
+
+
+function openShareModal(url) {
+  const modal = document.getElementById("share-modal");
+  const urlEl = document.getElementById("sm-url");
+  if (!modal || !url) return;
+
+  urlEl.textContent = url;
+  document.getElementById("sm-whatsapp").href = "https://wa.me/?text=" + encodeURIComponent("Check this credibility report: " + url);
+  document.getElementById("sm-x").href = "https://x.com/intent/tweet?text=" + encodeURIComponent("Credibility report via @VerdadScore") + "&url=" + encodeURIComponent(url);
+  document.getElementById("sm-facebook").href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
+  document.getElementById("sm-linkedin").href = "https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(url);
+  document.getElementById("sm-reddit").href = "https://www.reddit.com/submit?url=" + encodeURIComponent(url) + "&title=" + encodeURIComponent("Credibility Report — Verdad Score");
+  document.getElementById("sm-email").href = "mailto:?subject=" + encodeURIComponent("Credibility Report — Verdad Score") + "&body=" + encodeURIComponent("Check this credibility report: " + url);
+
+  modal.style.display = "flex";
+  modal.onclick = function(e) { if (e.target === modal) closeShareModal(); };
+}
+
+function closeShareModal() {
+  document.getElementById("share-modal").style.display = "none";
+}
+
+function copyShareModalUrl() {
+  const url = document.getElementById("sm-url").textContent;
+  const btn = document.getElementById("sm-copy-btn");
+  copyToClipboard(url, btn, "✓ COPIED", "COPY");
+}
+
+function copyToClipboard(text, feedbackEl, successMsg, resetMsg) {
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(text).then(() => {
         if (feedbackEl) { feedbackEl.textContent = successMsg; setTimeout(() => { feedbackEl.textContent = resetMsg; }, 2500); }
@@ -1025,16 +1081,11 @@ Paste your article, social media post or blog text here (max 500 words)..."
 
   function showShareUrl() {
     const url = localStorage.getItem("vs_share_url");
-    const display = document.getElementById("share-url-display");
-    const btn = document.getElementById("share-btn");
     if (url) {
-      display.style.display = "block";
-      display.innerHTML = `<a href="${url}" style="color:#3B82F6;text-decoration:none;">${url}</a>`;
-      btn.textContent = "↗ COPY LINK";
-      btn.onclick = () => copyToClipboard(url, btn, "✓ COPIED", "↗ COPY LINK");
+      openShareModal(url);
     } else {
-      display.style.display = "block";
-      display.textContent = "Scan an article first to generate a share link.";
+      const display = document.getElementById("share-url-display");
+      if (display) { display.style.display = "block"; display.textContent = "Scan an article first to generate a share link."; }
     }
   }
 
@@ -1516,19 +1567,13 @@ async function submitAuth() {
 
 function landingShareResult() {
   const btn = document.getElementById("landing-share-btn");
-  const display = document.getElementById("landing-share-url");
   const url = (btn && btn.getAttribute("data-share-url")) || localStorage.getItem("vs_share_url");
   if (!url) {
+    const display = document.getElementById("landing-share-url");
     if (display) { display.style.display = "block"; display.textContent = "No share link available — try scanning again."; }
     return;
   }
-  // Copy to clipboard
-  copyToClipboard(url, btn, "✓ LINK COPIED", "↗ SHARE RESULT");
-  // Show the URL
-  if (display) {
-    display.style.display = "block";
-    display.innerHTML = `<a href="${url}" target="_blank" style="color:#3B82F6;text-decoration:none;">${url}</a>`;
-  }
+  openShareModal(url);
 }
 
 // On page load — check if user just confirmed email and has a pending share URL
@@ -1857,5 +1902,125 @@ function unlockResult() {
 }
 </script>
 
+
+<!-- SHARE MODAL -->
+<div id="share-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);
+  z-index:999;align-items:center;justify-content:center;">
+  <div style="background:#0D1521;border:1px solid #1E293B;border-radius:10px;
+    padding:24px;width:340px;max-width:90vw;position:relative;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:#E2E8F0;letter-spacing:0.1em;">SHARE RESULT</span>
+      <button onclick="closeShareModal()" style="background:transparent;border:none;
+        color:#64748B;font-size:20px;cursor:pointer;line-height:1;">×</button>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;">
+      <a id="sm-whatsapp" href="#" target="_blank" rel="noopener noreferrer"
+        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#25D366;
+          display:flex;align-items:center;justify-content:center;font-size:18px;">💬</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">WHATSAPP</span>
+      </a>
+      <a id="sm-x" href="#" target="_blank" rel="noopener noreferrer"
+        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#000000;
+          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">𝕏</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">X</span>
+      </a>
+      <a id="sm-facebook" href="#" target="_blank" rel="noopener noreferrer"
+        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#1877F2;
+          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">f</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">FACEBOOK</span>
+      </a>
+      <a id="sm-linkedin" href="#" target="_blank" rel="noopener noreferrer"
+        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#0A66C2;
+          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">in</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">LINKEDIN</span>
+      </a>
+      <a id="sm-reddit" href="#" target="_blank" rel="noopener noreferrer"
+        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#FF4500;
+          display:flex;align-items:center;justify-content:center;font-size:18px;">👽</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">REDDIT</span>
+      </a>
+      <a id="sm-email" href="#" target="_blank" rel="noopener noreferrer"
+        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#64748B;
+          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;">✉</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">EMAIL</span>
+      </a>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;background:#080E1A;
+      border:1px solid #1E293B;border-radius:6px;padding:8px 12px;">
+      <span id="sm-url" style="font-family:'DM Mono',monospace;font-size:10px;color:#64748B;
+        flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+      <button id="sm-copy-btn" onclick="copyShareModalUrl()"
+        style="background:#3B82F6;border:none;color:#fff;border-radius:4px;
+        padding:4px 12px;cursor:pointer;font-family:'DM Mono',monospace;
+        font-size:9px;white-space:nowrap;">COPY</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div id="share-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);
+  z-index:999;align-items:center;justify-content:center;">
+  <div style="background:#0D1521;border:1px solid #1E293B;border-radius:10px;
+    padding:24px;width:340px;max-width:90vw;position:relative;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:#E2E8F0;letter-spacing:0.1em;">SHARE RESULT</span>
+      <button onclick="closeShareModal()" style="background:transparent;border:none;
+        color:#64748B;font-size:20px;cursor:pointer;line-height:1;">×</button>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;">
+      <a id="sm-whatsapp" href="#" target="_blank" rel="noopener noreferrer"
+        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#25D366;
+          display:flex;align-items:center;justify-content:center;font-size:18px;">💬</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">WHATSAPP</span>
+      </a>
+      <a id="sm-x" href="#" target="_blank" rel="noopener noreferrer"
+        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#000000;
+          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">𝕏</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">X</span>
+      </a>
+      <a id="sm-facebook" href="#" target="_blank" rel="noopener noreferrer"
+        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#1877F2;
+          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">f</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">FACEBOOK</span>
+      </a>
+      <a id="sm-linkedin" href="#" target="_blank" rel="noopener noreferrer"
+        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#0A66C2;
+          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">in</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">LINKEDIN</span>
+      </a>
+      <a id="sm-reddit" href="#" target="_blank" rel="noopener noreferrer"
+        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#FF4500;
+          display:flex;align-items:center;justify-content:center;font-size:18px;">👽</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">REDDIT</span>
+      </a>
+      <a id="sm-email" href="#" target="_blank" rel="noopener noreferrer"
+        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#64748B;
+          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;">✉</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">EMAIL</span>
+      </a>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;background:#080E1A;
+      border:1px solid #1E293B;border-radius:6px;padding:8px 12px;">
+      <span id="sm-url" style="font-family:'DM Mono',monospace;font-size:10px;color:#64748B;
+        flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+      <button id="sm-copy-btn" onclick="copyShareModalUrl()"
+        style="background:#3B82F6;border:none;color:#fff;border-radius:4px;
+        padding:4px 12px;cursor:pointer;font-family:'DM Mono',monospace;
+        font-size:9px;white-space:nowrap;">COPY</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
