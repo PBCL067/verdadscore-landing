@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(25, 28)'%3E%3Crect x='0' y='62' width='14' height='48' rx='7' fill='%2316a34a' opacity='0.25'/%3E%3Crect x='22' y='48' width='14' height='76' rx='7' fill='%2316a34a' opacity='0.45'/%3E%3Crect x='44' y='54' width='14' height='64' rx='7' fill='%2316a34a' opacity='0.35'/%3E%3Crect x='66' y='28' width='14' height='116' rx='7' fill='%2316a34a' opacity='0.65'/%3E%3Crect x='88' y='4' width='14' height='164' rx='7' fill='%2316a34a' opacity='1'/%3E%3Crect x='110' y='28' width='14' height='116' rx='7' fill='%2316a34a' opacity='0.65'/%3E%3Crect x='132' y='54' width='14' height='64' rx='7' fill='%2316a34a' opacity='0.35'/%3E%3Crect x='154' y='48' width='14' height='76' rx='7' fill='%2316a34a' opacity='0.45'/%3E%3Crect x='176' y='62' width='14' height='48' rx='7' fill='%2316a34a' opacity='0.25'/%3E%3C/g%3E%3C/svg%3E" />
-    <meta property="og:image" content="https://verdadscore.com/og-default.png">
+  <meta property="og:image" content="https://verdadscore.com/og-default.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Verdad Score — The Credibility Layer for Global News</title>
   <meta name="description" content="AI-powered media credibility intelligence. Know which news to trust before you act on it." />
@@ -11,7 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg:      #060C17;
       --surface: #0D1521;
@@ -26,9 +25,7 @@
       --muted:   #64748B;
       --white:   #FFFFFF;
     }
-
     html { scroll-behavior: smooth; }
-
     body {
       background: var(--bg);
       color: var(--text);
@@ -36,9 +33,7 @@
       line-height: 1.6;
       overflow-x: hidden;
     }
-
     a { color: inherit; text-decoration: none; }
-
     .mono { font-family: "DM Mono", monospace; }
 
     /* ── NAV ─────────────────────────────────────────────────── */
@@ -50,30 +45,12 @@
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
-    .nav-brand {
-      display: flex; align-items: center; gap: 10px;
-    }
-    .nav-logo {
-      width: 32px; height: 32px; background: var(--blue);
-      border-radius: 6px; display: flex; align-items: center;
-      justify-content: center;
-      font-family: "Bebas Neue"; font-size: 18px; color: white;
-    }
-    .nav-name {
-      font-family: "DM Mono"; font-size: 13px; font-weight: 500;
-      letter-spacing: 0.12em; color: var(--text);
-    }
-    .nav-links {
-      display: flex; align-items: center; gap: 32px;
-    }
-    .nav-links a {
-      font-size: 13px; color: var(--muted);
-      transition: color 0.2s;
-    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; }
+    .nav-name { font-family: "DM Mono"; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; color: var(--text); }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a { font-size: 13px; color: var(--muted); transition: color 0.2s; }
     .nav-links a:hover { color: var(--text); }
-    .nav-cta {
-      display: flex; gap: 12px; align-items: center;
-    }
+    .nav-cta { display: flex; gap: 12px; align-items: center; }
     .btn-ghost {
       padding: 8px 18px; border: 1px solid var(--border);
       border-radius: 5px; font-size: 13px; color: var(--muted);
@@ -89,12 +66,45 @@
     }
     .btn-primary:hover { opacity: 0.88; }
 
+    /* Profile dropdown */
+    .profile-menu { position: relative; }
+    .profile-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border: 1px solid var(--border);
+      border-radius: 5px; background: transparent; color: var(--text);
+      font-family: "DM Sans"; font-size: 13px; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .profile-btn:hover { border-color: var(--blue); }
+    .profile-avatar {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--blue); display: flex; align-items: center;
+      justify-content: center; font-size: 11px; font-weight: 700; color: white;
+    }
+    .profile-dropdown {
+      display: none; position: absolute; top: calc(100% + 8px); right: 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; min-width: 180px; overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .profile-dropdown.open { display: block; }
+    .profile-dropdown a, .profile-dropdown button {
+      display: block; width: 100%; padding: 10px 16px;
+      font-size: 13px; color: var(--muted); text-align: left;
+      background: transparent; border: none; cursor: pointer;
+      font-family: "DM Sans"; transition: all 0.15s;
+      border-bottom: 1px solid var(--border);
+    }
+    .profile-dropdown a:last-child, .profile-dropdown button:last-child { border-bottom: none; }
+    .profile-dropdown a:hover, .profile-dropdown button:hover { background: var(--card); color: var(--text); }
+    .profile-dropdown .signout { color: var(--red); }
+    .profile-dropdown .signout:hover { background: rgba(239,68,68,0.08); color: var(--red); }
+
     /* ── HERO ─────────────────────────────────────────────────── */
     .hero {
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      text-align: center;
-      padding: 140px 24px 60px;
+      text-align: center; padding: 140px 24px 60px;
       position: relative; overflow: hidden;
     }
     .hero-grid {
@@ -106,8 +116,7 @@
       mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent);
     }
     .hero-glow {
-      position: absolute; top: 20%; left: 50%;
-      transform: translateX(-50%);
+      position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
       width: 600px; height: 300px;
       background: radial-gradient(ellipse, rgba(59,130,246,0.12), transparent 70%);
       pointer-events: none;
@@ -124,20 +133,16 @@
       background: var(--blue); border-radius: 50%;
       animation: pulse 2s infinite;
     }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     .hero h1 {
       font-size: clamp(40px, 6vw, 72px);
       font-weight: 700; line-height: 1.08;
-      letter-spacing: -0.02em; margin-bottom: 24px;
-      position: relative;
+      letter-spacing: -0.02em; margin-bottom: 24px; position: relative;
     }
     .hero h1 span { color: var(--blue); }
     .hero p {
       font-size: clamp(16px, 2vw, 20px);
-      color: var(--muted); max-width: 560px;
+      color: var(--muted); max-width: 580px;
       margin: 0 auto 40px; line-height: 1.6;
     }
     .hero-actions {
@@ -148,191 +153,118 @@
     .btn-hero {
       padding: 14px 32px; background: var(--blue);
       border: none; border-radius: 6px;
-      font-size: 15px; font-weight: 600;
-      color: white; cursor: pointer;
-      font-family: "DM Sans";
-      transition: all 0.2s;
+      font-size: 15px; font-weight: 600; color: white;
+      cursor: pointer; font-family: "DM Sans"; transition: all 0.2s;
       box-shadow: 0 0 30px rgba(59,130,246,0.3);
     }
-    .btn-hero:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 40px rgba(59,130,246,0.45);
-    }
+    .btn-hero:hover { transform: translateY(-1px); box-shadow: 0 0 40px rgba(59,130,246,0.45); }
     .btn-hero-ghost {
-      padding: 14px 32px;
-      border: 1px solid var(--border);
-      border-radius: 6px; font-size: 15px;
-      color: var(--muted); cursor: pointer;
-      background: transparent; font-family: "DM Sans";
-      transition: all 0.2s;
+      padding: 14px 32px; border: 1px solid var(--border);
+      border-radius: 6px; font-size: 15px; color: var(--muted);
+      cursor: pointer; background: transparent; font-family: "DM Sans"; transition: all 0.2s;
     }
-    .btn-hero-ghost:hover {
-      border-color: var(--blue); color: var(--text);
-    }
+    .btn-hero-ghost:hover { border-color: var(--blue); color: var(--text); }
 
-    /* ── LIVE STATS ───────────────────────────────────────────── */
+    /* ── STATS BAR ────────────────────────────────────────────── */
     .stats-bar {
-      display: flex; gap: 0;
-      border: 1px solid var(--border);
+      display: flex; border: 1px solid var(--border);
       border-radius: 8px; overflow: hidden;
-      position: relative; background: var(--surface);
-      max-width: 700px; width: 100%; margin: 0 auto;
+      background: var(--surface); max-width: 700px; width: 100%; margin: 0 auto;
     }
     .stat-item {
       flex: 1; padding: 16px 24px; text-align: center;
       border-right: 1px solid var(--border);
     }
     .stat-item:last-child { border-right: none; }
-    .stat-val {
-      font-family: "Bebas Neue"; font-size: 28px;
-      line-height: 1; margin-bottom: 4px;
-    }
-    .stat-label {
-      font-family: "DM Mono"; font-size: 9px;
-      color: var(--muted); letter-spacing: 0.1em;
-    }
+    .stat-val { font-family: "Bebas Neue"; font-size: 28px; line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-family: "DM Mono"; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; }
 
     /* ── SECTION ──────────────────────────────────────────────── */
-    section {
-      padding: 40px 24px;
-      max-width: 1100px; margin: 0 auto;
-    }
+    section { padding: 80px 24px; max-width: 1100px; margin: 0 auto; }
     .section-label {
-      font-family: "DM Mono"; font-size: 10px;
-      color: var(--blue); letter-spacing: 0.15em;
-      text-transform: uppercase; margin-bottom: 16px;
-      display: block;
+      font-family: "DM Mono"; font-size: 10px; color: var(--blue);
+      letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; display: block;
     }
     .section-title {
-      font-size: clamp(28px, 4vw, 44px);
-      font-weight: 700; letter-spacing: -0.02em;
-      line-height: 1.1; margin-bottom: 16px;
+      font-size: clamp(28px, 4vw, 44px); font-weight: 700;
+      letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 16px;
     }
     .section-title span { color: var(--blue); }
-    .section-sub {
-      font-size: 17px; color: var(--muted);
-      max-width: 520px; line-height: 1.6;
-    }
+    .section-sub { font-size: 17px; color: var(--muted); max-width: 520px; line-height: 1.6; }
 
     /* ── HOW IT WORKS ─────────────────────────────────────────── */
     .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 2px; margin-top: 56px;
-      border: 1px solid var(--border); border-radius: 8px;
-      overflow: hidden;
+      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
     }
-    .step {
-      padding: 32px 28px;
-      background: var(--surface);
-      position: relative;
-    }
-    .step-num {
-      font-family: "Bebas Neue"; font-size: 48px;
-      color: rgba(59,130,246,0.15); line-height: 1;
-      margin-bottom: 16px;
-    }
-    .step h3 {
-      font-size: 16px; font-weight: 600;
-      margin-bottom: 10px; color: var(--text);
-    }
+    .step { padding: 32px 28px; background: var(--surface); position: relative; }
+    .step-num { font-family: "Bebas Neue"; font-size: 48px; color: rgba(59,130,246,0.15); line-height: 1; margin-bottom: 16px; }
+    .step h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: var(--text); }
     .step p { font-size: 13px; color: var(--muted); line-height: 1.6; }
 
     /* ── SCAN DEMO ────────────────────────────────────────────── */
     .scan-demo {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden;
-      margin-top: 56px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; margin-top: 56px;
     }
     .scan-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
+      padding: 16px 20px; border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 8px;
     }
-    .scan-dot {
-      width: 10px; height: 10px; border-radius: 50%;
-    }
+    .scan-dot { width: 10px; height: 10px; border-radius: 50%; }
     .scan-body { padding: 24px; }
-    .scan-input-row {
-      display: flex; gap: 10px; margin-bottom: 24px;
-    }
+    .scan-input-row { display: flex; gap: 10px; margin-bottom: 24px; }
     .scan-input {
-      flex: 1; background: var(--card);
-      border: 1px solid var(--border); border-radius: 6px;
-      padding: 12px 16px; color: var(--text);
-      font-family: "DM Mono"; font-size: 12px;
-      outline: none;
+      flex: 1; background: var(--card); border: 1px solid var(--border);
+      border-radius: 6px; padding: 12px 16px; color: var(--text);
+      font-family: "DM Mono"; font-size: 12px; outline: none;
     }
     .scan-input:focus { border-color: var(--blue); }
     .scan-input::placeholder { color: var(--muted); }
     .scan-btn {
-      padding: 12px 24px; background: var(--blue);
-      border: none; border-radius: 6px;
-      color: white; font-family: "DM Mono";
-      font-size: 11px; cursor: pointer;
-      letter-spacing: 0.08em; white-space: nowrap;
-      transition: opacity 0.2s;
+      padding: 12px 24px; background: var(--blue); border: none;
+      border-radius: 6px; color: white; font-family: "DM Mono";
+      font-size: 11px; cursor: pointer; letter-spacing: 0.08em;
+      white-space: nowrap; transition: opacity 0.2s;
     }
     .scan-btn:hover { opacity: 0.85; }
-    .scan-result {
-      background: var(--card); border-radius: 8px;
-      padding: 20px; display: none;
-    }
+    .scan-result { background: var(--card); border-radius: 8px; padding: 20px; display: none; }
     .scan-result.visible { display: block; }
-    .scan-result-header {
-      display: flex; justify-content: space-between;
-      align-items: flex-start; margin-bottom: 16px;
-    }
-    .vci-display {
-      text-align: right;
-    }
-    .vci-score {
-      font-family: "Bebas Neue"; font-size: 52px;
-      line-height: 1;
-    }
-    .vci-label {
-      font-family: "DM Mono"; font-size: 9px;
-      letter-spacing: 0.1em;
-    }
-    .result-outlet {
-      font-family: "DM Mono"; font-size: 10px;
-      color: var(--blue); letter-spacing: 0.1em;
-      margin-bottom: 6px;
-    }
-    .result-title {
-      font-size: 15px; font-weight: 600;
-      color: var(--text); margin-bottom: 8px;
-    }
-    .result-summary {
-      font-size: 13px; color: var(--muted); line-height: 1.6;
-    }
-    .result-tags {
-      display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px;
-    }
-    .result-tag {
-      font-family: "DM Mono"; font-size: 9px;
-      padding: 3px 8px; border-radius: 3px;
-      letter-spacing: 0.06em;
-    }
-    .scan-loading {
-      text-align: center; padding: 24px;
-      font-family: "DM Mono"; font-size: 11px;
-      color: var(--muted); display: none;
-    }
+    .scan-result-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .vci-display { text-align: right; }
+    .vci-score { font-family: "Bebas Neue"; font-size: 52px; line-height: 1; }
+    .vci-label { font-family: "DM Mono"; font-size: 9px; letter-spacing: 0.1em; }
+    .result-outlet { font-family: "DM Mono"; font-size: 10px; color: var(--blue); letter-spacing: 0.1em; margin-bottom: 6px; }
+    .result-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .scan-loading { text-align: center; padding: 24px; font-family: "DM Mono"; font-size: 11px; color: var(--muted); display: none; }
     .scan-loading.visible { display: block; }
 
     /* ── PRICING ──────────────────────────────────────────────── */
+    .pricing-toggle {
+      display: flex; align-items: center; gap: 8px;
+      margin: 48px auto 0; background: var(--surface);
+      border-radius: 6px; padding: 4px; width: fit-content;
+    }
+    .pricing-toggle button {
+      background: transparent; border: none; border-radius: 4px;
+      padding: 6px 20px; color: var(--muted); font-family: "DM Mono";
+      font-size: 11px; cursor: pointer; letter-spacing: 0.08em;
+      text-transform: uppercase; transition: all 0.15s;
+    }
+    .pricing-toggle button.active { background: var(--blue); color: white; }
+    .pricing-toggle .saving-badge {
+      font-family: "DM Mono"; font-size: 9px; color: var(--green);
+      margin-left: 4px;
+    }
     .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px; margin-top: 56px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px; margin-top: 24px;
     }
     .pricing-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px; padding: 32px;
-      position: relative; transition: border-color 0.2s;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 32px; position: relative;
+      transition: border-color 0.2s;
     }
     .pricing-card:hover { border-color: var(--blue); }
     .pricing-card.featured {
@@ -340,144 +272,99 @@
       background: linear-gradient(135deg, rgba(59,130,246,0.05), var(--surface));
     }
     .featured-badge {
-      position: absolute; top: -12px; left: 50%;
-      transform: translateX(-50%);
-      background: var(--blue); color: white;
-      font-family: "DM Mono"; font-size: 9px;
-      padding: 4px 12px; border-radius: 10px;
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--blue); color: white; font-family: "DM Mono";
+      font-size: 9px; padding: 4px 12px; border-radius: 10px;
       letter-spacing: 0.1em; white-space: nowrap;
     }
-    .pricing-tier {
-      font-family: "DM Mono"; font-size: 10px;
-      color: var(--blue); letter-spacing: 0.15em;
-      margin-bottom: 12px; display: block;
-    }
-    .pricing-price {
-      font-family: "Bebas Neue"; font-size: 48px;
-      line-height: 1; color: var(--text);
-      margin-bottom: 4px;
-    }
-    .pricing-period {
-      font-size: 13px; color: var(--muted);
-      margin-bottom: 24px;
-    }
-    .pricing-features {
-      list-style: none; margin-bottom: 28px;
-    }
+    .pricing-tier { font-family: "DM Mono"; font-size: 10px; color: var(--blue); letter-spacing: 0.15em; margin-bottom: 12px; display: block; }
+    .pricing-price { font-family: "Bebas Neue"; font-size: 48px; line-height: 1; color: var(--text); margin-bottom: 4px; }
+    .pricing-period { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+    .pricing-features { list-style: none; margin-bottom: 28px; }
     .pricing-features li {
-      font-size: 13px; color: var(--muted);
-      padding: 6px 0; border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--muted); padding: 6px 0;
+      border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;
     }
-    .pricing-features li::before {
-      content: "✓"; color: var(--green);
-      font-weight: 700; flex-shrink: 0;
-    }
+    .pricing-features li::before { content: "✓"; color: var(--green); font-weight: 700; flex-shrink: 0; }
     .pricing-features li:last-child { border-bottom: none; }
+    .pricing-features li.no::before { content: "✕"; color: var(--muted); }
+    .pricing-features li.no { opacity: 0.5; }
     .pricing-btn {
-      width: 100%; padding: 12px;
-      border-radius: 6px; font-size: 13px;
-      font-family: "DM Mono"; letter-spacing: 0.08em;
-      cursor: pointer; transition: all 0.2s;
+      width: 100%; padding: 12px; border-radius: 6px; font-size: 13px;
+      font-family: "DM Mono"; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s;
     }
-    .pricing-btn-primary {
-      background: var(--blue); border: none; color: white;
-    }
+    .pricing-btn-primary { background: var(--blue); border: none; color: white; }
     .pricing-btn-primary:hover { opacity: 0.88; }
-    .pricing-btn-ghost {
-      background: transparent;
-      border: 1px solid var(--border); color: var(--muted);
-    }
-    .pricing-btn-ghost:hover {
-      border-color: var(--blue); color: var(--text);
+    .pricing-btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+    .pricing-btn-ghost:hover { border-color: var(--blue); color: var(--text); }
+    .pricing-disclaimer {
+      font-family: "DM Mono"; font-size: 9px; color: var(--muted);
+      text-align: center; margin-top: 16px;
     }
 
     /* ── TESTIMONIALS ─────────────────────────────────────────── */
     .testimonials {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 16px; margin-top: 56px;
     }
     .testimonial {
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: var(--surface); border: 1px solid var(--border);
       border-radius: 10px; padding: 28px;
     }
-    .testimonial-text {
-      font-size: 14px; color: var(--text);
-      line-height: 1.7; margin-bottom: 20px;
-      font-style: italic;
+    .testimonial-placeholder {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 160px; text-align: center;
+      gap: 10px;
     }
-    .testimonial-text::before { content: "\201C"; color: var(--blue); font-size: 20px; }
-    .testimonial-text::after  { content: "\201D"; color: var(--blue); font-size: 20px; }
-    .testimonial-author {
-      display: flex; align-items: center; gap: 12px;
-    }
+    .testimonial-text { font-size: 14px; color: var(--text); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+    .testimonial-text::before { content: "C"; color: var(--blue); font-size: 20px; }
+    .testimonial-text::after  { content: "D"; color: var(--blue); font-size: 20px; }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
     .author-avatar {
       width: 36px; height: 36px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 14px; color: white;
-      flex-shrink: 0;
+      font-weight: 700; font-size: 14px; color: white; flex-shrink: 0;
     }
-    .author-name {
-      font-size: 13px; font-weight: 600; color: var(--text);
-    }
-    .author-role {
-      font-size: 11px; color: var(--muted);
-      font-family: "DM Mono";
-    }
+    .author-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .author-role { font-size: 11px; color: var(--muted); font-family: "DM Mono"; }
 
-    /* ── EMAIL SIGNUP ─────────────────────────────────────────── */
-    .signup-section {
+    /* ── NIR FEATURE CALLOUT ──────────────────────────────────── */
+    .nir-callout {
+      background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.05));
+      border: 1px solid rgba(59,130,246,0.25); border-radius: 12px;
+      padding: 48px; margin-top: 56px; display: flex;
+      gap: 48px; align-items: center;
+    }
+    .nir-callout-text { flex: 1; }
+    .nir-callout-stats {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 16px; flex-shrink: 0;
+    }
+    .nir-stat {
+      text-align: center; padding: 20px;
+      background: rgba(59,130,246,0.06); border-radius: 8px;
+      border: 1px solid rgba(59,130,246,0.15);
+    }
+    .nir-stat-val { font-family: "Bebas Neue"; font-size: 36px; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+    .nir-stat-label { font-family: "DM Mono"; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; }
+
+    /* ── CTA SECTION ──────────────────────────────────────────── */
+    .cta-section {
       text-align: center; padding: 100px 24px;
       background: var(--surface);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
-    .signup-box {
-      max-width: 480px; margin: 40px auto 0;
-      display: flex; gap: 10px;
-    }
-    .signup-input {
-      flex: 1; background: var(--card);
-      border: 1px solid var(--border); border-radius: 6px;
-      padding: 14px 18px; color: var(--text);
-      font-family: "DM Sans"; font-size: 14px; outline: none;
-    }
-    .signup-input:focus { border-color: var(--blue); }
-    .signup-input::placeholder { color: var(--muted); }
-    .signup-submit {
-      padding: 14px 24px; background: var(--blue);
-      border: none; border-radius: 6px; color: white;
-      font-family: "DM Sans"; font-size: 14px;
-      font-weight: 600; cursor: pointer;
-      white-space: nowrap; transition: opacity 0.2s;
-    }
-    .signup-submit:hover { opacity: 0.88; }
-    .signup-note {
-      font-size: 12px; color: var(--muted);
-      margin-top: 12px; font-family: "DM Mono";
-    }
 
     /* ── FOOTER ───────────────────────────────────────────────── */
     footer {
-      padding: 48px 40px;
-      border-top: 1px solid var(--border);
+      padding: 48px 40px; border-top: 1px solid var(--border);
       display: flex; justify-content: space-between;
-      align-items: center; flex-wrap: gap;
+      align-items: center; flex-wrap: wrap; gap: 20px;
       max-width: 1100px; margin: 0 auto;
     }
-    .footer-brand {
-      font-family: "DM Mono"; font-size: 11px;
-      color: var(--muted); letter-spacing: 0.1em;
-    }
-    .footer-links {
-      display: flex; gap: 24px;
-    }
-    .footer-links a {
-      font-size: 12px; color: var(--muted);
-      font-family: "DM Mono"; transition: color 0.2s;
-    }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: var(--muted); font-family: "DM Mono"; transition: color 0.2s; }
     .footer-links a:hover { color: var(--text); }
 
     /* ── RESPONSIVE ───────────────────────────────────────────── */
@@ -486,11 +373,11 @@
       .nav-links { display: none; }
       .stats-bar { flex-wrap: wrap; }
       .stat-item { min-width: 50%; border-bottom: 1px solid var(--border); }
-      .signup-box { flex-direction: column; }
-      footer { flex-direction: column; gap: 20px; text-align: center; }
+      .nir-callout { flex-direction: column; padding: 28px; }
+      .nir-callout-stats { width: 100%; }
+      footer { flex-direction: column; text-align: center; }
     }
-    section { padding-top: 40px; padding-bottom: 40px; }
-</style>
+  </style>
 </head>
 <body>
 
@@ -515,10 +402,12 @@
   <div class="nav-links">
     <a href="#how-it-works">How it works</a>
     <a href="#scan">Try a scan</a>
-    
+    <a href="#pricing">Pricing</a>
   </div>
-  <div class="nav-cta">
-    <a href="https://app.verdadscore.com"><button class="btn-primary">Sign In / Sign Up</button></a>
+  <div class="nav-cta" id="nav-cta">
+    <!-- Filled by JS based on auth state -->
+    <a href="https://app.verdadscore.com"><button class="btn-ghost">Sign In</button></a>
+    <a href="https://app.verdadscore.com"><button class="btn-primary">Start Free</button></a>
   </div>
 </nav>
 
@@ -527,22 +416,21 @@
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
 
-  <div class="hero-badge mono">LIVE · 42,000+ ARTICLES SCORED</div>
+  <div class="hero-badge mono">LIVE · <span id="hero-article-count">48,000+</span> ARTICLES SCORED</div>
 
   <h1>
-    Know which news<br/>
-    to trust <span>before you act</span>
+    Misinformation moves fast.<br/>
+    <span>Verdad Score moves faster.</span>
   </h1>
 
   <p>
-    Verdad Score uses AI to rate the credibility of every article,
-    outlet and author in real time — so journalists, analysts and
-    PR professionals can verify claims in seconds.
+    AI-powered credibility scoring for every article, outlet and author — in seconds.
+    Built for journalists, analysts and PR professionals who can't afford to get it wrong.
   </p>
 
   <div class="hero-actions">
     <a href="https://app.verdadscore.com">
-      <button class="btn-hero">Start Free Trial</button>
+      <button class="btn-hero">Start Free</button>
     </a>
     <a href="#scan">
       <button class="btn-hero-ghost">Try a live scan →</button>
@@ -551,78 +439,67 @@
 
   <div class="stats-bar">
     <div class="stat-item">
-      <div class="stat-val" style="color:var(--blue)" id="stat-articles">24,323</div>
+      <div class="stat-val" style="color:var(--blue)" id="stat-articles">48,662</div>
       <div class="stat-label mono">ARTICLES SCORED</div>
     </div>
     <div class="stat-item">
-      <div class="stat-val" style="color:var(--green)">73+</div>
+      <div class="stat-val" style="color:var(--green)">105</div>
       <div class="stat-label mono">GLOBAL OUTLETS</div>
     </div>
     <div class="stat-item">
-      <div class="stat-val" style="color:var(--yellow)">76.4</div>
-      <div class="stat-label mono">AVG VCI SCORE</div>
+      <div class="stat-val" style="color:var(--yellow)" id="stat-authors">5,166</div>
+      <div class="stat-label mono">AUTHORS TRACKED</div>
     </div>
     <div class="stat-item">
-      <div class="stat-val" style="color:var(--red)" id="stat-contested">3</div>
+      <div class="stat-val" style="color:var(--red)" id="stat-contested">—</div>
       <div class="stat-label mono">CONTESTED TODAY</div>
     </div>
   </div>
 </div>
 
-<!-- HOW IT WORKS -->
-<section id="scan" style="padding-top:0;">
+<!-- SCAN DEMO -->
+<section id="scan" style="padding-top:40px;">
   <span class="section-label">Live scan</span>
   <h2 class="section-title">Paste any article.<br/><span>Know if it's credible.</span></h2>
-  <p class="section-sub">Copy any article text and get a full AI credibility report in seconds. Paste from any site, including paywalled articles.</p>
+  <p class="section-sub">Copy any article text and get a full AI credibility report in seconds. Works on any site, including paywalled articles.</p>
 
   <div class="scan-demo">
     <div class="scan-header">
       <div class="scan-dot" style="background:#EF4444"></div>
       <div class="scan-dot" style="background:#F59E0B"></div>
       <div class="scan-dot" style="background:#22C55E"></div>
-      <span class="mono" style="font-size:11px;color:var(--muted);margin-left:8px;">verdad score · url scanner</span>
+      <span class="mono" style="font-size:11px;color:var(--muted);margin-left:8px;">verdad score · article scanner</span>
     </div>
     <div class="scan-body">
-      <!-- Scan form -->
       <div id="scan-form" style="display:block">
-        
-        <!-- Tab switcher -->
         <div style="display:flex;gap:8px;margin-bottom:12px;">
           <button class="mono" id="tab-url" onclick="switchTab('url')" style="background:transparent;border:1px solid #334155;color:#64748B;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:10px;letter-spacing:0.08em;">URL</button>
           <button class="mono" id="tab-text" onclick="switchTab('text')" style="background:#1E293B;border:1px solid #3B82F6;color:#3B82F6;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:10px;letter-spacing:0.08em;">PASTE TEXT</button>
         </div>
-
-        <div style="font-family:'DM Mono';font-size:9px;color:var(--muted);margin-bottom:10px;">⚡ 5 free scans per day · <a href="https://app.verdadscore.com" style="color:var(--blue);text-decoration:none;">Sign up</a> to unlock more</div>
+        <div style="font-family:'DM Mono';font-size:9px;color:var(--muted);margin-bottom:10px;">
+          ⚡ 5 free scans per day · <a href="https://app.verdadscore.com" style="color:var(--blue);">Sign up</a> to unlock more
+        </div>
         <div id="input-url-row" class="scan-input-row" style="display:none">
-          <input class="scan-input" id="scan-url" type="url"
-            placeholder="https://www.bbc.com/news/articles/..." />
+          <input class="scan-input" id="scan-url" type="url" placeholder="https://www.bbc.com/news/articles/..." />
           <button class="scan-btn mono" onclick="runScan()">SCAN ARTICLE</button>
         </div>
-
-  <!-- Paste text input -->
-  <div id="input-text-row">
-    <textarea class="scan-input" id="scan-text" rows="7"
-      placeholder="e.g. Outlet: The Guardian
-e.g. Author: Jane Smith
-
-Paste your article, social media post or blog text here (max 500 words)..."
-      style="width:100%;resize:vertical;font-family:inherit;"
-      oninput="updateCharCount()"></textarea>
-    <div style="font-family:'DM Mono';font-size:9px;color:var(--muted);text-align:right;margin-top:4px;">
-      <span id="char-count">0</span>/500 words
-    </div>
-    <button class="scan-btn mono" onclick="runScan()" style="width:100%;margin-top:8px;">SCAN ARTICLE</button>
+        <div id="input-text-row">
+          <textarea class="scan-input" id="scan-text" rows="7"
+            placeholder="Paste your article text here (max 500 words)..."
+            style="width:100%;resize:vertical;font-family:inherit;"
+            oninput="updateCharCount()"></textarea>
+          <div style="font-family:'DM Mono';font-size:9px;color:var(--muted);text-align:right;margin-top:4px;">
+            <span id="char-count">0</span>/500 words
+          </div>
+          <button class="scan-btn mono" onclick="runScan()" style="width:100%;margin-top:8px;">SCAN ARTICLE</button>
         </div>
       </div>
-
-      
 
       <div class="scan-loading" id="scan-loading">
         <span id="scan-status">Analysing article...</span>
       </div>
 
       <div class="scan-result" id="scan-result">
-        <!-- Header: always visible -->
         <div class="scan-result-header">
           <div style="flex:1">
             <div class="result-outlet mono" id="res-outlet"></div>
@@ -633,17 +510,10 @@ Paste your article, social media post or blog text here (max 500 words)..."
             <div class="vci-label mono" id="res-verdict"></div>
           </div>
         </div>
-
-        <!-- Locked full report -->
         <div id="res-locked" style="position:relative;margin-top:16px;">
-          <!-- Blurred preview -->
           <div id="res-blurred" style="filter:blur(4px);pointer-events:none;user-select:none;opacity:0.5;">
-            <div style="font-size:13px;color:#94A3B8;line-height:1.6;
-              margin:12px 0;padding:12px;background:rgba(255,255,255,0.03);
-              border-radius:6px;border-left:3px solid var(--blue)">
-              This article shows strong signals of balanced reporting with multiple credible sources cited.
-              The framing is neutral and the claims are well supported by official documentation and named sources.
-              Missing context includes independent verification of key statistics.
+            <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin:12px 0;padding:12px;background:rgba(255,255,255,0.03);border-radius:6px;border-left:3px solid var(--blue)">
+              This article shows strong signals of balanced reporting with multiple credible sources cited. The framing is neutral and the claims are well supported by official documentation and named sources.
             </div>
             <div style="margin-top:16px">
               <div style="font-family:'DM Mono';font-size:9px;color:var(--blue);letter-spacing:0.1em;margin-bottom:8px">FRAMING ANALYSIS</div>
@@ -653,50 +523,28 @@ Paste your article, social media post or blog text here (max 500 words)..."
                 <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:6px;padding:10px;text-align:center;font-family:'DM Mono';font-size:9px;color:#10B981">✓ EMOTIONAL</div>
               </div>
             </div>
-            <div style="margin-top:16px">
-              <div style="font-family:'DM Mono';font-size:9px;color:var(--blue);letter-spacing:0.1em;margin-bottom:8px">SOURCES CITED (4)</div>
-              <div style="display:flex;flex-wrap:wrap;gap:6px">
-                <div style="background:rgba(255,255,255,0.03);padding:5px 10px;border-radius:4px;font-size:11px;color:#94A3B8">Government Official</div>
-                <div style="background:rgba(255,255,255,0.03);padding:5px 10px;border-radius:4px;font-size:11px;color:#94A3B8">Named Expert</div>
-                <div style="background:rgba(255,255,255,0.03);padding:5px 10px;border-radius:4px;font-size:11px;color:#94A3B8">Court Record</div>
-                <div style="background:rgba(255,255,255,0.03);padding:5px 10px;border-radius:4px;font-size:11px;color:#94A3B8">Named Resident</div>
-              </div>
-            </div>
           </div>
-
-          <!-- Unlock overlay -->
           <div id="res-unlock" style="position:absolute;top:0;left:0;right:0;bottom:0;
             display:flex;flex-direction:column;align-items:center;justify-content:center;
             background:linear-gradient(to bottom, transparent, rgba(10,15,25,0.95) 40%);
             border-radius:8px;padding:24px;text-align:center;">
-            <div style="font-family:'DM Mono';font-size:10px;color:#3B82F6;
-              letter-spacing:0.1em;margin-bottom:8px">🔒 FULL REPORT</div>
-            <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px">
-              Unlock framing analysis, sources & claims
-            </div>
-            <div style="font-size:12px;color:#94A3B8;margin-bottom:16px">
-              Free account — no credit card required
-            </div>
-            <button onclick="openAuthModal('signup')" style="background:#3B82F6;border:none;color:white;
-              padding:12px 32px;border-radius:5px;font-family:'DM Mono';
-              font-size:11px;cursor:pointer;letter-spacing:0.08em;
-              box-shadow:0 0 20px rgba(59,130,246,0.3);">
+            <div style="font-family:'DM Mono';font-size:10px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:8px">🔒 FULL REPORT</div>
+            <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px">Unlock framing analysis, sources & claims</div>
+            <div style="font-size:12px;color:#94A3B8;margin-bottom:16px">Free account — no credit card required</div>
+            <button onclick="openAuthModal('signup')" style="background:#3B82F6;border:none;color:white;padding:12px 32px;border-radius:5px;font-family:'DM Mono';font-size:11px;cursor:pointer;letter-spacing:0.08em;box-shadow:0 0 20px rgba(59,130,246,0.3);">
               CREATE FREE ACCOUNT →
             </button>
             <div style="font-size:11px;color:#475569;margin-top:10px">
-              Already have an account?
-              <a onclick="openAuthModal('signin')" href="#"
-              style="color:#3B82F6;text-decoration:none">Sign in →</a>
+              Already have an account? <a onclick="openAuthModal('signin')" href="#" style="color:#3B82F6;">Sign in →</a>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
 </section>
 
-<!-- PRICING -->
+<!-- HOW IT WORKS -->
 <section id="how-it-works" style="padding-top:0;">
   <span class="section-label">How it works</span>
   <h2 class="section-title">Four layers of<br/><span>credibility intelligence</span></h2>
@@ -706,7 +554,7 @@ Paste your article, social media post or blog text here (max 500 words)..."
     <div class="step">
       <div class="step-num">01</div>
       <h3>Outlet Registry</h3>
-      <p>Every outlet is assigned a base VCI score based on editorial standards, ownership structure, and historical accuracy.</p>
+      <p>Every outlet is assigned a base credibility score based on editorial standards, ownership structure, and historical accuracy across 105 global sources.</p>
     </div>
     <div class="step">
       <div class="step-num">02</div>
@@ -715,96 +563,220 @@ Paste your article, social media post or blog text here (max 500 words)..."
     </div>
     <div class="step">
       <div class="step-num">03</div>
-      <h3>Sentiment Analysis</h3>
-      <p>Framing is scored for neutrality. One-sided reporting, sensationalism and advocacy language are penalised.</p>
+      <h3>Framing Analysis</h3>
+      <p>Framing is scored for neutrality. One-sided reporting, sensationalism and advocacy language are flagged and penalised.</p>
     </div>
     <div class="step">
       <div class="step-num">04</div>
       <h3>Fact-Check Match</h3>
-      <p>Claims are cross-referenced against global fact-checkers including Full Fact, Snopes, PolitiFact and 12 others.</p>
+      <p>Claims are cross-referenced against global fact-checkers including Full Fact, Snopes, PolitiFact and 12 others in real time.</p>
     </div>
   </div>
 </section>
 
-<!-- SCAN DEMO -->
-<section id="testimonials" style="padding-top:0">
+<!-- NARRATIVE INTELLIGENCE CALLOUT -->
+<section style="padding-top:0;">
+  <div class="nir-callout">
+    <div class="nir-callout-text">
+      <span class="section-label">Narrative Intelligence</span>
+      <h2 class="section-title" style="font-size:clamp(22px,3vw,36px);">
+        Not just articles.<br/><span>Entire narratives.</span>
+      </h2>
+      <p style="font-size:15px;color:var(--muted);line-height:1.7;margin-top:12px;max-width:460px;">
+        Verdad Score's Narrative Intelligence Reports analyse every article written about a subject — politician, company, conflict, policy — and surface patterns in how the story is being told, who is telling it, and where credibility breaks down.
+      </p>
+      <p style="font-size:13px;color:var(--muted);margin-top:16px;">
+        Available on <span style="color:var(--blue);">Analyst</span> and <span style="color:var(--blue);">Organization</span> plans.
+      </p>
+    </div>
+    <div class="nir-callout-stats">
+      <div class="nir-stat">
+        <div class="nir-stat-val">200</div>
+        <div class="nir-stat-label">ARTICLES PER REPORT</div>
+      </div>
+      <div class="nir-stat">
+        <div class="nir-stat-val">90</div>
+        <div class="nir-stat-label">DAYS OF COVERAGE</div>
+      </div>
+      <div class="nir-stat">
+        <div class="nir-stat-val">5K+</div>
+        <div class="nir-stat-label">AUTHORS TRACKED</div>
+      </div>
+      <div class="nir-stat">
+        <div class="nir-stat-val">105</div>
+        <div class="nir-stat-label">GLOBAL OUTLETS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="padding-top:0;">
+  <span class="section-label">Pricing</span>
+  <h2 class="section-title">Simple, transparent<br/><span>pricing</span></h2>
+  <p class="section-sub">Start free. Upgrade when you need more power. Cancel anytime.</p>
+
+  <div class="pricing-toggle">
+    <button id="toggle-monthly" class="active" onclick="setPricingCycle('monthly')">MONTHLY</button>
+    <button id="toggle-annual" onclick="setPricingCycle('annual')">ANNUAL <span class="saving-badge">2 MONTHS FREE</span></button>
+  </div>
+
+  <div class="pricing-grid">
+    <!-- FREE -->
+    <div class="pricing-card">
+      <span class="pricing-tier">FREE</span>
+      <div class="pricing-price">$0</div>
+      <div class="pricing-period">forever</div>
+      <ul class="pricing-features">
+        <li>5 scans per day</li>
+        <li>VCI score + verdict</li>
+        <li>1 article gift per week</li>
+        <li class="no">Full breakdown (FI/EI)</li>
+        <li class="no">Author & outlet scoring</li>
+        <li class="no">Narrative Intelligence Reports</li>
+        <li class="no">PDF export</li>
+      </ul>
+      <a href="https://app.verdadscore.com">
+        <button class="pricing-btn pricing-btn-ghost">GET STARTED FREE</button>
+      </a>
+    </div>
+
+    <!-- READER -->
+    <div class="pricing-card">
+      <span class="pricing-tier">READER</span>
+      <div class="pricing-price" id="reader-price">$10</div>
+      <div class="pricing-period" id="reader-period">per month</div>
+      <ul class="pricing-features">
+        <li>20 scans per day</li>
+        <li>Full VCI breakdown (FI/EI)</li>
+        <li>Author & outlet scoring</li>
+        <li>Watchlist (up to 3)</li>
+        <li>3 article gifts per week</li>
+        <li>Monday credibility digest</li>
+        <li class="no">Narrative Intelligence Reports</li>
+        <li class="no">PDF export</li>
+      </ul>
+      <a href="https://app.verdadscore.com">
+        <button class="pricing-btn pricing-btn-primary">START FREE →</button>
+      </a>
+    </div>
+
+    <!-- ANALYST -->
+    <div class="pricing-card featured">
+      <div class="featured-badge">MOST POPULAR</div>
+      <span class="pricing-tier">ANALYST</span>
+      <div class="pricing-price" id="analyst-price">$29</div>
+      <div class="pricing-period" id="analyst-period">per month</div>
+      <ul class="pricing-features">
+        <li>100 scans per day</li>
+        <li>Full Layer 4 detail</li>
+        <li>Narrative Intelligence Reports</li>
+        <li>Watchlist (up to 20)</li>
+        <li>Unlimited article gifts</li>
+        <li>Mon/Wed/Fri digests</li>
+        <li>PDF export</li>
+        <li>Author & outlet deep dive</li>
+      </ul>
+      <a href="https://app.verdadscore.com">
+        <button class="pricing-btn pricing-btn-primary">START FREE →</button>
+      </a>
+    </div>
+
+    <!-- ORGANIZATION -->
+    <div class="pricing-card">
+      <span class="pricing-tier">ORGANIZATION</span>
+      <div class="pricing-price" id="org-price">$299</div>
+      <div class="pricing-period" id="org-period">per month</div>
+      <ul class="pricing-features">
+        <li>10 seats</li>
+        <li>Everything in Analyst</li>
+        <li>Unlimited NIRs</li>
+        <li>API access</li>
+        <li>Branded PDF reports</li>
+        <li>Priority support</li>
+        <li>Annual billing via invoice</li>
+      </ul>
+      <a href="mailto:founders@verdadscore.com?subject=Organization Plan">
+        <button class="pricing-btn pricing-btn-ghost">CONTACT US</button>
+      </a>
+    </div>
+  </div>
+
+  <p class="pricing-disclaimer">
+    Prices displayed in USD for reference. Transactions processed in Argentine Pesos (ARS) via Mercado Pago. Your bank's exchange rate may vary slightly.
+    · <a href="#features" style="color:var(--blue);">See full feature comparison →</a>
+  </p>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" style="padding-top:0;">
   <span class="section-label">What people say</span>
   <h2 class="section-title">Trusted by journalists,<br/><span>analysts & PR professionals</span></h2>
+  <p class="section-sub" style="margin-bottom:0;">Real stories from the people using Verdad Score every day.</p>
 
   <div class="testimonials">
     <div class="testimonial">
-      <p class="testimonial-text">
-        Before publishing any claim, I run it through Verdad Score.
-        The VCI score gives me confidence when I need it most —
-        and flags problems before they become corrections.
-      </p>
-      <div class="testimonial-author">
-        <div class="author-avatar" style="background:var(--blue)">SM</div>
-        <div>
-          <div class="author-name">Sarah Mitchell</div>
-          <div class="author-role mono">Investigative Journalist</div>
+      <div class="testimonial-placeholder">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;">
+          <span style="font-family:'DM Mono';font-size:18px;color:var(--muted);">?</span>
+        </div>
+        <div style="font-family:'DM Mono';font-size:9px;color:var(--muted);letter-spacing:0.1em;">TESTIMONIAL COMING SOON</div>
+        <div style="font-size:12px;color:var(--muted);text-align:center;max-width:200px;">
+          We're collecting feedback from our early users. Check back soon.
         </div>
       </div>
     </div>
-
     <div class="testimonial">
-      <p class="testimonial-text">
-        When a story breaks about our client, we need to know
-        immediately whether it's from a credible source or a
-        fringe outlet. Verdad Score makes that call in seconds.
-      </p>
-      <div class="testimonial-author">
-        <div class="author-avatar" style="background:var(--green)">JR</div>
-        <div>
-          <div class="author-name">James Rourke</div>
-          <div class="author-role mono">PR Director, London</div>
+      <div class="testimonial-placeholder">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;">
+          <span style="font-family:'DM Mono';font-size:18px;color:var(--muted);">?</span>
+        </div>
+        <div style="font-family:'DM Mono';font-size:9px;color:var(--muted);letter-spacing:0.1em;">TESTIMONIAL COMING SOON</div>
+        <div style="font-size:12px;color:var(--muted);text-align:center;max-width:200px;">
+          We're collecting feedback from our early users. Check back soon.
         </div>
       </div>
     </div>
-
     <div class="testimonial">
-      <p class="testimonial-text">
-        The contested narratives feature is extraordinary.
-        Seeing where high-credibility and low-credibility outlets
-        diverge on the same story is invaluable for my research.
-      </p>
-      <div class="testimonial-author">
-        <div class="author-avatar" style="background:var(--yellow)">AL</div>
-        <div>
-          <div class="author-name">Dr. Ana Lima</div>
-          <div class="author-role mono">Financial Analyst</div>
+      <div class="testimonial-placeholder">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;">
+          <span style="font-family:'DM Mono';font-size:18px;color:var(--muted);">?</span>
+        </div>
+        <div style="font-family:'DM Mono';font-size:9px;color:var(--muted);letter-spacing:0.1em;">TESTIMONIAL COMING SOON</div>
+        <div style="font-size:12px;color:var(--muted);text-align:center;max-width:200px;">
+          We're collecting feedback from our early users. Check back soon.
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- EMAIL SIGNUP -->
-<div class="signup-section" id="signup">
-  <span class="section-label" style="display:block;text-align:center">Early access</span>
-  <h2 class="section-title" style="text-align:center">
-    Start your free trial<br/><span>today</span>
+<!-- CTA -->
+<div class="cta-section">
+  <span class="section-label" style="display:block;text-align:center;">Get started</span>
+  <h2 class="section-title" style="text-align:center;">
+    Start free.<br/><span>Upgrade when you're ready.</span>
   </h2>
-  <p style="color:var(--muted);text-align:center;max-width:440px;margin:16px auto 0;font-size:16px;">
-    Join analysts, journalists and PR professionals already using Verdad Score.
+  <p style="color:var(--muted);text-align:center;max-width:440px;margin:16px auto 32px;font-size:16px;">
+    5 free scans a day, no credit card required. Join journalists, analysts and PR professionals already using Verdad Score.
   </p>
-  <div class="signup-box">
-    <input class="signup-input" id="signup-email" type="email"
-      placeholder="your@email.com" />
-    <button class="signup-submit" onclick="submitSignup()">
-      Start Free Trial
-    </button>
+  <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+    <a href="https://app.verdadscore.com">
+      <button class="btn-hero">Create Free Account</button>
+    </a>
+    <a href="#pricing">
+      <button class="btn-hero-ghost">See pricing →</button>
+    </a>
   </div>
-  <p class="signup-note mono">No credit card required · Cancel anytime</p>
-  <p class="signup-note mono" id="signup-msg" style="color:var(--green);margin-top:8px;display:none">
-    ✓ Check your inbox — we'll be in touch shortly.
+  <p class="mono" style="font-size:11px;color:var(--muted);margin-top:20px;">
+    No credit card required · Cancel anytime · Powered by Mercado Pago
   </p>
 </div>
 
 <!-- FOOTER -->
 <footer>
   <div>
-    <div class="footer-brand" style="display:flex;align-items:center;gap:8px;">
+    <div style="display:flex;align-items:center;gap:8px;font-family:'DM Mono';font-size:11px;color:var(--muted);letter-spacing:0.1em;">
       <svg width="18" height="18" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
         <g transform="translate(25, 28)">
           <rect x="0"   y="62" width="14" height="48"  rx="7" fill="#16a34a" opacity="0.25"/>
@@ -827,656 +799,371 @@ Paste your article, social media post or blog text here (max 500 words)..."
   </div>
   <div class="footer-links">
     <a href="https://app.verdadscore.com">Dashboard</a>
-    
-    <a href="mailto:hello@verdadscore.com">Contact</a>
+    <a href="mailto:founders@verdadscore.com">Contact</a>
     <a href="/legal#privacy">Privacy Policy</a>
     <a href="/legal#tos">Terms of Service</a>
     <a href="/legal#refund">Refund Policy</a>
   </div>
 </footer>
 
-<script>
-  const API = "https://coldfact.up.railway.app";
-
-  // Load live stats
-  fetch(API + "/health")
-    .then(r => r.json())
-    .then(d => {
-      if (d.article_count) {
-        document.getElementById("stat-articles").textContent =
-          d.article_count.toLocaleString();
-      }
-    }).catch(() => {});
-
-  fetch(API + "/clusters?verdict=CONTESTED&per_page=1")
-    .then(r => r.json())
-    .then(d => {
-      if (d.total !== undefined) {
-        document.getElementById("stat-contested").textContent = d.total;
-      }
-    }).catch(() => {});
-
-  // Email gate removed — scanner open to all visitors
-
-  // Tab switching
-  function switchTab(tab) {
-    const urlRow  = document.getElementById("input-url-row");
-    const textRow = document.getElementById("input-text-row");
-    const tabUrl  = document.getElementById("tab-url");
-    const tabText = document.getElementById("tab-text");
-    if (tab === "url") {
-      urlRow.style.display  = "flex";
-      textRow.style.display = "none";
-      tabUrl.style.borderColor  = "#3B82F6"; tabUrl.style.color  = "#3B82F6"; tabUrl.style.background  = "#1E293B";
-      tabText.style.borderColor = "#334155"; tabText.style.color = "#64748B"; tabText.style.background = "transparent";
-    } else {
-      urlRow.style.display  = "none";
-      textRow.style.display = "block";
-      tabText.style.borderColor = "#3B82F6"; tabText.style.color = "#3B82F6"; tabText.style.background = "#1E293B";
-      tabUrl.style.borderColor  = "#334155"; tabUrl.style.color  = "#64748B"; tabUrl.style.background  = "transparent";
-    }
-  }
-
-  function updateCharCount() {
-    const text = document.getElementById("scan-text").value;
-    const words = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
-    const counter = document.getElementById("char-count");
-    counter.textContent = words;
-    counter.style.color = words > 500 ? "#EF4444" : "var(--muted)";
-    if (words > 500) {
-      const trimmed = text.trim().split(/\s+/).slice(0, 500).join(" ");
-      document.getElementById("scan-text").value = trimmed;
-      counter.textContent = 500;
-    }
-  }
-
-  // Scan
-  async function runScan() {
-    const url = document.getElementById("scan-url").value.trim();
-
-    const loading = document.getElementById("scan-loading");
-    const result  = document.getElementById("scan-result");
-    const statusEl = document.getElementById("scan-status");
-
-    loading.classList.add("visible");
-    result.classList.remove("visible");
-
-    const messages = [
-      "Fetching article...",
-      "Analysing content...",
-      "Checking fact databases...",
-      "Calculating VCI score...",
-    ];
-    let mi = 0;
-    const interval = setInterval(() => {
-      statusEl.textContent = messages[mi % messages.length];
-      mi++;
-    }, 1200);
-
-    try {
-      const res = await fetch(API + "/scan", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          document.getElementById("input-text-row") && document.getElementById("input-text-row").style.display !== "none"
-            ? { text: document.getElementById("scan-text").value.trim() }
-            : { url: document.getElementById("scan-url").value.trim() }
-        ),
-      });
-      const data = await res.json();
-      clearInterval(interval);
-      loading.classList.remove("visible");
-
-      if (res.ok) {
-
-        const score   = Math.round(data.vci_score || 70);
-        const verdict = data.verdict || "At Risk";
-        const color   = score >= 82 ? "var(--green)" :
-                        score >= 65 ? "var(--yellow)" : "var(--red)";
-
-        // Score + verdict
-        document.getElementById("res-vci").textContent = score;
-        document.getElementById("res-vci").style.color = color;
-        document.getElementById("res-verdict").textContent = verdict.toUpperCase();
-        document.getElementById("res-verdict").style.color = color;
-
-        // Outlet + title
-        const outletEl = document.getElementById("res-outlet");
-        if (data.outlet && data.outlet !== "Unknown") {
-          outletEl.textContent = data.outlet.toUpperCase();
-          outletEl.style.display = "block";
-        } else {
-          outletEl.style.display = "none";
-        }
-        document.getElementById("res-title").textContent = data.title || "";
-
-        // Store scan result for post-signup restore
-        localStorage.setItem("vs_pending_scan", JSON.stringify(data));
-
-        // Save to /share endpoint immediately so confirmation redirect can use it
-        fetch("https://coldfact.up.railway.app/share", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            vci_score:   Math.round(data.vci_score || 0),
-            verdict:     data.verdict || "",
-            outlet:      data.outlet  || null,
-            title:       data.title   || null,
-            summary:     data.summary || null,
-            result_json: data,
-          }),
-        }).then(r => r.json()).then(d => {
-          if (d.url) localStorage.setItem("vs_share_url", d.url);
-        }).catch(() => {});
-
-        // Show result + locked overlay
-        result.classList.add("visible");
-
-        // If URL scan returned no deep analysis (site blocked scraping), show hint
-        const hasDeepAnalysis = data.framing || (data.sources && data.sources.length) || (data.claims && data.claims.length);
-        const isUrlScan = document.getElementById("input-url-row").style.display !== "none";
-        const existingHint = document.getElementById("partial-result-hint");
-        if (existingHint) existingHint.remove();
-        if (isUrlScan && !hasDeepAnalysis) {
-          const hint = document.createElement("div");
-          hint.id = "partial-result-hint";
-          hint.style.cssText = "margin-top:12px;padding:10px 14px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:6px;display:flex;align-items:flex-start;gap:10px;";
-          hint.innerHTML = `<span style="color:#F59E0B;font-size:14px;flex-shrink:0;">⚠</span><span style="font-family:'DM Mono';font-size:10px;color:#94A3B8;line-height:1.6;">This site restricted full content access. <a onclick="switchTab('text')" href="#" style="color:#3B82F6;text-decoration:none;">Paste the article text</a> for a complete analysis including sources, key claims and framing.</span>`;
-          document.getElementById("scan-result").appendChild(hint);
-        }
-      } else {
-        const detail = data.detail;
-        if (typeof detail === "object" && detail.suggestion) {
-          statusEl.textContent = detail.suggestion;
-        } else {
-          statusEl.textContent = "Could not scan this URL. Try pasting the article text instead.";
-        }
-        loading.classList.add("visible");
-      }
-    } catch(e) {
-      clearInterval(interval);
-      loading.classList.remove("visible");
-      statusEl.textContent = "Scan failed. Please try again.";
-      loading.classList.add("visible");
-    }
-  }
-
-  // Enter key on scan input
-  
-function openShareModal(url) {
-  const modal = document.getElementById("share-modal");
-  const urlEl = document.getElementById("sm-url");
-  if (!modal || !url) return;
-
-  urlEl.textContent = url;
-  document.getElementById("sm-whatsapp").href = "https://wa.me/?text=" + encodeURIComponent("Check this credibility report: " + url);
-  document.getElementById("sm-x").href = "https://x.com/intent/tweet?text=" + encodeURIComponent("Credibility report via @VerdadScore") + "&url=" + encodeURIComponent(url);
-  document.getElementById("sm-facebook").href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
-  document.getElementById("sm-linkedin").href = "https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(url);
-  document.getElementById("sm-reddit").href = "https://www.reddit.com/submit?url=" + encodeURIComponent(url) + "&title=" + encodeURIComponent("Credibility Report — Verdad Score");
-  document.getElementById("sm-email").href = "mailto:?subject=" + encodeURIComponent("Credibility Report — Verdad Score") + "&body=" + encodeURIComponent("Check this credibility report: " + url);
-
-  modal.style.display = "flex";
-  modal.onclick = function(e) { if (e.target === modal) closeShareModal(); };
-}
-
-function closeShareModal() {
-  document.getElementById("share-modal").style.display = "none";
-}
-
-function copyShareModalUrl() {
-  const url = document.getElementById("sm-url").textContent;
-  const btn = document.getElementById("sm-copy-btn");
-  copyToClipboard(url, btn, "✓ COPIED", "COPY");
-}
-
-
-function openShareModal(url) {
-  const modal = document.getElementById("share-modal");
-  const urlEl = document.getElementById("sm-url");
-  if (!modal || !url) return;
-
-  urlEl.textContent = url;
-  document.getElementById("sm-whatsapp").href = "https://wa.me/?text=" + encodeURIComponent("Check this credibility report: " + url);
-  document.getElementById("sm-x").href = "https://x.com/intent/tweet?text=" + encodeURIComponent("Credibility report via @VerdadScore") + "&url=" + encodeURIComponent(url);
-  document.getElementById("sm-facebook").href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
-  document.getElementById("sm-linkedin").href = "https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(url);
-  document.getElementById("sm-reddit").href = "https://www.reddit.com/submit?url=" + encodeURIComponent(url) + "&title=" + encodeURIComponent("Credibility Report — Verdad Score");
-  document.getElementById("sm-email").href = "mailto:?subject=" + encodeURIComponent("Credibility Report — Verdad Score") + "&body=" + encodeURIComponent("Check this credibility report: " + url);
-
-  modal.style.display = "flex";
-  modal.onclick = function(e) { if (e.target === modal) closeShareModal(); };
-}
-
-function closeShareModal() {
-  document.getElementById("share-modal").style.display = "none";
-}
-
-function copyShareModalUrl() {
-  const url = document.getElementById("sm-url").textContent;
-  const btn = document.getElementById("sm-copy-btn");
-  copyToClipboard(url, btn, "✓ COPIED", "COPY");
-}
-
-function copyToClipboard(text, feedbackEl, successMsg, resetMsg) {
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(() => {
-        if (feedbackEl) { feedbackEl.textContent = successMsg; setTimeout(() => { feedbackEl.textContent = resetMsg; }, 2500); }
-      }).catch(() => fallbackCopy(text));
-    } else {
-      fallbackCopy(text);
-      if (feedbackEl) { feedbackEl.textContent = successMsg; setTimeout(() => { feedbackEl.textContent = resetMsg; }, 2500); }
-    }
-  }
-
-  function fallbackCopy(text) {
-    const el = document.createElement("textarea");
-    el.value = text;
-    el.style.cssText = "position:fixed;top:-9999px;left:-9999px;";
-    document.body.appendChild(el);
-    el.focus(); el.select();
-    try { document.execCommand("copy"); } catch(e) {}
-    document.body.removeChild(el);
-  }
-
-  function showShareUrl() {
-    const url = localStorage.getItem("vs_share_url");
-    if (url) {
-      openShareModal(url);
-    } else {
-      const display = document.getElementById("share-url-display");
-      if (display) { display.style.display = "block"; display.textContent = "Scan an article first to generate a share link."; }
-    }
-  }
-
-  document.getElementById("scan-url").addEventListener("keydown", e => {
-    if (e.key === "Enter") runScan();
-  });
-
-  // Email signup
-  function submitSignup() {
-    const email = document.getElementById("signup-email").value.trim();
-    if (!email || !email.includes("@")) return;
-    // Store in API
-    fetch(API + "/waitlist", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    }).catch(() => {});
-    document.getElementById("signup-email").value = "";
-    document.getElementById("signup-msg").style.display = "block";
-  }
-
-  document.getElementById("signup-email").addEventListener("keydown", e => {
-    if (e.key === "Enter") submitSignup();
-  });
-</script>
-
-<script>
-(function() {
-  const path = window.location.pathname;
-  if (!path.startsWith("/share/")) return;
-  const shareId = path.split("/share/")[1];
-  if (!shareId) return;
-
-  // Inject OG meta tags dynamically (for crawlers we need server-side,
-  // but this handles direct browser visits)
-  fetch("https://coldfact.up.railway.app/share/" + shareId)
-    .then(r => r.json())
-    .then(d => {
-      if (d.detail) { document.getElementById("share-loading").textContent = "Share link not found."; return; }
-
-      const score   = Math.round(d.vci_score || 0);
-      const verdict = (d.verdict || "").toUpperCase();
-      const outlet  = d.outlet || "";
-      const title   = d.title  || "Article Analysis";
-      const color   = score >= 82 ? "#22C55E" : score >= 65 ? "#F59E0B" : "#EF4444";
-
-      // Update page title and OG meta tags
-      document.title = `VCI ${score} — ${verdict} | Verdad Score`;
-
-      const setMeta = (prop, content, isName) => {
-        const attr = isName ? "name" : "property";
-        let el = document.querySelector(`meta[${attr}="${prop}"]`);
-        if (!el) { el = document.createElement("meta"); el.setAttribute(attr, prop); document.head.appendChild(el); }
-        el.setAttribute("content", content);
-      };
-
-      const ogTitle = `${title} — VCI ${score} ${verdict}`;
-      const ogDesc  = `Credibility score: ${score}/100 · ${verdict} · Powered by Verdad Score`;
-      const ogUrl   = window.location.href;
-
-      setMeta("og:title",       ogTitle);
-      setMeta("og:description", ogDesc);
-      setMeta("og:url",         ogUrl);
-      setMeta("og:type",        "article");
-      setMeta("og:site_name",   "Verdad Score");
-      setMeta("twitter:card",        "summary", true);
-      setMeta("twitter:title",       ogTitle,   true);
-      setMeta("twitter:description", ogDesc,    true);
-      setMeta("description",         ogDesc,    true);
-      document.getElementById("share-loading").style.display = "none";
-      document.getElementById("share-card").style.display   = "block";
-
-      document.getElementById("sc-score").textContent   = score;
-      document.getElementById("sc-score").style.color   = color;
-      document.getElementById("sc-verdict").textContent = verdict;
-      document.getElementById("sc-verdict").style.color = color;
-      document.getElementById("sc-outlet").textContent  = outlet ? outlet.toUpperCase() : "";
-      document.getElementById("sc-outlet").style.display = outlet ? "block" : "none";
-      document.getElementById("sc-title").textContent   = title;
-      document.getElementById("sc-summary").textContent = d.summary || "";
-
-      // Detect report vs article scan
-      const d2 = d.result_json || d;
-      const isReport = d2.is_report === true;
-      if (isReport) document.getElementById("sc-summary").style.display = "none";
-
-      if (isReport) {
-        const vciCol = s => s >= 82 ? "#22C55E" : s >= 65 ? "#F59E0B" : "#EF4444";
-        const rj = d2;
-        const gap = rj.credibility_gap || 0;
-
-        const statsHtml = `
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;">
-            <div style="text-align:center;padding:12px;background:rgba(59,130,246,0.05);border-radius:6px;border:1px solid #1E293B;">
-              <div style="font-size:28px;font-weight:700;color:#3B82F6;font-family:'DM Mono';">${rj.articles_analysed}</div>
-              <div style="font-size:9px;color:#64748B;font-family:'DM Mono';letter-spacing:1px;">ARTICLES</div>
-            </div>
-            <div style="text-align:center;padding:12px;background:rgba(59,130,246,0.05);border-radius:6px;border:1px solid #1E293B;">
-              <div style="font-size:28px;font-weight:700;color:${vciCol(rj.avg_vci)};font-family:'DM Mono';">${rj.avg_vci}</div>
-              <div style="font-size:9px;color:#64748B;font-family:'DM Mono';letter-spacing:1px;">AVG VCI</div>
-            </div>
-            <div style="text-align:center;padding:12px;background:rgba(59,130,246,0.05);border-radius:6px;border:1px solid #1E293B;">
-              <div style="font-size:28px;font-weight:700;color:#EF4444;font-family:'DM Mono';">${rj.blacklisted}</div>
-              <div style="font-size:9px;color:#64748B;font-family:'DM Mono';letter-spacing:1px;">BLACKLISTED</div>
-            </div>
-            <div style="text-align:center;padding:12px;background:rgba(59,130,246,0.05);border-radius:6px;border:1px solid #1E293B;">
-              <div style="font-size:28px;font-weight:700;color:${gap > 5 ? "#EF4444" : "#22C55E"};font-family:'DM Mono';">${gap > 0 ? "\u2212" : "+"}${Math.abs(gap)}</div>
-              <div style="font-size:9px;color:#64748B;font-family:'DM Mono';letter-spacing:1px;">CRED GAP</div>
-            </div>
-          </div>`;
-
-        const narrativeHtml = rj.narrative ? `
-          <div style="margin-bottom:24px;">
-            <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">EXECUTIVE SUMMARY</div>
-            <div style="font-size:13px;color:#94A3B8;line-height:1.8;">${rj.narrative.replace(/^#+\s*/gm,"").replace(/\*\*/g,"").trim()}</div>
-          </div>` : "";
-
-        const patternsHtml = rj.patterns && rj.patterns.length ? `
-          <div style="margin-bottom:24px;padding:16px;background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:6px;">
-            <div style="font-family:'DM Mono';font-size:9px;color:#EF4444;letter-spacing:0.1em;margin-bottom:10px;">PATTERNS DETECTED</div>
-            ${rj.patterns.map(p => `<div style="font-size:12px;color:#E2E8F0;padding:8px 0;border-bottom:1px solid #1E293B;">${p}</div>`).join("")}
-          </div>` : "";
-
-        const authorsHtml = rj.authors && rj.authors.length ? `
-          <div style="margin-bottom:24px;">
-            <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">AUTHOR CREDIBILITY BREAKDOWN</div>
-            ${rj.authors.slice(0,10).map(a => `
-              <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #1E293B;">
-                <div style="font-size:18px;font-weight:700;color:${vciCol(a.avg_vci)};font-family:'DM Mono';width:40px;text-align:center;">${a.avg_vci}</div>
-                <div style="flex:1;">
-                  <div style="font-size:13px;color:#E2E8F0;font-weight:500;">${a.author}</div>
-                  <div style="font-size:10px;color:#3B82F6;font-family:'DM Mono';">${a.outlet} · ${a.article_count} articles · ${a.status}</div>
-                </div>
-                ${a.delta !== null && a.delta !== undefined ? `<div style="font-size:10px;font-family:'DM Mono';color:${a.delta > 0 ? "#22C55E" : "#EF4444"};">${a.delta > 0 ? "+" : ""}${a.delta} vs overall</div>` : ""}
-              </div>`).join("")}
-          </div>` : "";
-
-        const compHtml = rj.comparison && rj.comparison.length ? `
-          <div style="margin-bottom:24px;">
-            <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">COMPARISON COVERAGE</div>
-            ${rj.comparison.map(c => `
-              <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #1E293B;">
-                <div style="font-size:16px;font-weight:700;color:${vciCol(c.vci_score)};font-family:'DM Mono';width:36px;text-align:center;">${Math.round(c.vci_score)}</div>
-                <div style="flex:1;">
-                  <div style="font-size:12px;color:#E2E8F0;">${(c.title||"").slice(0,70)}</div>
-                  <div style="font-size:10px;color:#3B82F6;font-family:'DM Mono';">${c.outlet}</div>
-                </div>
-              </div>`).join("")}
-          </div>` : "";
-
-        document.getElementById("sc-full-report").innerHTML =
-          "<div style='border-top:1px solid #1E293B;padding-top:24px;'>" +
-          statsHtml + narrativeHtml + patternsHtml + authorsHtml + compHtml +
-          "</div>";
-
-        document.getElementById("sc-outlet").textContent = "NARRATIVE INTELLIGENCE REPORT";
-        document.getElementById("sc-outlet").style.display = "block";
-
-      } else {
-
-      // Render full report (article scan)
-      const d2_orig = d2;
-      const f  = d2.framing || {};
-      const credColor = c => c === "HIGH" ? "#22C55E" : c === "MEDIUM" ? "#F59E0B" : "#EF4444";
-      const typeColor = t => t === "STATE_MEDIA" || t === "ANONYMOUS" ? "#F59E0B" : t === "EXPERT" || t === "GOVERNMENT" ? "#22C55E" : "#64748B";
-
-      document.getElementById("sc-full-report").innerHTML = `
-        <div style="border-top:1px solid #1E293B;padding-top:24px;">
-
-          ${d2.reasoning ? `
-          <div style="font-size:13px;color:#94A3B8;line-height:1.7;margin-bottom:20px;
-            padding:14px;background:rgba(59,130,246,0.05);border-radius:6px;
-            border-left:3px solid #3B82F6;font-style:italic;">
-            ${d2.reasoning}
-          </div>` : ""}
-
-          ${d2.framing ? `
-          <div style="margin-bottom:20px;">
-            <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;
-              letter-spacing:0.1em;margin-bottom:10px;">FRAMING ANALYSIS</div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
-              ${[["SENSATIONAL", f.is_sensational], ["ONE-SIDED", f.is_one_sided], ["EMOTIONAL LANGUAGE", f.has_emotional_language]].map(([label, val]) =>
-                `<div style="background:${val ? "rgba(239,68,68,0.1)" : "rgba(34,197,94,0.1)"};
-                  border:1px solid ${val ? "rgba(239,68,68,0.3)" : "rgba(34,197,94,0.3)"};
-                  border-radius:6px;padding:10px;text-align:center;
-                  font-family:'DM Mono';font-size:9px;
-                  color:${val ? "#EF4444" : "#22C55E"};">
-                  ${val ? "⚠ " : "✓ "}${label}
-                </div>`).join("")}
-            </div>
-            ${f.narrative_push ? `
-              <div style="font-family:'DM Mono';font-size:9px;color:#F59E0B;margin-bottom:4px;">NARRATIVE PUSH</div>
-              <div style="font-size:12px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">${f.narrative_push}</div>` : ""}
-            ${f.missing_context ? `
-              <div style="font-family:'DM Mono';font-size:9px;color:#64748B;margin-bottom:4px;">MISSING CONTEXT</div>
-              <div style="font-size:12px;color:#94A3B8;line-height:1.6;">${f.missing_context}</div>` : ""}
-          </div>` : ""}
-
-          ${d2.sources && d2.sources.length ? `
-          <div style="margin-bottom:20px;">
-            <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;
-              letter-spacing:0.1em;margin-bottom:10px;">SOURCES CITED (${d2.sources.length})</div>
-            ${d2.sources.map(s => `
-              <div style="display:flex;align-items:center;justify-content:space-between;
-                padding:8px 0;border-bottom:1px solid #1E293B;">
-                <div style="font-size:13px;color:#E2E8F0;">${s.entity}</div>
-                <div style="display:flex;gap:8px;">
-                  <span style="font-family:'DM Mono';font-size:9px;color:${typeColor(s.type)};
-                    background:${typeColor(s.type)}20;padding:2px 8px;border-radius:3px;">${s.type}</span>
-                  <span style="font-family:'DM Mono';font-size:9px;color:${credColor(s.credibility)};">${s.credibility}</span>
-                </div>
-              </div>`).join("")}
-          </div>` : ""}
-
-          ${d2.claims && d2.claims.length ? `
-          <div style="margin-bottom:20px;">
-            <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;
-              letter-spacing:0.1em;margin-bottom:10px;">KEY CLAIMS</div>
-            ${d2.claims.map((c, i) => `
-              <div style="display:flex;gap:10px;margin-bottom:8px;">
-                <span style="font-family:'DM Mono';font-size:9px;color:#3B82F6;min-width:20px;">${i+1}.</span>
-                <div style="font-size:12px;color:#94A3B8;line-height:1.6;">${c}</div>
-              </div>`).join("")}
-          </div>` : ""}
-
-          <div style="text-align:center;margin-top:8px;">
-            <a href="https://app.verdadscore.com" style="font-family:'DM Mono';
-              font-size:11px;color:#3B82F6;letter-spacing:0.08em;text-decoration:none;">
-              VIEW FULL DASHBOARD →
-            </a>
-          </div>
-          <div style="text-align:center;margin-top:8px;">
-            <button id="share-btn" onclick="showShareUrl()" style="background:transparent;border:1px solid #1E293B;color:#64748B;padding:6px 16px;border-radius:4px;font-family:'DM Mono';font-size:10px;cursor:pointer;letter-spacing:0.08em;">↗ SHARE RESULT</button>
-            <div id="share-url-display" style="display:none;margin-top:8px;font-family:'DM Mono';font-size:10px;color:#3B82F6;word-break:break-all;"></div>
-          </div>
-        </div>`;
-
-      } // end else (article scan)
-
-      // Copy link button
-      document.getElementById("sc-copy").addEventListener("click", () => {
-        const copyBtn = document.getElementById("sc-copy");
-        copyToClipboard(window.location.href, copyBtn, "✓ COPIED", "COPY LINK");
-      });
-
-      // Scan your own button
-      document.getElementById("sc-scan").addEventListener("click", () => {
-        window.location.href = "/#scan";
-      });
-    })
-    .catch(() => {
-      document.getElementById("share-loading").textContent = "Failed to load result.";
-    });
-
-  // Show share UI, hide normal page
-  document.addEventListener("DOMContentLoaded", () => {
-    // Minimal nav — hide links and dual CTA, show only logo + sign in
-    document.querySelector(".nav-links").style.display  = "none";
-    document.querySelector(".nav-cta").innerHTML        = '<a href="https://app.verdadscore.com"><button class="btn-primary" style="font-size:13px;padding:8px 20px;">Sign In</button></a>';
-    document.querySelector(".hero").style.display       = "none";
-    document.querySelectorAll("section").forEach(s => s.style.display = "none");
-    document.querySelector(".signup-section").style.display = "none";
-    document.querySelector("footer").style.display      = "none";
-    document.getElementById("share-view").style.display = "flex";
-  });
-})();
-</script>
-
-<!-- SHARE VIEW (hidden by default) -->
-<div id="share-view" style="display:none;flex-direction:column;align-items:center;
-  justify-content:center;min-height:80vh;padding:100px 24px 60px;background:var(--bg);">
-
-  <div id="share-loading" style="font-family:'DM Mono',monospace;font-size:12px;
-    color:var(--muted);letter-spacing:0.1em;">LOADING RESULT...</div>
-
-  <div id="share-card" style="display:none;max-width:680px;width:100%;margin:0 auto;">
-    <!-- Header -->
-    <div style="text-align:center;margin-bottom:32px;">
-      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue);letter-spacing:0.1em;margin-bottom:16px;">VERDAD SCORE · CREDIBILITY REPORT</div>
-      <div id="sc-score" style="font-family:'Bebas Neue',sans-serif;font-size:120px;
-        line-height:1;margin-bottom:0;"></div>
-      <div id="sc-verdict" style="font-family:'DM Mono',monospace;font-size:14px;
-        letter-spacing:0.2em;margin-bottom:16px;"></div>
-      <div id="sc-outlet" style="font-family:'DM Mono',monospace;font-size:10px;
-        color:var(--blue);letter-spacing:0.12em;margin-bottom:10px;"></div>
-      <div id="sc-title" style="font-size:18px;font-weight:600;color:var(--text);
-        line-height:1.4;margin-bottom:16px;"></div>
-      <div id="sc-summary" style="font-size:14px;color:var(--muted);line-height:1.7;
-        margin-bottom:32px;"></div>
+<!-- SHARE MODAL -->
+<div id="share-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;align-items:center;justify-content:center;">
+  <div style="background:#0D1521;border:1px solid #1E293B;border-radius:10px;padding:24px;width:340px;max-width:90vw;position:relative;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:#E2E8F0;letter-spacing:0.1em;">SHARE RESULT</span>
+      <button onclick="closeShareModal()" style="background:transparent;border:none;color:#64748B;font-size:20px;cursor:pointer;line-height:1;">×</button>
     </div>
-
-        <div id="sc-full-report" style="margin-bottom:20px;"></div>
-
-    <!-- Actions -->
-    <div style="display:flex;gap:10px;justify-content:center;">
-      <button id="sc-copy" style="background:transparent;border:1px solid var(--border);
-        color:var(--muted);padding:10px 20px;border-radius:5px;
-        font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;
-        letter-spacing:0.08em;transition:all 0.2s;">COPY LINK</button>
-      <button id="sc-scan" style="background:transparent;border:1px solid var(--border);
-        color:var(--muted);padding:10px 20px;border-radius:5px;
-        font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;
-        letter-spacing:0.08em;transition:all 0.2s;">SCAN YOUR OWN →</button>
+    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;">
+      <a id="sm-whatsapp" href="#" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:18px;">💬</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">WHATSAPP</span>
+      </a>
+      <a id="sm-x" href="#" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#000;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">𝕏</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">X</span>
+      </a>
+      <a id="sm-facebook" href="#" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#1877F2;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">f</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">FACEBOOK</span>
+      </a>
+      <a id="sm-linkedin" href="#" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#0A66C2;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">in</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">LINKEDIN</span>
+      </a>
+      <a id="sm-reddit" href="#" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#FF4500;display:flex;align-items:center;justify-content:center;font-size:18px;">👽</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">REDDIT</span>
+      </a>
+      <a id="sm-email" href="#" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
+        <div style="width:48px;height:48px;border-radius:24px;background:#64748B;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;">✉</div>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">EMAIL</span>
+      </a>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;background:#080E1A;border:1px solid #1E293B;border-radius:6px;padding:8px 12px;">
+      <span id="sm-url" style="font-family:'DM Mono',monospace;font-size:10px;color:#64748B;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+      <button id="sm-copy-btn" onclick="copyShareModalUrl()" style="background:#3B82F6;border:none;color:#fff;border-radius:4px;padding:4px 12px;cursor:pointer;font-family:'DM Mono',monospace;font-size:9px;white-space:nowrap;">COPY</button>
     </div>
   </div>
 </div>
 
-
 <!-- AUTH MODAL -->
-<div id="auth-modal" style="display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,0.75);z-index:999;
-  align-items:center;justify-content:center;">
-  <div style="background:#0D1521;border:1px solid #1E293B;border-radius:12px;
-    padding:40px;max-width:420px;width:90%;position:relative;">
-
-    <!-- Close -->
-    <button onclick="closeAuthModal()" style="position:absolute;top:16px;right:16px;
-      background:transparent;border:none;color:#64748B;font-size:20px;cursor:pointer;">✕</button>
-
-    <!-- Brand -->
+<div id="auth-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;align-items:center;justify-content:center;">
+  <div style="background:#0D1521;border:1px solid #1E293B;border-radius:12px;padding:40px;max-width:420px;width:90%;position:relative;">
+    <button onclick="closeAuthModal()" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:#64748B;font-size:20px;cursor:pointer;">✕</button>
     <div style="text-align:center;margin-bottom:28px;">
-      <div style="width:40px;height:40px;background:#3B82F6;border-radius:8px;
-        display:flex;align-items:center;justify-content:center;
-        font-family:'Bebas Neue';font-size:22px;color:white;margin:0 auto 12px;">V</div>
-      <div id="auth-title" style="font-size:20px;font-weight:700;color:#E2E8F0;margin-bottom:4px;">
-        Create account
-      </div>
-      <div id="auth-sub" style="font-size:13px;color:#64748B;">
-        Unlock your full credibility report
-      </div>
+      <div style="width:40px;height:40px;background:#3B82F6;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:22px;color:white;margin:0 auto 12px;">V</div>
+      <div id="auth-title" style="font-size:20px;font-weight:700;color:#E2E8F0;margin-bottom:4px;">Create account</div>
+      <div id="auth-sub" style="font-size:13px;color:#64748B;">Unlock your full credibility report</div>
     </div>
-
-    <!-- Google OAuth -->
-    <button onclick="signInWithGoogle()" style="width:100%;display:flex;align-items:center;
-      justify-content:center;gap:10px;padding:12px;background:#111827;
-      border:1px solid #1E293B;border-radius:6px;color:#E2E8F0;
-      font-family:'DM Sans';font-size:14px;cursor:pointer;margin-bottom:16px;">
+    <button onclick="signInWithGoogle()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:12px;background:#111827;border:1px solid #1E293B;border-radius:6px;color:#E2E8F0;font-family:'DM Sans';font-size:14px;cursor:pointer;margin-bottom:16px;">
       <span style="font-weight:700">G</span> Continue with Google
     </button>
-
-    <!-- Divider -->
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
       <div style="flex:1;height:1px;background:#1E293B;"></div>
       <span style="font-family:'DM Mono';font-size:10px;color:#475569;">OR</span>
       <div style="flex:1;height:1px;background:#1E293B;"></div>
     </div>
-
-    <!-- Email/password -->
-    <input id="auth-email" type="email" placeholder="your@email.com"
-      style="width:100%;background:#111827;border:1px solid #1E293B;border-radius:6px;
-      padding:12px 16px;color:#E2E8F0;font-family:'DM Sans';font-size:14px;
-      outline:none;margin-bottom:10px;box-sizing:border-box;" />
-    <input id="auth-password" type="password" placeholder="Password"
-      style="width:100%;background:#111827;border:1px solid #1E293B;border-radius:6px;
-      padding:12px 16px;color:#E2E8F0;font-family:'DM Sans';font-size:14px;
-      outline:none;margin-bottom:10px;box-sizing:border-box;" />
-
-    <div id="auth-error" style="font-family:'DM Mono';font-size:11px;color:#EF4444;
-      margin-bottom:10px;display:none;"></div>
-    <div id="auth-msg" style="font-family:'DM Mono';font-size:11px;color:#22C55E;
-      margin-bottom:10px;display:none;"></div>
-
-    <button id="auth-submit" onclick="submitAuth()"
-      style="width:100%;padding:13px;background:#3B82F6;border:none;border-radius:6px;
-      color:white;font-family:'DM Sans';font-size:15px;font-weight:600;cursor:pointer;
-      margin-bottom:16px;">
-      Create Account
-    </button>
-
+    <input id="auth-email" type="email" placeholder="your@email.com" style="width:100%;background:#111827;border:1px solid #1E293B;border-radius:6px;padding:12px 16px;color:#E2E8F0;font-family:'DM Sans';font-size:14px;outline:none;margin-bottom:10px;box-sizing:border-box;" />
+    <input id="auth-password" type="password" placeholder="Password" style="width:100%;background:#111827;border:1px solid #1E293B;border-radius:6px;padding:12px 16px;color:#E2E8F0;font-family:'DM Sans';font-size:14px;outline:none;margin-bottom:10px;box-sizing:border-box;" />
+    <div id="auth-error" style="font-family:'DM Mono';font-size:11px;color:#EF4444;margin-bottom:10px;display:none;"></div>
+    <div id="auth-msg" style="font-family:'DM Mono';font-size:11px;color:#22C55E;margin-bottom:10px;display:none;"></div>
+    <button id="auth-submit" onclick="submitAuth()" style="width:100%;padding:13px;background:#3B82F6;border:none;border-radius:6px;color:white;font-family:'DM Sans';font-size:15px;font-weight:600;cursor:pointer;margin-bottom:16px;">Create Account</button>
     <div style="text-align:center;font-size:13px;color:#64748B;">
       <span id="auth-toggle-text">Already registered?</span>
-      <a onclick="toggleAuthMode()" href="#"
-        style="color:#3B82F6;text-decoration:none;margin-left:4px;"
-        id="auth-toggle-link">Sign in</a>
+      <a onclick="toggleAuthMode()" href="#" style="color:#3B82F6;margin-left:4px;" id="auth-toggle-link">Sign in</a>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE VIEW (for /share/ URLs) -->
+<div id="share-view" style="display:none;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;padding:100px 24px 60px;background:var(--bg);">
+  <div id="share-loading" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:0.1em;">LOADING RESULT...</div>
+  <div id="share-card" style="display:none;max-width:680px;width:100%;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue);letter-spacing:0.1em;margin-bottom:16px;">VERDAD SCORE · CREDIBILITY REPORT</div>
+      <div id="sc-score" style="font-family:'Bebas Neue',sans-serif;font-size:120px;line-height:1;margin-bottom:0;"></div>
+      <div id="sc-verdict" style="font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.2em;margin-bottom:16px;"></div>
+      <div id="sc-outlet" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:0.12em;margin-bottom:10px;"></div>
+      <div id="sc-title" style="font-size:18px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:16px;"></div>
+      <div id="sc-summary" style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:32px;"></div>
+    </div>
+    <div id="sc-full-report" style="margin-bottom:20px;"></div>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button id="sc-copy" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:10px 20px;border-radius:5px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;letter-spacing:0.08em;">COPY LINK</button>
+      <button id="sc-scan" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:10px 20px;border-radius:5px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;letter-spacing:0.08em;">SCAN YOUR OWN →</button>
     </div>
   </div>
 </div>
 
 <script>
+const API = "https://coldfact.up.railway.app";
 const SUPABASE_URL  = "https://wmdyapgjerjhrtdvbuxq.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtZHlhcGdqZXJqaHJ0ZHZidXhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0ODU5NjIsImV4cCI6MjA4ODA2MTk2Mn0.qSW5P7jrgxZg2WTD3Xc3QdarZz_FOPlOvr3usQAkIp8";
 
+// ── AUTH STATE ────────────────────────────────────────────────
+function getAuthUser() {
+  try { return JSON.parse(localStorage.getItem("vs_user")); } catch { return null; }
+}
+
+function updateNavAuth() {
+  const user  = getAuthUser();
+  const token = localStorage.getItem("vs_token");
+  const cta   = document.getElementById("nav-cta");
+  if (!cta) return;
+
+  if (user && token) {
+    const email    = user.email || "";
+    const initials = email.slice(0,2).toUpperCase();
+    cta.innerHTML = `
+      <div class="profile-menu" id="profile-menu">
+        <button class="profile-btn" onclick="toggleProfileMenu()">
+          <div class="profile-avatar">${initials}</div>
+          <span>${email.split("@")[0]}</span>
+          <span style="font-size:10px;color:var(--muted);">▾</span>
+        </button>
+        <div class="profile-dropdown" id="profile-dropdown">
+          <a href="https://app.verdadscore.com">Dashboard</a>
+          <a href="https://app.verdadscore.com#scan-history">Scan History</a>
+          <a href="https://app.verdadscore.com#profile">Edit Profile</a>
+          <button class="signout" onclick="signOut()">Sign Out</button>
+        </div>
+      </div>`;
+  } else {
+    cta.innerHTML = `
+      <a href="https://app.verdadscore.com"><button class="btn-ghost">Sign In</button></a>
+      <a href="https://app.verdadscore.com"><button class="btn-primary">Start Free</button></a>`;
+  }
+}
+
+function toggleProfileMenu() {
+  const dd = document.getElementById("profile-dropdown");
+  if (dd) dd.classList.toggle("open");
+}
+
+// Close dropdown when clicking outside
+document.addEventListener("click", function(e) {
+  const menu = document.getElementById("profile-menu");
+  if (menu && !menu.contains(e.target)) {
+    const dd = document.getElementById("profile-dropdown");
+    if (dd) dd.classList.remove("open");
+  }
+});
+
+function signOut() {
+  localStorage.removeItem("vs_token");
+  localStorage.removeItem("vs_user");
+  localStorage.removeItem("vs_share_url");
+  localStorage.removeItem("vs_pending_scan");
+  updateNavAuth();
+}
+
+// ── PRICING TOGGLE ────────────────────────────────────────────
+function setPricingCycle(cycle) {
+  document.getElementById("toggle-monthly").classList.toggle("active", cycle === "monthly");
+  document.getElementById("toggle-annual").classList.toggle("active", cycle === "annual");
+
+  if (cycle === "monthly") {
+    document.getElementById("reader-price").textContent  = "$10";
+    document.getElementById("reader-period").textContent = "per month";
+    document.getElementById("analyst-price").textContent  = "$29";
+    document.getElementById("analyst-period").textContent = "per month";
+    document.getElementById("org-price").textContent  = "$299";
+    document.getElementById("org-period").textContent = "per month";
+  } else {
+    document.getElementById("reader-price").textContent  = "$90";
+    document.getElementById("reader-period").textContent = "per year · save $30";
+    document.getElementById("analyst-price").textContent  = "$290";
+    document.getElementById("analyst-period").textContent = "per year · save $58";
+    document.getElementById("org-price").textContent  = "Contact";
+    document.getElementById("org-period").textContent = "annual billing via invoice";
+  }
+}
+
+// ── LIVE STATS ────────────────────────────────────────────────
+fetch(API + "/health")
+  .then(r => r.json())
+  .then(d => {
+    if (d.article_count) {
+      const count = d.article_count.toLocaleString();
+      document.getElementById("stat-articles").textContent = count;
+      document.getElementById("hero-article-count").textContent = d.article_count.toLocaleString() + "+";
+    }
+  }).catch(() => {});
+
+fetch(API + "/clusters?verdict=CONTESTED&per_page=1")
+  .then(r => r.json())
+  .then(d => {
+    if (d.total !== undefined) {
+      document.getElementById("stat-contested").textContent = d.total;
+    }
+  }).catch(() => {});
+
+// ── SCAN TAB SWITCHING ────────────────────────────────────────
+function switchTab(tab) {
+  const urlRow  = document.getElementById("input-url-row");
+  const textRow = document.getElementById("input-text-row");
+  const tabUrl  = document.getElementById("tab-url");
+  const tabText = document.getElementById("tab-text");
+  if (tab === "url") {
+    urlRow.style.display  = "flex";
+    textRow.style.display = "none";
+    tabUrl.style.borderColor  = "#3B82F6"; tabUrl.style.color  = "#3B82F6"; tabUrl.style.background  = "#1E293B";
+    tabText.style.borderColor = "#334155"; tabText.style.color = "#64748B"; tabText.style.background = "transparent";
+  } else {
+    urlRow.style.display  = "none";
+    textRow.style.display = "block";
+    tabText.style.borderColor = "#3B82F6"; tabText.style.color = "#3B82F6"; tabText.style.background = "#1E293B";
+    tabUrl.style.borderColor  = "#334155"; tabUrl.style.color  = "#64748B"; tabUrl.style.background  = "transparent";
+  }
+}
+
+function updateCharCount() {
+  const text  = document.getElementById("scan-text").value;
+  const words = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+  const counter = document.getElementById("char-count");
+  counter.textContent = words;
+  counter.style.color = words > 500 ? "#EF4444" : "var(--muted)";
+  if (words > 500) {
+    document.getElementById("scan-text").value = text.trim().split(/\s+/).slice(0, 500).join(" ");
+    counter.textContent = 500;
+  }
+}
+
+// ── SCAN ──────────────────────────────────────────────────────
+async function runScan() {
+  const loading  = document.getElementById("scan-loading");
+  const result   = document.getElementById("scan-result");
+  const statusEl = document.getElementById("scan-status");
+
+  loading.classList.add("visible");
+  result.classList.remove("visible");
+
+  const messages = ["Fetching article...", "Analysing content...", "Checking fact databases...", "Calculating VCI score..."];
+  let mi = 0;
+  const interval = setInterval(() => { statusEl.textContent = messages[mi % messages.length]; mi++; }, 1200);
+
+  try {
+    const isText = document.getElementById("input-text-row").style.display !== "none";
+    const body   = isText
+      ? { text: document.getElementById("scan-text").value.trim() }
+      : { url:  document.getElementById("scan-url").value.trim() };
+
+    const res  = await fetch(API + "/scan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const data = await res.json();
+    clearInterval(interval);
+    loading.classList.remove("visible");
+
+    if (res.ok) {
+      const score   = Math.round(data.vci_score || 70);
+      const verdict = data.verdict || "At Risk";
+      const color   = score >= 82 ? "var(--green)" : score >= 65 ? "var(--yellow)" : "var(--red)";
+
+      document.getElementById("res-vci").textContent = score;
+      document.getElementById("res-vci").style.color = color;
+      document.getElementById("res-verdict").textContent = verdict.toUpperCase();
+      document.getElementById("res-verdict").style.color = color;
+
+      const outletEl = document.getElementById("res-outlet");
+      if (data.outlet && data.outlet !== "Unknown") {
+        outletEl.textContent   = data.outlet.toUpperCase();
+        outletEl.style.display = "block";
+      } else {
+        outletEl.style.display = "none";
+      }
+      document.getElementById("res-title").textContent = data.title || "";
+      localStorage.setItem("vs_pending_scan", JSON.stringify(data));
+
+      fetch(API + "/share", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ vci_score: Math.round(data.vci_score || 0), verdict: data.verdict || "", outlet: data.outlet || null, title: data.title || null, summary: data.summary || null, result_json: data }),
+      }).then(r => r.json()).then(d => { if (d.url) localStorage.setItem("vs_share_url", d.url); }).catch(() => {});
+
+      result.classList.add("visible");
+
+      const hasDeepAnalysis = data.framing || (data.sources && data.sources.length) || (data.claims && data.claims.length);
+      const isUrlScan = document.getElementById("input-url-row").style.display !== "none";
+      const existingHint = document.getElementById("partial-result-hint");
+      if (existingHint) existingHint.remove();
+      if (isUrlScan && !hasDeepAnalysis) {
+        const hint = document.createElement("div");
+        hint.id = "partial-result-hint";
+        hint.style.cssText = "margin-top:12px;padding:10px 14px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:6px;display:flex;align-items:flex-start;gap:10px;";
+        hint.innerHTML = `<span style="color:#F59E0B;font-size:14px;flex-shrink:0;">⚠</span><span style="font-family:'DM Mono';font-size:10px;color:#94A3B8;line-height:1.6;">This site restricted full content access. <a onclick="switchTab('text')" href="#" style="color:#3B82F6;">Paste the article text</a> for a complete analysis.</span>`;
+        document.getElementById("scan-result").appendChild(hint);
+      }
+    } else {
+      const detail = data.detail;
+      statusEl.textContent = (typeof detail === "object" && detail.suggestion) ? detail.suggestion : "Could not scan this URL. Try pasting the article text instead.";
+      loading.classList.add("visible");
+    }
+  } catch(e) {
+    clearInterval(interval);
+    loading.classList.remove("visible");
+    statusEl.textContent = "Scan failed. Please try again.";
+    loading.classList.add("visible");
+  }
+}
+
+document.getElementById("scan-url").addEventListener("keydown", e => { if (e.key === "Enter") runScan(); });
+
+// ── SHARE MODAL ───────────────────────────────────────────────
+function openShareModal(url) {
+  const modal = document.getElementById("share-modal");
+  const urlEl = document.getElementById("sm-url");
+  if (!modal || !url) return;
+  urlEl.textContent = url;
+  document.getElementById("sm-whatsapp").href = "https://wa.me/?text=" + encodeURIComponent("Check this credibility report: " + url);
+  document.getElementById("sm-x").href        = "https://x.com/intent/tweet?text=" + encodeURIComponent("Credibility report via @VerdadScore") + "&url=" + encodeURIComponent(url);
+  document.getElementById("sm-facebook").href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
+  document.getElementById("sm-linkedin").href = "https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(url);
+  document.getElementById("sm-reddit").href   = "https://www.reddit.com/submit?url=" + encodeURIComponent(url) + "&title=" + encodeURIComponent("Credibility Report — Verdad Score");
+  document.getElementById("sm-email").href    = "mailto:?subject=" + encodeURIComponent("Credibility Report — Verdad Score") + "&body=" + encodeURIComponent("Check this credibility report: " + url);
+  modal.style.display = "flex";
+  modal.onclick = function(e) { if (e.target === modal) closeShareModal(); };
+}
+
+function closeShareModal() { document.getElementById("share-modal").style.display = "none"; }
+
+function copyShareModalUrl() {
+  const url = document.getElementById("sm-url").textContent;
+  const btn = document.getElementById("sm-copy-btn");
+  copyToClipboard(url, btn, "✓ COPIED", "COPY");
+}
+
+function showShareUrl() {
+  const url = localStorage.getItem("vs_share_url");
+  if (url) { openShareModal(url); }
+}
+
+function copyToClipboard(text, feedbackEl, successMsg, resetMsg) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => {
+      if (feedbackEl) { feedbackEl.textContent = successMsg; setTimeout(() => { feedbackEl.textContent = resetMsg; }, 2500); }
+    }).catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+    if (feedbackEl) { feedbackEl.textContent = successMsg; setTimeout(() => { feedbackEl.textContent = resetMsg; }, 2500); }
+  }
+}
+
+function fallbackCopy(text) {
+  const el = document.createElement("textarea");
+  el.value = text; el.style.cssText = "position:fixed;top:-9999px;left:-9999px;";
+  document.body.appendChild(el); el.focus(); el.select();
+  try { document.execCommand("copy"); } catch(e) {}
+  document.body.removeChild(el);
+}
+
+// ── AUTH MODAL ────────────────────────────────────────────────
 let authMode = "signup";
 
 function openAuthModal(mode) {
   authMode = mode || "signup";
   updateAuthMode();
   document.getElementById("auth-modal").style.display = "flex";
-  // Reset modal to default state
   document.getElementById("auth-email").style.display    = "block";
-  document.querySelector("[onclick='signInWithGoogle()']").style.display = "block";
+  document.getElementById("auth-password").style.display = "block";
+  document.getElementById("auth-submit").style.display   = "block";
   document.getElementById("auth-submit").onclick = submitAuth;
   document.getElementById("auth-toggle-text").style.display = "inline";
   document.getElementById("auth-toggle-link").style.display = "inline";
@@ -1485,9 +1172,7 @@ function openAuthModal(mode) {
   document.getElementById("auth-msg").style.display   = "none";
 }
 
-function closeAuthModal() {
-  document.getElementById("auth-modal").style.display = "none";
-}
+function closeAuthModal() { document.getElementById("auth-modal").style.display = "none"; }
 
 function toggleAuthMode() {
   authMode = authMode === "signup" ? "signin" : "signup";
@@ -1517,42 +1202,32 @@ async function submitAuth() {
 
   errEl.style.display = "none";
   msgEl.style.display = "none";
-  btn.textContent     = "Please wait...";
-  btn.disabled        = true;
+  btn.textContent = "Please wait...";
+  btn.disabled    = true;
 
   try {
     const endpoint = authMode === "signup"
       ? `${SUPABASE_URL}/auth/v1/signup`
       : `${SUPABASE_URL}/auth/v1/token?grant_type=password`;
 
-    const res  = await fetch(endpoint, {
-      method: "POST",
-      headers: { "apikey": SUPABASE_ANON, "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    const res  = await fetch(endpoint, { method: "POST", headers: { "apikey": SUPABASE_ANON, "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) });
     const data = await res.json();
 
     if (data.error || data.error_description) {
       errEl.textContent   = data.error_description || data.error;
       errEl.style.display = "block";
     } else if (authMode === "signup" && !data.access_token) {
-      // Email confirmation required — clear fields, show message only
-      document.getElementById("auth-email").value    = "";
-      document.getElementById("auth-password").value = "";
       document.getElementById("auth-email").style.display    = "none";
       document.getElementById("auth-password").style.display = "none";
       document.getElementById("auth-submit").style.display   = "none";
-      document.getElementById("forgot-link") && (document.getElementById("forgot-link").style.display = "none");
       document.querySelector("[onclick='signInWithGoogle()']").style.display = "none";
       document.getElementById("auth-title").textContent = "Check your email";
       document.getElementById("auth-sub").textContent   = "Click the confirmation link we sent you, then come back and sign in.";
-      msgEl.textContent   = "";
-      msgEl.style.display = "none";
     } else if (data.access_token) {
-      // Signed in — unlock the result
       localStorage.setItem("vs_token", data.access_token);
       localStorage.setItem("vs_user", JSON.stringify(data.user));
       closeAuthModal();
+      updateNavAuth();
       unlockResult();
       localStorage.removeItem("vs_pending_scan");
     }
@@ -1565,72 +1240,111 @@ async function submitAuth() {
   btn.disabled    = false;
 }
 
-function landingShareResult() {
-  const btn = document.getElementById("landing-share-btn");
-  const url = (btn && btn.getAttribute("data-share-url")) || localStorage.getItem("vs_share_url");
-  if (!url) {
-    const display = document.getElementById("landing-share-url");
-    if (display) { display.style.display = "block"; display.textContent = "No share link available — try scanning again."; }
-    return;
-  }
-  openShareModal(url);
+function addForgotPassword() {
+  const existing = document.getElementById("forgot-link");
+  if (existing) return;
+  const el = document.createElement("div");
+  el.id = "forgot-link";
+  el.style.cssText = "text-align:center;margin-top:-8px;margin-bottom:10px;";
+  el.innerHTML = `<a onclick="submitForgotPassword()" href="#" style="font-family:'DM Mono';font-size:10px;color:#475569;text-decoration:none;letter-spacing:0.08em;">FORGOT PASSWORD?</a>`;
+  document.getElementById("auth-submit").before(el);
 }
 
-// On page load — check if user just confirmed email and has a pending share URL
-(function() {
-  const shareUrl = localStorage.getItem("vs_share_url");
-  const token    = localStorage.getItem("vs_token");
-  if (shareUrl && !token) {
-    // No token yet but share URL exists — user just confirmed, Supabase will have set a session
-    // Check if Supabase session exists via cookie by trying to get the user
-    fetch("https://wmdyapgjerjhrtdvbuxq.supabase.co/auth/v1/user", {
-      headers: {
-        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtZHlhcGdqZXJqaHJ0ZHZidXhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0ODU5NjIsImV4cCI6MjA4ODA2MTk2Mn0.qSW5P7jrgxZg2WTD3Xc3QdarZz_FOPlOvr3usQAkIp8",
-      }
-    }).then(r => r.json()).then(u => {
-      if (u.id) {
-        localStorage.removeItem("vs_share_url");
-        localStorage.removeItem("vs_pending_scan");
-        window.location.href = shareUrl;
-      }
-    }).catch(() => {});
-  }
-})();
+async function submitForgotPassword() {
+  const email = document.getElementById("auth-email").value.trim();
+  const errEl = document.getElementById("auth-error");
+  const msgEl = document.getElementById("auth-msg");
+  if (!email) { errEl.textContent = "Enter your email address first."; errEl.style.display = "block"; return; }
+  errEl.style.display = "none";
+  await fetch(`${SUPABASE_URL}/auth/v1/recover`, { method: "POST", headers: { "apikey": SUPABASE_ANON, "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
+  msgEl.textContent   = "Password reset email sent. Check your inbox.";
+  msgEl.style.display = "block";
+}
 
-// Handle Supabase redirects — OAuth, email confirmation, password reset
+function unlockResult() {
+  const result  = document.getElementById("scan-result");
+  const pending = localStorage.getItem("vs_pending_scan");
+  const data    = pending ? JSON.parse(pending) : null;
+  if (!data) return;
+
+  const score   = Math.round(data.vci_score || 70);
+  const verdict = data.verdict || "At Risk";
+  const color   = score >= 82 ? "var(--green)" : score >= 65 ? "var(--yellow)" : "var(--red)";
+
+  document.getElementById("res-vci").textContent     = score;
+  document.getElementById("res-vci").style.color     = color;
+  document.getElementById("res-verdict").textContent = verdict.toUpperCase();
+  document.getElementById("res-verdict").style.color = color;
+
+  const outletEl = document.getElementById("res-outlet");
+  if (data.outlet && data.outlet !== "Unknown") {
+    outletEl.textContent   = data.outlet.toUpperCase();
+    outletEl.style.display = "block";
+  } else { outletEl.style.display = "none"; }
+  document.getElementById("res-title").textContent = data.title || "";
+  result.classList.add("visible");
+
+  const locked = document.getElementById("res-locked");
+  if (!locked) return;
+  const f = data.framing || {};
+  const credColor = c => c === "HIGH" ? "#22C55E" : c === "MEDIUM" ? "#F59E0B" : "#EF4444";
+  const typeColor = t => t === "STATE_MEDIA" || t === "ANONYMOUS" ? "#F59E0B" : t === "EXPERT" || t === "GOVERNMENT" ? "#22C55E" : "#64748B";
+
+  locked.innerHTML = `
+    <div style="margin-top:16px;border-top:1px solid #1E293B;padding-top:16px;">
+      ${data.reasoning ? `<div style="font-size:13px;color:#94A3B8;line-height:1.7;margin-bottom:20px;padding:14px;background:rgba(59,130,246,0.05);border-radius:6px;border-left:3px solid #3B82F6;font-style:italic;">${data.reasoning}</div>` : ""}
+      ${data.framing ? `
+      <div style="margin-bottom:20px;">
+        <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">FRAMING ANALYSIS</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
+          ${[["SENSATIONAL", f.is_sensational], ["ONE-SIDED", f.is_one_sided], ["EMOTIONAL LANGUAGE", f.has_emotional_language]].map(([label, val]) =>
+            `<div style="background:${val ? "rgba(239,68,68,0.1)" : "rgba(34,197,94,0.1)"};border:1px solid ${val ? "rgba(239,68,68,0.3)" : "rgba(34,197,94,0.3)"};border-radius:6px;padding:10px;text-align:center;font-family:'DM Mono';font-size:9px;color:${val ? "#EF4444" : "#22C55E"};">${val ? "⚠ " : "✓ "}${label}</div>`).join("")}
+        </div>
+        ${f.narrative_push ? `<div style="font-family:'DM Mono';font-size:9px;color:#F59E0B;margin-bottom:4px;">NARRATIVE PUSH</div><div style="font-size:12px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">${f.narrative_push}</div>` : ""}
+        ${f.missing_context ? `<div style="font-family:'DM Mono';font-size:9px;color:#64748B;margin-bottom:4px;">MISSING CONTEXT</div><div style="font-size:12px;color:#94A3B8;line-height:1.6;">${f.missing_context}</div>` : ""}
+      </div>` : ""}
+      ${data.sources && data.sources.length ? `
+      <div style="margin-bottom:20px;">
+        <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">SOURCES CITED (${data.sources.length})</div>
+        ${data.sources.map(s => `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1E293B;"><div style="font-size:13px;color:#E2E8F0;">${s.entity}</div><div style="display:flex;gap:8px;"><span style="font-family:'DM Mono';font-size:9px;color:${typeColor(s.type)};background:${typeColor(s.type)}20;padding:2px 8px;border-radius:3px;">${s.type}</span><span style="font-family:'DM Mono';font-size:9px;color:${credColor(s.credibility)};">${s.credibility}</span></div></div>`).join("")}
+      </div>` : ""}
+      ${data.claims && data.claims.length ? `
+      <div style="margin-bottom:20px;">
+        <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">KEY CLAIMS</div>
+        ${data.claims.map((c, i) => `<div style="display:flex;gap:10px;margin-bottom:8px;"><span style="font-family:'DM Mono';font-size:9px;color:#3B82F6;min-width:20px;">${i+1}.</span><div style="font-size:12px;color:#94A3B8;line-height:1.6;">${c}</div></div>`).join("")}
+      </div>` : ""}
+      <div style="text-align:center;margin-top:24px;display:flex;flex-direction:column;gap:12px;align-items:center;">
+        <button onclick="showShareUrl()" style="background:transparent;border:1px solid #1E293B;color:#64748B;padding:8px 20px;border-radius:4px;font-family:'DM Mono';font-size:10px;cursor:pointer;letter-spacing:0.08em;">↗ SHARE RESULT</button>
+        <a href="https://app.verdadscore.com" style="font-family:'DM Mono';font-size:11px;color:#3B82F6;letter-spacing:0.08em;text-decoration:none;">VIEW FULL DASHBOARD →</a>
+      </div>
+    </div>`;
+
+  const blurred = document.getElementById("res-blurred");
+  const overlay = document.getElementById("res-unlock");
+  if (blurred) { blurred.style.filter = "none"; blurred.style.opacity = "1"; blurred.style.pointerEvents = "auto"; }
+  if (overlay) overlay.style.display = "none";
+}
+
+// ── SUPABASE AUTH REDIRECT HANDLING ───────────────────────────
 (function() {
   const hash  = new URLSearchParams(window.location.hash.slice(1));
   const token = hash.get("access_token");
   const type  = hash.get("type");
-
   if (!token) return;
-
   localStorage.setItem("vs_token", token);
   window.history.replaceState({}, "", window.location.pathname);
 
   function runWhenReady(fn) {
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", fn);
-    } else {
-      fn();
-    }
+    if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", fn); } else { fn(); }
   }
 
   if (type === "recovery") {
-    // Password reset — show reset form in modal
     runWhenReady(openResetModal);
   } else if (type === "signup") {
-    // Email confirmation — redirect to share page if available
     const shareUrl = localStorage.getItem("vs_share_url");
-    if (shareUrl) {
-      localStorage.removeItem("vs_share_url");
-      localStorage.removeItem("vs_pending_scan");
-      window.location.href = shareUrl;
-    } else {
-      runWhenReady(unlockResult);
-    }
+    if (shareUrl) { localStorage.removeItem("vs_share_url"); localStorage.removeItem("vs_pending_scan"); window.location.href = shareUrl; }
+    else { runWhenReady(unlockResult); }
   } else {
-    // Google OAuth — unlock on page
     runWhenReady(unlockResult);
   }
 })();
@@ -1641,15 +1355,10 @@ function openResetModal() {
   document.getElementById("auth-sub").textContent     = "Choose a new password for your account";
   document.getElementById("auth-submit").textContent  = "SET PASSWORD";
   document.getElementById("auth-submit").onclick      = submitReset;
-
-  // Hide email field, show only password
-  document.getElementById("auth-email").style.display    = "none";
+  document.getElementById("auth-email").style.display = "none";
   document.getElementById("auth-toggle-text").style.display = "none";
   document.getElementById("auth-toggle-link").style.display = "none";
-
-  // Swap Google button text
   document.querySelector("[onclick='signInWithGoogle()']").style.display = "none";
-  document.querySelectorAll(".auth-divider").forEach(el => el.style.display = "none");
 }
 
 async function submitReset() {
@@ -1658,369 +1367,115 @@ async function submitReset() {
   const msgEl    = document.getElementById("auth-msg");
   const btn      = document.getElementById("auth-submit");
   const token    = localStorage.getItem("vs_token");
-
-  errEl.style.display = "none";
-  msgEl.style.display = "none";
-  btn.textContent     = "Please wait...";
-  btn.disabled        = true;
-
+  errEl.style.display = "none"; msgEl.style.display = "none";
+  btn.textContent = "Please wait..."; btn.disabled = true;
   try {
-    const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-      method: "PUT",
-      headers: {
-        "apikey":        SUPABASE_ANON,
-        "Authorization": `Bearer ${token}`,
-        "Content-Type":  "application/json",
-      },
-      body: JSON.stringify({ password }),
-    });
+    const res  = await fetch(`${SUPABASE_URL}/auth/v1/user`, { method: "PUT", headers: { "apikey": SUPABASE_ANON, "Authorization": `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify({ password }) });
     const data = await res.json();
-
-    if (data.error) {
-      errEl.textContent   = data.error;
-      errEl.style.display = "block";
-    } else {
-      msgEl.textContent   = "Password updated. You are now signed in.";
-      msgEl.style.display = "block";
-      setTimeout(() => {
-        closeAuthModal();
-        unlockResult();
-      }, 1500);
-    }
-  } catch(e) {
-    errEl.textContent   = "Something went wrong. Please try again.";
-    errEl.style.display = "block";
-  }
-
-  btn.textContent = "SET PASSWORD";
-  btn.disabled    = false;
+    if (data.error) { errEl.textContent = data.error; errEl.style.display = "block"; }
+    else { msgEl.textContent = "Password updated. You are now signed in."; msgEl.style.display = "block"; setTimeout(() => { closeAuthModal(); unlockResult(); }, 1500); }
+  } catch(e) { errEl.textContent = "Something went wrong."; errEl.style.display = "block"; }
+  btn.textContent = "SET PASSWORD"; btn.disabled = false;
 }
 
-// Add forgot password link to modal
-function addForgotPassword() {
-  const existing = document.getElementById("forgot-link");
-  if (existing) return;
-  const el = document.createElement("div");
-  el.id = "forgot-link";
-  el.style.cssText = "text-align:center;margin-top:-8px;margin-bottom:10px;";
-  el.innerHTML = `<a onclick="submitForgotPassword()" href="#"
-    style="font-family:'DM Mono';font-size:10px;color:#475569;text-decoration:none;
-    letter-spacing:0.08em;">FORGOT PASSWORD?</a>`;
-  document.getElementById("auth-submit").before(el);
-}
+// ── SHARE VIEW (for /share/ URLs) ─────────────────────────────
+(function() {
+  const path = window.location.pathname;
+  if (!path.startsWith("/share/")) return;
+  const shareId = path.split("/share/")[1];
+  if (!shareId) return;
 
-async function submitForgotPassword() {
-  const email = document.getElementById("auth-email").value.trim();
-  const errEl = document.getElementById("auth-error");
-  const msgEl = document.getElementById("auth-msg");
+  fetch(API + "/share/" + shareId)
+    .then(r => r.json())
+    .then(d => {
+      if (d.detail) { document.getElementById("share-loading").textContent = "Share link not found."; return; }
 
-  if (!email) {
-    errEl.textContent   = "Enter your email address first.";
-    errEl.style.display = "block";
-    return;
-  }
+      const score   = Math.round(d.vci_score || 0);
+      const verdict = (d.verdict || "").toUpperCase();
+      const outlet  = d.outlet || "";
+      const title   = d.title  || "Article Analysis";
+      const color   = score >= 82 ? "#22C55E" : score >= 65 ? "#F59E0B" : "#EF4444";
 
-  errEl.style.display = "none";
+      document.title = `VCI ${score} — ${verdict} | Verdad Score`;
+      const setMeta = (prop, content, isName) => {
+        const attr = isName ? "name" : "property";
+        let el = document.querySelector(`meta[${attr}="${prop}"]`);
+        if (!el) { el = document.createElement("meta"); el.setAttribute(attr, prop); document.head.appendChild(el); }
+        el.setAttribute("content", content);
+      };
+      const ogTitle = `${title} — VCI ${score} ${verdict}`;
+      const ogDesc  = `Credibility score: ${score}/100 · ${verdict} · Powered by Verdad Score`;
+      setMeta("og:title", ogTitle); setMeta("og:description", ogDesc);
+      setMeta("og:url", window.location.href); setMeta("og:type", "article");
+      setMeta("og:site_name", "Verdad Score");
+      setMeta("twitter:card", "summary", true); setMeta("twitter:title", ogTitle, true);
+      setMeta("twitter:description", ogDesc, true); setMeta("description", ogDesc, true);
 
-  const res = await fetch(`${SUPABASE_URL}/auth/v1/recover`, {
-    method: "POST",
-    headers: { "apikey": SUPABASE_ANON, "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
+      document.getElementById("share-loading").style.display = "none";
+      document.getElementById("share-card").style.display   = "block";
+      document.getElementById("sc-score").textContent   = score;
+      document.getElementById("sc-score").style.color   = color;
+      document.getElementById("sc-verdict").textContent = verdict;
+      document.getElementById("sc-verdict").style.color = color;
+      document.getElementById("sc-outlet").textContent  = outlet ? outlet.toUpperCase() : "";
+      document.getElementById("sc-outlet").style.display = outlet ? "block" : "none";
+      document.getElementById("sc-title").textContent   = title;
+      document.getElementById("sc-summary").textContent = d.summary || "";
+
+      const d2 = d.result_json || d;
+      const isReport = d2.is_report === true;
+      if (isReport) document.getElementById("sc-summary").style.display = "none";
+
+      if (isReport) {
+        const vciCol = s => s >= 82 ? "#22C55E" : s >= 65 ? "#F59E0B" : "#EF4444";
+        const rj = d2; const gap = rj.credibility_gap || 0;
+        document.getElementById("sc-full-report").innerHTML = `<div style="border-top:1px solid #1E293B;padding-top:24px;">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;">
+            <div style="text-align:center;padding:12px;background:rgba(59,130,246,0.05);border-radius:6px;border:1px solid #1E293B;"><div style="font-size:28px;font-weight:700;color:#3B82F6;font-family:'DM Mono';">${rj.articles_analysed}</div><div style="font-size:9px;color:#64748B;font-family:'DM Mono';letter-spacing:1px;">ARTICLES</div></div>
+            <div style="text-align:center;padding:12px;background:rgba(59,130,246,0.05);border-radius:6px;border:1px solid #1E293B;"><div style="font-size:28px;font-weight:700;color:${vciCol(rj.avg_vci)};font-family:'DM Mono';">${rj.avg_vci}</div><div style="font-size:9px;color:#64748B;font-family:'DM Mono';letter-spacing:1px;">AVG VCI</div></div>
+            <div style="text-align:center;padding:12px;background:rgba(59,130,246,0.05);border-radius:6px;border:1px solid #1E293B;"><div style="font-size:28px;font-weight:700;color:#EF4444;font-family:'DM Mono';">${rj.blacklisted}</div><div style="font-size:9px;color:#64748B;font-family:'DM Mono';letter-spacing:1px;">BLACKLISTED</div></div>
+            <div style="text-align:center;padding:12px;background:rgba(59,130,246,0.05);border-radius:6px;border:1px solid #1E293B;"><div style="font-size:28px;font-weight:700;color:${gap > 5 ? "#EF4444" : "#22C55E"};font-family:'DM Mono';">${gap > 0 ? "−" : "+"}${Math.abs(gap)}</div><div style="font-size:9px;color:#64748B;font-family:'DM Mono';letter-spacing:1px;">CRED GAP</div></div>
+          </div>
+          ${rj.narrative ? `<div style="margin-bottom:24px;"><div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">EXECUTIVE SUMMARY</div><div style="font-size:13px;color:#94A3B8;line-height:1.8;">${rj.narrative.replace(/^#+\s*/gm,"").replace(/\*\*/g,"").trim()}</div></div>` : ""}
+          ${rj.patterns && rj.patterns.length ? `<div style="margin-bottom:24px;padding:16px;background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:6px;"><div style="font-family:'DM Mono';font-size:9px;color:#EF4444;letter-spacing:0.1em;margin-bottom:10px;">PATTERNS DETECTED</div>${rj.patterns.map(p => `<div style="font-size:12px;color:#E2E8F0;padding:8px 0;border-bottom:1px solid #1E293B;">${p}</div>`).join("")}</div>` : ""}
+          ${rj.authors && rj.authors.length ? `<div style="margin-bottom:24px;"><div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">AUTHOR CREDIBILITY BREAKDOWN</div>${rj.authors.slice(0,10).map(a => `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #1E293B;"><div style="font-size:18px;font-weight:700;color:${vciCol(a.avg_vci)};font-family:'DM Mono';width:40px;text-align:center;">${a.avg_vci}</div><div style="flex:1;"><div style="font-size:13px;color:#E2E8F0;font-weight:500;">${a.author}</div><div style="font-size:10px;color:#3B82F6;font-family:'DM Mono';">${a.outlet} · ${a.article_count} articles · ${a.status}</div></div>${a.delta !== null && a.delta !== undefined ? `<div style="font-size:10px;font-family:'DM Mono';color:${a.delta > 0 ? "#22C55E" : "#EF4444"};">${a.delta > 0 ? "+" : ""}${a.delta} vs overall</div>` : ""}</div>`).join("")}</div>` : ""}
+        </div>`;
+        document.getElementById("sc-outlet").textContent = "NARRATIVE INTELLIGENCE REPORT";
+        document.getElementById("sc-outlet").style.display = "block";
+      } else {
+        const f = d2.framing || {};
+        const credColor = c => c === "HIGH" ? "#22C55E" : c === "MEDIUM" ? "#F59E0B" : "#EF4444";
+        const typeColor = t => t === "STATE_MEDIA" || t === "ANONYMOUS" ? "#F59E0B" : t === "EXPERT" || t === "GOVERNMENT" ? "#22C55E" : "#64748B";
+        document.getElementById("sc-full-report").innerHTML = `<div style="border-top:1px solid #1E293B;padding-top:24px;">
+          ${d2.reasoning ? `<div style="font-size:13px;color:#94A3B8;line-height:1.7;margin-bottom:20px;padding:14px;background:rgba(59,130,246,0.05);border-radius:6px;border-left:3px solid #3B82F6;font-style:italic;">${d2.reasoning}</div>` : ""}
+          ${d2.framing ? `<div style="margin-bottom:20px;"><div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">FRAMING ANALYSIS</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">${[["SENSATIONAL", f.is_sensational], ["ONE-SIDED", f.is_one_sided], ["EMOTIONAL LANGUAGE", f.has_emotional_language]].map(([label, val]) => `<div style="background:${val ? "rgba(239,68,68,0.1)" : "rgba(34,197,94,0.1)"};border:1px solid ${val ? "rgba(239,68,68,0.3)" : "rgba(34,197,94,0.3)"};border-radius:6px;padding:10px;text-align:center;font-family:'DM Mono';font-size:9px;color:${val ? "#EF4444" : "#22C55E"};">${val ? "⚠ " : "✓ "}${label}</div>`).join("")}</div></div>` : ""}
+          ${d2.sources && d2.sources.length ? `<div style="margin-bottom:20px;"><div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">SOURCES CITED (${d2.sources.length})</div>${d2.sources.map(s => `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1E293B;"><div style="font-size:13px;color:#E2E8F0;">${s.entity}</div><div style="display:flex;gap:8px;"><span style="font-family:'DM Mono';font-size:9px;color:${typeColor(s.type)};background:${typeColor(s.type)}20;padding:2px 8px;border-radius:3px;">${s.type}</span><span style="font-family:'DM Mono';font-size:9px;color:${credColor(s.credibility)};">${s.credibility}</span></div></div>`).join("")}</div>` : ""}
+          ${d2.claims && d2.claims.length ? `<div style="margin-bottom:20px;"><div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;letter-spacing:0.1em;margin-bottom:10px;">KEY CLAIMS</div>${d2.claims.map((c, i) => `<div style="display:flex;gap:10px;margin-bottom:8px;"><span style="font-family:'DM Mono';font-size:9px;color:#3B82F6;min-width:20px;">${i+1}.</span><div style="font-size:12px;color:#94A3B8;line-height:1.6;">${c}</div></div>`).join("")}</div>` : ""}
+          <div style="text-align:center;margin-top:8px;"><a href="https://app.verdadscore.com" style="font-family:'DM Mono';font-size:11px;color:#3B82F6;letter-spacing:0.08em;text-decoration:none;">VIEW FULL DASHBOARD →</a></div>
+          <div style="text-align:center;margin-top:8px;"><button onclick="showShareUrl()" style="background:transparent;border:1px solid #1E293B;color:#64748B;padding:6px 16px;border-radius:4px;font-family:'DM Mono';font-size:10px;cursor:pointer;letter-spacing:0.08em;">↗ SHARE RESULT</button></div>
+        </div>`;
+      }
+
+      document.getElementById("sc-copy").addEventListener("click", () => {
+        copyToClipboard(window.location.href, document.getElementById("sc-copy"), "✓ COPIED", "COPY LINK");
+      });
+      document.getElementById("sc-scan").addEventListener("click", () => { window.location.href = "/#scan"; });
+    })
+    .catch(() => { document.getElementById("share-loading").textContent = "Failed to load result."; });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector(".nav-links").style.display  = "none";
+    document.querySelector(".nav-cta").innerHTML        = '<a href="https://app.verdadscore.com"><button class="btn-primary" style="font-size:13px;padding:8px 20px;">Sign In</button></a>';
+    document.querySelector(".hero").style.display       = "none";
+    document.querySelectorAll("section").forEach(s => s.style.display = "none");
+    document.querySelector(".cta-section").style.display = "none";
+    document.querySelector("footer").style.display      = "none";
+    document.getElementById("share-view").style.display = "flex";
   });
+})();
 
-  msgEl.textContent   = "Password reset email sent. Check your inbox.";
-  msgEl.style.display = "block";
-}
-
-function unlockResult() {
-  const result  = document.getElementById("scan-result");
-  const pending = localStorage.getItem("vs_pending_scan");
-  const data    = pending ? JSON.parse(pending) : null;
-
-  if (data) {
-    const score   = Math.round(data.vci_score || 70);
-    const verdict = data.verdict || "At Risk";
-    const color   = score >= 82 ? "var(--green)" : score >= 65 ? "var(--yellow)" : "var(--red)";
-
-    document.getElementById("res-vci").textContent     = score;
-    document.getElementById("res-vci").style.color     = color;
-    document.getElementById("res-verdict").textContent = verdict.toUpperCase();
-    document.getElementById("res-verdict").style.color = color;
-
-    const outletEl = document.getElementById("res-outlet");
-    if (data.outlet && data.outlet !== "Unknown") {
-      outletEl.textContent   = data.outlet.toUpperCase();
-      outletEl.style.display = "block";
-    } else {
-      outletEl.style.display = "none";
-    }
-    document.getElementById("res-title").textContent = data.title || "";
-    result.classList.add("visible");
-  }
-
-  // Replace locked section with full report
-  const locked = document.getElementById("res-locked");
-  if (!locked || !data) return;
-
-  const f = data.framing || {};
-  const credColor = c => c === "HIGH" ? "#22C55E" : c === "MEDIUM" ? "#F59E0B" : "#EF4444";
-  const typeColor = t => t === "STATE_MEDIA" || t === "ANONYMOUS" ? "#F59E0B" : t === "EXPERT" || t === "GOVERNMENT" ? "#22C55E" : "#64748B";
-
-  locked.innerHTML = `
-    <div style="margin-top:16px;border-top:1px solid #1E293B;padding-top:16px;">
-
-      ${data.reasoning ? `
-      <div style="font-size:13px;color:#94A3B8;line-height:1.7;margin-bottom:20px;
-        padding:14px;background:rgba(59,130,246,0.05);border-radius:6px;
-        border-left:3px solid #3B82F6;font-style:italic;">
-        ${data.reasoning}
-      </div>` : ""}
-
-      ${data.framing ? `
-      <div style="margin-bottom:20px;">
-        <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;
-          letter-spacing:0.1em;margin-bottom:10px;">FRAMING ANALYSIS</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
-          ${[
-            ["SENSATIONAL",      f.is_sensational],
-            ["ONE-SIDED",        f.is_one_sided],
-            ["EMOTIONAL LANGUAGE", f.has_emotional_language],
-          ].map(([label, val]) => `
-            <div style="background:${val ? "rgba(239,68,68,0.1)" : "rgba(34,197,94,0.1)"};
-              border:1px solid ${val ? "rgba(239,68,68,0.3)" : "rgba(34,197,94,0.3)"};
-              border-radius:6px;padding:10px;text-align:center;
-              font-family:'DM Mono';font-size:9px;
-              color:${val ? "#EF4444" : "#22C55E"};">
-              ${val ? "⚠ " : "✓ "}${label}
-            </div>`).join("")}
-        </div>
-        ${f.narrative_push ? `
-          <div style="font-family:'DM Mono';font-size:9px;color:#F59E0B;
-            letter-spacing:0.08em;margin-bottom:4px;">NARRATIVE PUSH</div>
-          <div style="font-size:12px;color:#94A3B8;line-height:1.6;margin-bottom:12px;">
-            ${f.narrative_push}
-          </div>` : ""}
-        ${f.missing_context ? `
-          <div style="font-family:'DM Mono';font-size:9px;color:#64748B;
-            letter-spacing:0.08em;margin-bottom:4px;">MISSING CONTEXT</div>
-          <div style="font-size:12px;color:#94A3B8;line-height:1.6;">
-            ${f.missing_context}
-          </div>` : ""}
-      </div>` : ""}
-
-      ${data.sources && data.sources.length ? `
-      <div style="margin-bottom:20px;">
-        <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;
-          letter-spacing:0.1em;margin-bottom:10px;">
-          SOURCES CITED (${data.sources.length})
-        </div>
-        ${data.sources.map(s => `
-          <div style="display:flex;align-items:center;justify-content:space-between;
-            padding:8px 0;border-bottom:1px solid #1E293B;">
-            <div style="font-size:13px;color:#E2E8F0;">${s.entity}</div>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <span style="font-family:'DM Mono';font-size:9px;
-                color:${typeColor(s.type)};background:${typeColor(s.type)}20;
-                padding:2px 8px;border-radius:3px;">${s.type}</span>
-              <span style="font-family:'DM Mono';font-size:9px;
-                color:${credColor(s.credibility)};">${s.credibility}</span>
-            </div>
-          </div>`).join("")}
-      </div>` : ""}
-
-      ${data.claims && data.claims.length ? `
-      <div style="margin-bottom:20px;">
-        <div style="font-family:'DM Mono';font-size:9px;color:#3B82F6;
-          letter-spacing:0.1em;margin-bottom:10px;">KEY CLAIMS</div>
-        ${data.claims.map((c, i) => `
-          <div style="display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;">
-            <span style="font-family:'DM Mono';font-size:9px;color:#3B82F6;min-width:20px;">${i+1}.</span>
-            <div style="font-size:12px;color:#94A3B8;line-height:1.6;">${c}</div>
-          </div>`).join("")}
-      </div>` : ""}
-
-      <div style="text-align:center;margin-top:24px;display:flex;flex-direction:column;gap:12px;align-items:center;">
-        <button id="landing-share-btn" onclick="landingShareResult()" style="
-          background:transparent;border:1px solid #1E293B;color:#64748B;
-          padding:8px 20px;border-radius:4px;font-family:'DM Mono';
-          font-size:10px;cursor:pointer;letter-spacing:0.08em;
-          transition:all 0.2s;" onmouseover="this.style.borderColor='#3B82F6';this.style.color='#E2E8F0'"
-          onmouseout="this.style.borderColor='#1E293B';this.style.color='#64748B'">
-          ↗ SHARE RESULT
-        </button>
-        <div id="landing-share-url" style="display:none;font-family:'DM Mono';font-size:10px;
-          color:#3B82F6;word-break:break-all;max-width:400px;text-align:center;"></div>
-        <a id="dashboard-link" href="https://app.verdadscore.com" style="font-family:'DM Mono';
-          font-size:11px;color:#3B82F6;letter-spacing:0.08em;text-decoration:none;">
-          VIEW FULL DASHBOARD →
-        </a>
-      </div>
-    </div>`;
-
-  // Save to scan history now that user is authenticated
-  const token = localStorage.getItem("vs_token");
-  if (token && data) {
-    fetch("https://coldfact.up.railway.app/scan/history", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        url:         data.url         || null,
-        title:       data.title       || null,
-        outlet:      data.outlet      || null,
-        vci_score:   data.vci_score   || null,
-        verdict:     data.verdict     || null,
-        summary:     data.summary     || null,
-        result_json: data,
-      }),
-    }).catch(() => {});
-  }
-
-  // Populate share button with already-saved share URL
-  const shareBtn = document.getElementById("landing-share-btn");
-  const savedShareUrl = localStorage.getItem("vs_share_url");
-  if (shareBtn && savedShareUrl) {
-    shareBtn.setAttribute("data-share-url", savedShareUrl);
-  }
-
-  // Set dashboard link with token
-  const dashLink = document.getElementById("dashboard-link");
-  if (token && dashLink) {
-    dashLink.href = "https://app.verdadscore.com/#access_token=" + token;
-  }
-
-  // Remove the blur and unlock overlay
-  const blurred = document.getElementById("res-blurred");
-  const overlay = document.getElementById("res-unlock");
-  if (blurred) blurred.style.filter  = "none";
-  if (blurred) blurred.style.opacity = "1";
-  if (blurred) blurred.style.pointerEvents = "auto";
-  if (overlay) overlay.style.display = "none";
-
-}
+// ── INIT ──────────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", updateNavAuth);
 </script>
-
-
-<!-- SHARE MODAL -->
-<div id="share-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);
-  z-index:999;align-items:center;justify-content:center;">
-  <div style="background:#0D1521;border:1px solid #1E293B;border-radius:10px;
-    padding:24px;width:340px;max-width:90vw;position:relative;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <span style="font-family:'DM Mono',monospace;font-size:11px;color:#E2E8F0;letter-spacing:0.1em;">SHARE RESULT</span>
-      <button onclick="closeShareModal()" style="background:transparent;border:none;
-        color:#64748B;font-size:20px;cursor:pointer;line-height:1;">×</button>
-    </div>
-    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;">
-      <a id="sm-whatsapp" href="#" target="_blank" rel="noopener noreferrer"
-        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
-        <div style="width:48px;height:48px;border-radius:24px;background:#25D366;
-          display:flex;align-items:center;justify-content:center;font-size:18px;">💬</div>
-        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">WHATSAPP</span>
-      </a>
-      <a id="sm-x" href="#" target="_blank" rel="noopener noreferrer"
-        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
-        <div style="width:48px;height:48px;border-radius:24px;background:#000000;
-          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">𝕏</div>
-        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">X</span>
-      </a>
-      <a id="sm-facebook" href="#" target="_blank" rel="noopener noreferrer"
-        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
-        <div style="width:48px;height:48px;border-radius:24px;background:#1877F2;
-          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">f</div>
-        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">FACEBOOK</span>
-      </a>
-      <a id="sm-linkedin" href="#" target="_blank" rel="noopener noreferrer"
-        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
-        <div style="width:48px;height:48px;border-radius:24px;background:#0A66C2;
-          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">in</div>
-        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">LINKEDIN</span>
-      </a>
-      <a id="sm-reddit" href="#" target="_blank" rel="noopener noreferrer"
-        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
-        <div style="width:48px;height:48px;border-radius:24px;background:#FF4500;
-          display:flex;align-items:center;justify-content:center;font-size:18px;">👽</div>
-        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">REDDIT</span>
-      </a>
-      <a id="sm-email" href="#" target="_blank" rel="noopener noreferrer"
-        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
-        <div style="width:48px;height:48px;border-radius:24px;background:#64748B;
-          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;">✉</div>
-        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">EMAIL</span>
-      </a>
-    </div>
-    <div style="display:flex;gap:8px;align-items:center;background:#080E1A;
-      border:1px solid #1E293B;border-radius:6px;padding:8px 12px;">
-      <span id="sm-url" style="font-family:'DM Mono',monospace;font-size:10px;color:#64748B;
-        flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
-      <button id="sm-copy-btn" onclick="copyShareModalUrl()"
-        style="background:#3B82F6;border:none;color:#fff;border-radius:4px;
-        padding:4px 12px;cursor:pointer;font-family:'DM Mono',monospace;
-        font-size:9px;white-space:nowrap;">COPY</button>
-    </div>
-  </div>
-</div>
-
-<!-- SHARE MODAL -->
-<div id="share-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);
-  z-index:999;align-items:center;justify-content:center;">
-  <div style="background:#0D1521;border:1px solid #1E293B;border-radius:10px;
-    padding:24px;width:340px;max-width:90vw;position:relative;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <span style="font-family:'DM Mono',monospace;font-size:11px;color:#E2E8F0;letter-spacing:0.1em;">SHARE RESULT</span>
-      <button onclick="closeShareModal()" style="background:transparent;border:none;
-        color:#64748B;font-size:20px;cursor:pointer;line-height:1;">×</button>
-    </div>
-    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;">
-      <a id="sm-whatsapp" href="#" target="_blank" rel="noopener noreferrer"
-        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
-        <div style="width:48px;height:48px;border-radius:24px;background:#25D366;
-          display:flex;align-items:center;justify-content:center;font-size:18px;">💬</div>
-        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">WHATSAPP</span>
-      </a>
-      <a id="sm-x" href="#" target="_blank" rel="noopener noreferrer"
-        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
-        <div style="width:48px;height:48px;border-radius:24px;background:#000000;
-          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">𝕏</div>
-        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">X</span>
-      </a>
-      <a id="sm-facebook" href="#" target="_blank" rel="noopener noreferrer"
-        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
-        <div style="width:48px;height:48px;border-radius:24px;background:#1877F2;
-          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">f</div>
-        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">FACEBOOK</span>
-      </a>
-      <a id="sm-linkedin" href="#" target="_blank" rel="noopener noreferrer"
-        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
-        <div style="width:48px;height:48px;border-radius:24px;background:#0A66C2;
-          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;">in</div>
-        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">LINKEDIN</span>
-      </a>
-      <a id="sm-reddit" href="#" target="_blank" rel="noopener noreferrer"
-        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
-        <div style="width:48px;height:48px;border-radius:24px;background:#FF4500;
-          display:flex;align-items:center;justify-content:center;font-size:18px;">👽</div>
-        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">REDDIT</span>
-      </a>
-      <a id="sm-email" href="#" target="_blank" rel="noopener noreferrer"
-        style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;">
-        <div style="width:48px;height:48px;border-radius:24px;background:#64748B;
-          display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;">✉</div>
-        <span style="font-family:'DM Mono',monospace;font-size:8px;color:#64748B;">EMAIL</span>
-      </a>
-    </div>
-    <div style="display:flex;gap:8px;align-items:center;background:#080E1A;
-      border:1px solid #1E293B;border-radius:6px;padding:8px 12px;">
-      <span id="sm-url" style="font-family:'DM Mono',monospace;font-size:10px;color:#64748B;
-        flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
-      <button id="sm-copy-btn" onclick="copyShareModalUrl()"
-        style="background:#3B82F6;border:none;color:#fff;border-radius:4px;
-        padding:4px 12px;cursor:pointer;font-family:'DM Mono',monospace;
-        font-size:9px;white-space:nowrap;">COPY</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>
