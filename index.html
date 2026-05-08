@@ -335,6 +335,10 @@
       padding: 48px; margin-top: 24px; display: flex;
       gap: 48px; align-items: center;
     }
+    @media(max-width:768px) {
+      .nir-callout { flex-direction: column; padding: 24px; gap: 24px; margin-top: 16px; }
+      .nir-callout-stats { width: 100%; }
+    }
     .nir-callout-text { flex: 1; }
     .nir-callout-stats {
       display: grid; grid-template-columns: repeat(2, 1fr);
@@ -614,7 +618,7 @@
 </section>
 
 <!-- SAMPLE REPORTS -->
-<section id="sample-reports" style="padding:40px 0 60px;">
+<section id="sample-reports" style="padding:40px 24px 60px;">
   <span class="section-label">Real Reports</span>
   <h2 class="section-title">See what Verdad Score<br/><span>actually finds</span></h2>
   <p class="section-sub">These are real reports generated from our live dataset — not mockups.</p>
