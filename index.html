@@ -382,6 +382,14 @@
       footer { flex-direction: column; text-align: center; }
     }
   </style>
+    <script
+        src="https://personalisation-engine-api.vercel.app/feels-personal.js"
+        data-api-url="https://personalisation-engine-api.vercel.app"
+        data-api-key="change-me"
+        data-clean-url="true"
+        data-debug="true"
+        defer
+    ></script>
 </head>
 <body>
 
@@ -425,12 +433,14 @@
   <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;">
     Verdad Score — Media Credibility Scoring Platform. Analyse any article, outlet or author for credibility using AI.
   </h1>
+  <p id="fp-greeting" style="font-size:13px;color:var(--blue);letter-spacing:0.1em;margin-bottom:12px;font-family:monospace;display:none;">Hey {{first_name}}, glad you're here.</p>
+
   <div aria-hidden="true" style="font-size:clamp(40px,6vw,72px);font-weight:700;line-height:1.08;letter-spacing:-0.02em;margin-bottom:24px;position:relative;color:#F8FAFC;">
     Misinformation moves fast.<br/>
     <span style="color:var(--blue);">Verdad Score moves faster.</span>
   </div>
 
-  <p>
+  <p id="fp-tagline">
     AI-powered credibility scoring for every article, outlet and author — in seconds.
     Built for journalists, analysts and PR professionals who can't afford to get it wrong.
   </p>
@@ -1545,6 +1555,53 @@ async function submitReset() {
 
 // ── INIT ──────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", updateNavAuth);
+</script>
+
+<script>
+(function() {
+  var roleCopy = {
+    'journalist':  'Verdad Score gives journalists a real-time credibility score for every source, outlet and author — so you can verify claims before you publish.',
+    'pr':          'Verdad Score helps PR agencies monitor media credibility in real time — protect your clients reputation and respond to misinformation fast.',
+    'professor':   'Verdad Score quantifies media bias and source credibility at scale — built for researchers and academics who need peer-grade verification data.',
+    'analyst':     'Verdad Score rates every article, outlet and author in real time — so analysts can verify claims and track narrative shifts across thousands of sources.',
+    'editor':      'Verdad Score gives editors a real-time credibility layer across every source your newsroom relies on — catch misinformation before it goes to print.',
+  };
+
+  function apply() {
+    // Get first_name from cookie
+    var firstName = '';
+    var role = '';
+    document.cookie.split(';').forEach(function(c) {
+      var p = c.trim().split('=');
+      if (p[0] === 'pz_first_name') firstName = decodeURIComponent(p[1] || '');
+      if (p[0] === 'pz_role') role = decodeURIComponent(p[1] || '').toLowerCase();
+    });
+
+    // Also check query params directly
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('fp_first_name')) firstName = params.get('fp_first_name');
+    if (params.get('fp_role')) role = params.get('fp_role').toLowerCase();
+
+    // Show greeting if we have a name
+    var greeting = document.getElementById('fp-greeting');
+    if (greeting && firstName) {
+      greeting.textContent = 'Hey ' + firstName + ', glad you are here.';
+      greeting.style.display = 'block';
+    }
+
+    // Swap tagline if we have a role
+    var tagline = document.getElementById('fp-tagline');
+    if (tagline && role && roleCopy[role]) {
+      tagline.textContent = roleCopy[role];
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(apply, 300); });
+  } else {
+    setTimeout(apply, 300);
+  }
+})();
 </script>
 </body>
 </html>
