@@ -111,6 +111,29 @@
 
         document.title = `${post.title} — Verdad Score`;
 
+        // SEO meta tags
+        const setMeta = (name, val, prop=false) => {
+          let el = document.querySelector(prop ? `meta[property="${name}"]` : `meta[name="${name}"]`);
+          if (!el) { el = document.createElement("meta"); el.setAttribute(prop ? "property" : "name", name); document.head.appendChild(el); }
+          el.setAttribute("content", val);
+        };
+        const excerpt = post.excerpt?.replace(/^#+\s*/gm,"").replace(/\*\*/g,"").slice(0,160) || "";
+        setMeta("description", excerpt);
+        setMeta("keywords", `${post.subject}, media credibility, credibilidad mediatica, VCI, Verdad Score, Argentine media, periodismo argentino`);
+        setMeta("og:title", post.title, true);
+        setMeta("og:description", excerpt, true);
+        setMeta("og:type", "article", true);
+        setMeta("og:url", window.location.href, true);
+        setMeta("og:site_name", "Verdad Score", true);
+        setMeta("twitter:card", "summary_large_image");
+        setMeta("twitter:title", post.title);
+        setMeta("twitter:description", excerpt);
+
+        // Canonical URL
+        let canonical = document.querySelector("link[rel='canonical']");
+        if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }
+        canonical.href = `https://verdadscore.com/blog-post.html?slug=${slug}`;
+
         document.getElementById("article-container").innerHTML = `
           <a href="/blog.html" class="back">← Back to Blog</a>
           <div class="subject-label">${post.subject?.toUpperCase() || "MEDIA ANALYSIS"}</div>
