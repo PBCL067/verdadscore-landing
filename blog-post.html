@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verdad Score — Media Intelligence Report</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #060C17; color: #E2E8F0; font-family: 'Inter', sans-serif; }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px; border-bottom: 1px solid #1E293B;
+      background: #060C17; position: sticky; top: 0; z-index: 100;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-brand-text { font-family: 'DM Mono'; font-size: 11px; letter-spacing: 3px; color: #22C55E; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { font-family: 'DM Mono'; font-size: 10px; color: #64748B; text-decoration: none; letter-spacing: 1px; }
+    .article { max-width: 720px; margin: 0 auto; padding: 64px 48px 80px; }
+    .back { font-family: 'DM Mono'; font-size: 10px; color: #64748B; text-decoration: none; letter-spacing: 1px; display: block; margin-bottom: 32px; }
+    .back:hover { color: #E2E8F0; }
+    .subject-label { font-family: 'DM Mono'; font-size: 9px; color: #3B82F6; letter-spacing: 2px; margin-bottom: 16px; }
+    .article-title { font-size: 36px; font-weight: 700; line-height: 1.15; margin-bottom: 16px; }
+    .article-meta { font-family: 'DM Mono'; font-size: 9px; color: #334155; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid #1E293B; }
+    .lang-toggle {
+      display: flex; gap: 0; margin-bottom: 32px;
+      border: 1px solid #1E293B; border-radius: 6px;
+      overflow: hidden; width: fit-content;
+    }
+    .lang-btn { padding: 6px 16px; background: #0D1521; border: none; color: #64748B; font-family: 'DM Mono'; font-size: 10px; cursor: pointer; }
+    .lang-btn.active { background: #3B82F6; color: #fff; }
+    .article-body { font-size: 16px; line-height: 1.8; color: #CBD5E1; }
+    .article-body h1, .article-body h2 { font-size: 22px; font-weight: 600; color: #F1F5F9; margin: 32px 0 12px; }
+    .article-body h3 { font-size: 18px; font-weight: 600; color: #F1F5F9; margin: 24px 0 8px; }
+    .article-body p { margin-bottom: 18px; }
+    .article-body strong { color: #F1F5F9; font-weight: 600; }
+    .cta {
+      margin-top: 48px; padding: 28px; background: #0D1521;
+      border: 1px solid #1E293B; border-radius: 8px; text-align: center;
+    }
+    .cta-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+    .cta-sub { font-size: 14px; color: #64748B; margin-bottom: 16px; }
+    .cta-btn {
+      display: inline-block; padding: 12px 28px; background: #3B82F6;
+      color: #fff; border-radius: 6px; text-decoration: none;
+      font-family: 'DM Mono'; font-size: 10px; letter-spacing: 1px;
+    }
+    footer { border-top: 1px solid #1E293B; padding: 32px 48px; display: flex; justify-content: space-between; font-family: 'DM Mono'; font-size: 9px; color: #334155; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="nav-brand">
+      <svg width="20" height="20" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(25,28)">
+          <rect x="0" y="62" width="14" height="48" rx="7" fill="#22C55E" opacity="0.25"/>
+          <rect x="22" y="48" width="14" height="76" rx="7" fill="#22C55E" opacity="0.45"/>
+          <rect x="88" y="4" width="14" height="164" rx="7" fill="#22C55E" opacity="1"/>
+          <rect x="110" y="28" width="14" height="116" rx="7" fill="#22C55E" opacity="0.65"/>
+          <rect x="154" y="48" width="14" height="76" rx="7" fill="#22C55E" opacity="0.45"/>
+          <rect x="176" y="62" width="14" height="48" rx="7" fill="#22C55E" opacity="0.25"/>
+        </g>
+      </svg>
+      <span class="nav-brand-text">VERDAD SCORE</span>
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/blog.html">Blog</a>
+      <a href="https://app.verdadscore.com">Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="article" id="article-container">
+    <div style="text-align:center;padding:60px;color:#64748B;font-family:'DM Mono';font-size:11px;">LOADING...</div>
+  </div>
+
+  <footer>
+    <span>Verdad Score Intelligence · verdadscore.com</span>
+    <span>matthew@verdadscore.com</span>
+  </footer>
+
+  <script>
+    const API = "https://coldfact.up.railway.app";
+    const params = new URLSearchParams(window.location.search);
+    let slug = params.get("slug");
+    let currentLang = params.get("lang") || "en";
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.getElementById("btn-en").classList.toggle("active", lang === "en");
+      document.getElementById("btn-es").classList.toggle("active", lang === "es");
+      loadPost();
+    }
+
+    function renderMarkdown(text) {
+      return text
+        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
+        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
+        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\n\n/g, "</p><p>")
+        .replace(/^(?!<[h|p])/gm, "<p>")
+        + "</p>";
+    }
+
+    async function loadPost() {
+      try {
+        const resp = await fetch(`${API}/blog/posts/${slug}?language=${currentLang}`);
+        const post = await resp.json();
+
+        document.title = `${post.title} — Verdad Score`;
+
+        document.getElementById("article-container").innerHTML = `
+          <a href="/blog.html" class="back">← Back to Blog</a>
+          <div class="subject-label">${post.subject?.toUpperCase() || "MEDIA ANALYSIS"}</div>
+          <h1 class="article-title">${post.title}</h1>
+          <div class="article-meta">
+            ${post.published_at ? new Date(post.published_at).toLocaleDateString("en-GB", {day:"2-digit",month:"long",year:"numeric"}) : "Draft"} · verdadscore.com
+          </div>
+          <div class="lang-toggle">
+            <button class="lang-btn ${currentLang==="en"?"active":""}" id="btn-en" onclick="setLang('en')">EN</button>
+            <button class="lang-btn ${currentLang==="es"?"active":""}" id="btn-es" onclick="setLang('es')">ES</button>
+          </div>
+          <div class="article-body">${renderMarkdown(post.content || "")}</div>
+          <div class="cta">
+            <div class="cta-title">See the full report</div>
+            <div class="cta-sub">Generate credibility reports for any public figure, journalist or outlet.</div>
+            <a href="https://app.verdadscore.com" class="cta-btn">TRY VERDAD SCORE FREE →</a>
+          </div>
+        `;
+      } catch(e) {
+        document.getElementById("article-container").innerHTML = '<div style="padding:60px;text-align:center;color:#64748B">Post not found.</div>';
+      }
+    }
+
+    loadPost();
+  </script>
+</body>
+</html>

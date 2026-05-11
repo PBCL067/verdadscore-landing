@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Verdad Score</title>
+  <meta name="description" content="Media intelligence insights, credibility analysis and narrative reporting from Verdad Score.">
+  <link rel="canonical" href="https://verdadscore.com/blog">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #060C17; color: #E2E8F0; font-family: 'Inter', sans-serif; }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px; border-bottom: 1px solid #1E293B;
+      background: #060C17; position: sticky; top: 0; z-index: 100;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-brand-text { font-family: 'DM Mono'; font-size: 11px; letter-spacing: 3px; color: #22C55E; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { font-family: 'DM Mono'; font-size: 10px; color: #64748B; text-decoration: none; letter-spacing: 1px; }
+    .nav-links a:hover { color: #E2E8F0; }
+    .hero {
+      padding: 80px 48px 48px;
+      max-width: 900px; margin: 0 auto;
+    }
+    .hero-label { font-family: 'DM Mono'; font-size: 9px; letter-spacing: 3px; color: #22C55E; margin-bottom: 16px; }
+    .hero-title { font-size: 48px; font-weight: 700; line-height: 1.1; margin-bottom: 16px; }
+    .hero-sub { font-size: 16px; color: #64748B; line-height: 1.6; }
+    .lang-toggle {
+      display: flex; gap: 0; margin-top: 24px;
+      border: 1px solid #1E293B; border-radius: 6px;
+      overflow: hidden; width: fit-content;
+    }
+    .lang-btn {
+      padding: 8px 20px; background: #0D1521; border: none;
+      color: #64748B; font-family: 'DM Mono'; font-size: 10px;
+      cursor: pointer; letter-spacing: 1px;
+    }
+    .lang-btn.active { background: #3B82F6; color: #fff; }
+    .posts { max-width: 900px; margin: 0 auto; padding: 0 48px 80px; }
+    .post-card {
+      border: 1px solid #1E293B; border-radius: 8px;
+      padding: 28px; margin-bottom: 16px;
+      background: #0D1521; cursor: pointer;
+      transition: border-color 0.2s;
+      text-decoration: none; display: block;
+    }
+    .post-card:hover { border-color: #3B82F6; }
+    .post-subject { font-family: 'DM Mono'; font-size: 9px; color: #3B82F6; letter-spacing: 2px; margin-bottom: 10px; }
+    .post-title { font-size: 20px; font-weight: 600; color: #F1F5F9; margin-bottom: 10px; line-height: 1.3; }
+    .post-excerpt { font-size: 14px; color: #64748B; line-height: 1.7; margin-bottom: 14px; }
+    .post-meta { font-family: 'DM Mono'; font-size: 9px; color: #334155; }
+    .loading { text-align: center; padding: 60px; color: #64748B; font-family: 'DM Mono'; font-size: 11px; }
+    footer {
+      border-top: 1px solid #1E293B; padding: 32px 48px;
+      display: flex; justify-content: space-between;
+      font-family: 'DM Mono'; font-size: 9px; color: #334155;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="nav-brand">
+      <svg width="20" height="20" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(25,28)">
+          <rect x="0" y="62" width="14" height="48" rx="7" fill="#22C55E" opacity="0.25"/>
+          <rect x="22" y="48" width="14" height="76" rx="7" fill="#22C55E" opacity="0.45"/>
+          <rect x="44" y="54" width="14" height="64" rx="7" fill="#22C55E" opacity="0.35"/>
+          <rect x="66" y="28" width="14" height="116" rx="7" fill="#22C55E" opacity="0.65"/>
+          <rect x="88" y="4" width="14" height="164" rx="7" fill="#22C55E" opacity="1"/>
+          <rect x="110" y="28" width="14" height="116" rx="7" fill="#22C55E" opacity="0.65"/>
+          <rect x="132" y="54" width="14" height="64" rx="7" fill="#22C55E" opacity="0.35"/>
+          <rect x="154" y="48" width="14" height="76" rx="7" fill="#22C55E" opacity="0.45"/>
+          <rect x="176" y="62" width="14" height="48" rx="7" fill="#22C55E" opacity="0.25"/>
+        </g>
+      </svg>
+      <span class="nav-brand-text">VERDAD SCORE</span>
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/blog.html">Blog</a>
+      <a href="https://app.verdadscore.com">Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-label">MEDIA INTELLIGENCE</div>
+    <h1 class="hero-title">Insights & Analysis</h1>
+    <p class="hero-sub">Data-driven reports on media credibility, narrative patterns and journalistic standards.</p>
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" id="btn-es" onclick="setLang('es')">ES</button>
+    </div>
+  </div>
+
+  <div class="posts" id="posts-container">
+    <div class="loading">LOADING POSTS...</div>
+  </div>
+
+  <footer>
+    <span>Verdad Score Intelligence · verdadscore.com</span>
+    <span>matthew@verdadscore.com</span>
+  </footer>
+
+  <script>
+    const API = "https://coldfact.up.railway.app";
+    let currentLang = "en";
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.getElementById("btn-en").classList.toggle("active", lang === "en");
+      document.getElementById("btn-es").classList.toggle("active", lang === "es");
+      loadPosts();
+    }
+
+    async function loadPosts() {
+      const container = document.getElementById("posts-container");
+      container.innerHTML = '<div class="loading">LOADING...</div>';
+      try {
+        const resp = await fetch(`${API}/blog/posts?status=published&language=${currentLang}&per_page=20`);
+        const data = await resp.json();
+        const posts = data.posts || [];
+        if (posts.length === 0) {
+          container.innerHTML = '<div class="loading">No posts published yet.</div>';
+          return;
+        }
+        container.innerHTML = posts.map(p => `
+          <a class="post-card" href="/blog-post.html?slug=${p.slug}&lang=${currentLang}">
+            <div class="post-subject">${p.subject?.toUpperCase() || "MEDIA ANALYSIS"}</div>
+            <div class="post-title">${p.title}</div>
+            <div class="post-excerpt">${p.excerpt}</div>
+            <div class="post-meta">${p.published_at ? new Date(p.published_at).toLocaleDateString("en-GB", {day:"2-digit",month:"short",year:"numeric"}) : ""} · verdadscore.com</div>
+          </a>
+        `).join("");
+      } catch(e) {
+        container.innerHTML = '<div class="loading">Failed to load posts.</div>';
+      }
+    }
+
+    loadPosts();
+  </script>
+</body>
+</html>
