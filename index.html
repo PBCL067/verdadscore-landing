@@ -955,6 +955,143 @@
   </div>
 </section>
 
+<!-- BLOG PREVIEW — added Session 19 -->
+<section id="blog-preview">
+  <span class="section-label">Intelligence Blog</span>
+  <h2 class="section-title">Latest media intelligence<br/><span>from our analysts</span></h2>
+  <p class="section-sub" style="margin-bottom:0;">Data-driven reports on credibility, narrative patterns and journalistic standards.</p>
+
+  <div id="blog-preview-grid" style="
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    margin-top: 48px;
+  ">
+    <!-- Posts injected by JS -->
+    <div class="blog-preview-loading" style="
+      grid-column: 1/-1;
+      text-align: center;
+      font-family: 'DM Mono';
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      padding: 48px 0;
+    ">LOADING POSTS...</div>
+  </div>
+
+  <div style="text-align:center; margin-top:40px;">
+    <a href="/blog.html">
+      <button class="btn-hero-ghost">View all posts →</button>
+    </a>
+  </div>
+</section>
+
+<style>
+  #blog-preview {
+    padding: 100px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .blog-preview-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: border-color 0.2s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .blog-preview-card:hover {
+    border-color: var(--accent, #4f8ef7);
+  }
+  .blog-preview-subject {
+    font-family: 'DM Mono';
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .blog-preview-title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text, #fff);
+  }
+  .blog-preview-excerpt {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    flex: 1;
+  }
+  .blog-preview-meta {
+    font-family: 'DM Mono';
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-top: 8px;
+  }
+  .blog-preview-cta {
+    font-family: 'DM Mono';
+    font-size: 10px;
+    color: var(--accent, #4f8ef7);
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+  @media (max-width: 768px) {
+    #blog-preview { padding: 60px 20px; }
+  }
+</style>
+
+<script>
+(function() {
+  const API  = "https://coldfact.up.railway.app";
+  const grid = document.getElementById("blog-preview-grid");
+  if (!grid) return;
+
+  // Detect language from browser or default EN
+  const lang = (navigator.language || "en").startsWith("es") ? "es" : "en";
+
+  fetch(`${API}/blog/posts?status=published&language=${lang}&per_page=3`)
+    .then(r => r.json())
+    .then(data => {
+      const posts = data.posts || [];
+      if (!posts.length) {
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;font-family:'DM Mono';font-size:11px;color:var(--muted);letter-spacing:0.1em;padding:48px 0;">NO POSTS YET</div>';
+        return;
+      }
+
+      grid.innerHTML = posts.map(post => {
+        const date = post.published_at
+          ? new Date(post.published_at).toLocaleDateString(
+              lang === "es" ? "es-AR" : "en-US",
+              { year: "numeric", month: "long", day: "numeric" }
+            )
+          : "";
+        const excerpt = (post.excerpt || "")
+          .replace(/^#+\s*/gm, "")
+          .replace(/\*\*/g, "")
+          .slice(0, 120) + "...";
+
+        return `
+          <a class="blog-preview-card" href="/blog-post.html?slug=${post.slug}&lang=${lang}">
+            <div class="blog-preview-subject">${post.subject || "Media Intelligence"}</div>
+            <div class="blog-preview-title">${post.title || ""}</div>
+            <div class="blog-preview-excerpt">${excerpt}</div>
+            <div class="blog-preview-meta">${date}</div>
+            <div class="blog-preview-cta">READ REPORT →</div>
+          </a>`;
+      }).join("");
+    })
+    .catch(() => {
+      grid.innerHTML = "";
+    });
+})();
+</script>
+<!-- END BLOG PREVIEW -->
+
 <!-- CTA -->
 <div class="cta-section">
   <span class="section-label" style="display:block;text-align:center;">Get started</span>
