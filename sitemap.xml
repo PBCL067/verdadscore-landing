@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://verdadscore.com/</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://verdadscore.com/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://verdadscore.com/"/>
+  </url>
+  <url>
+    <loc>https://verdadscore.com/blog.html</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://verdadscore.com/blog.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://verdadscore.com/blog.html"/>
+  </url>
+  <url>
+    <loc>https://verdadscore.com/legal.html</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://verdadscore.com/legal.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://verdadscore.com/legal.html"/>
+  </url>
+  <url>
+    <loc>https://verdadscore.com/blog-post.html?slug=manuel-adorni-media-credibility-report</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://verdadscore.com/blog-post.html?slug=manuel-adorni-media-credibility-report"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://verdadscore.com/blog-post.html?slug=manuel-adorni-media-credibility-report"/>
+  </url>
+</urlset>

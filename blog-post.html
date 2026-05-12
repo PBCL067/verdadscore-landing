@@ -48,6 +48,89 @@
     }
     footer { border-top: 1px solid #1E293B; padding: 32px 48px; display: flex; justify-content: space-between; font-family: 'DM Mono'; font-size: 9px; color: #334155; }
   </style>
+
+    <!-- ═══════════════════════════════════════════════════
+         SEO / AI-SEO BLOCK — added Session 19
+         All values below are set dynamically by blog-post.js
+         after the slug is read from ?slug= in the URL.
+         Do not edit hardcoded values here — edit the JS below.
+    ════════════════════════════════════════════════════════ -->
+
+    <!-- Canonical (set dynamically by JS) -->
+    <link rel="canonical" id="canonical-tag" href="https://verdadscore.com/blog-post.html">
+
+    <!-- hreflang: same URL serves both languages via JS toggle -->
+    <link rel="alternate" hreflang="en" href="https://verdadscore.com/blog-post.html">
+    <link rel="alternate" hreflang="es" href="https://verdadscore.com/blog-post.html">
+    <link rel="alternate" hreflang="x-default" href="https://verdadscore.com/blog-post.html">
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+    <!-- JSON-LD: Article schema (values injected dynamically by JS) -->
+    <script type="application/ld+json" id="jsonld-article">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "",
+      "description": "",
+      "image": "https://verdadscore.com/og-default.png",
+      "datePublished": "",
+      "dateModified": "",
+      "inLanguage": "en",
+      "url": "https://verdadscore.com/blog-post.html",
+      "author": {
+        "@type": "Organization",
+        "name": "Verdad Score Intelligence",
+        "url": "https://verdadscore.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Verdad Score Intelligence",
+        "url": "https://verdadscore.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://verdadscore.com/og-default.png"
+        }
+      },
+      "isPartOf": {
+        "@type": "Blog",
+        "name": "Verdad Score Intelligence Blog",
+        "url": "https://verdadscore.com/blog.html"
+      }
+    }
+    </script>
+
+    <!-- JSON-LD: BreadcrumbList -->
+    <script type="application/ld+json" id="jsonld-breadcrumb">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://verdadscore.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://verdadscore.com/blog.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "",
+          "item": "https://verdadscore.com/blog-post.html"
+        }
+      ]
+    }
+    </script>
+
+    <!-- ═══════════════ END SEO BLOCK ═══════════════════ -->
+
 </head>
 <body>
   <nav>
@@ -159,5 +242,76 @@
 
     loadPost();
   </script>
+
+    <!-- SEO tag population — Session 19 -->
+    <script>
+    // Called after post data is fetched. Pass in the post object and current lang.
+    function updateSEOTags(post, lang) {
+        const slug   = new URLSearchParams(window.location.search).get('slug') || '';
+        const url    = 'https://verdadscore.com/blog-post.html?slug=' + slug;
+        const title  = lang === 'es' ? post.title_es : post.title_en;
+        const desc   = lang === 'es' ? post.excerpt_es : post.excerpt_en;
+        const imgUrl = post.cover_image_url || 'https://verdadscore.com/og-default.png';
+        const pubDate = post.published_at ? post.published_at.split('T')[0] : '';
+        const updDate = post.updated_at   ? post.updated_at.split('T')[0]   : pubDate;
+
+        // Canonical
+        const canon = document.getElementById('canonical-tag');
+        if (canon) canon.href = url;
+
+        // hreflang
+        document.querySelectorAll('link[hreflang]').forEach(el => {
+            el.href = url;
+        });
+
+        // og: tags (update existing or create)
+        function setMeta(prop, val, attr='property') {
+            let el = document.querySelector('meta[' + attr + '="' + prop + '"]');
+            if (!el) { el = document.createElement('meta'); el.setAttribute(attr, prop); document.head.appendChild(el); }
+            el.setAttribute('content', val);
+        }
+        setMeta('og:title',        title);
+        setMeta('og:description',  desc);
+        setMeta('og:url',          url);
+        setMeta('og:image',        imgUrl);
+        setMeta('og:type',         'article');
+        setMeta('og:locale',       lang === 'es' ? 'es_AR' : 'en_US');
+        setMeta('twitter:title',   title,   'name');
+        setMeta('twitter:description', desc, 'name');
+        setMeta('twitter:image',   imgUrl,  'name');
+        setMeta('twitter:card',    'summary_large_image', 'name');
+
+        // <title>
+        document.title = title + ' — Verdad Score';
+
+        // JSON-LD Article
+        const ld = document.getElementById('jsonld-article');
+        if (ld) {
+            const obj = JSON.parse(ld.textContent);
+            obj.headline     = title;
+            obj.description  = desc;
+            obj.image        = imgUrl;
+            obj.datePublished = pubDate;
+            obj.dateModified  = updDate;
+            obj.inLanguage   = lang === 'es' ? 'es-AR' : 'en-US';
+            obj.url          = url;
+            ld.textContent   = JSON.stringify(obj, null, 2);
+        }
+
+        // JSON-LD Breadcrumb — update post title in position 3
+        const bc = document.getElementById('jsonld-breadcrumb');
+        if (bc) {
+            const obj = JSON.parse(bc.textContent);
+            obj.itemListElement[2].name = title;
+            obj.itemListElement[2].item = url;
+            bc.textContent = JSON.stringify(obj, null, 2);
+        }
+    }
+
+    // Expose globally so existing fetch logic can call it
+    window.updateSEOTags = updateSEOTags;
+    </script>
+    <!-- END SEO JS -->
+
 </body>
 </html>
